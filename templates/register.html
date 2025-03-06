@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Index - Medilab Bootstrap Template</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="{% static 'images/favicon.png' %}" rel="icon">
+  <link href="{% static 'images/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css" rel="stylesheet' %}">
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Medilab
+  * Template URL: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/
+  * Updated: Aug 07 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header sticky-top">
+
+    <div class="topbar d-flex align-items-center">
+      <div class="container d-flex justify-content-center justify-content-md-between">
+        <div class="contact-info d-flex align-items-center">
+          <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">contact@example.com</a></i>
+          <i class="bi bi-phone d-flex align-items-center ms-4"><span>+1 5589 55488 55</span></i>
+        </div>
+        <div class="social-links d-none d-md-flex align-items-center">
+          <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+    </div><!-- End Top Bar -->
+
+    <div class="branding d-flex align-items-center">
+
+      <div class="container position-relative d-flex align-items-center justify-content-between">
+        <a href="index.html" class="logo d-flex align-items-center me-auto">
+          <!-- Uncomment the line below if you also wish to use an image logo -->
+          <!-- <img src="assets/img/logo.png" alt=""> -->
+          <h1 class="sitename">Medilab</h1>
+        </a>
+
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="#hero" class="active">Home<br></a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="{% url 'registration' %}">Registration</a></li>
+            <li><a href="{% url 'navbar' %}">login</a></li>
+            
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+
+        
+
+      </div>
+
+    </div>
+
+  </header>
+
+    
+    <section class="h-100 h-custom gradient-custom-2">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+              <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                <div class="card-body p-0">
+                  <div class="row g-0">
+                    <div class="col-lg-6">
+                      <div class="p-5">
+                        <h3 class="fw-normal mb-5" style="color: #4835d4;">General Infomation</h3>
+      
+                        <div class="mb-4 pb-2">
+                          <select data-mdb-select-init>
+                            <option value="1">Title</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                            <option value="4">Four</option>
+                          </select>
+                        </div>
+      
+                        <div class="row">
+                          <div class="col-md-6 mb-4 pb-2">
+      
+                            <div data-mdb-input-init class="form-outline">
+                              <input type="text" id="form3Examplev2" class="form-control form-control-lg" />
+                              <label class="form-label" for="form3Examplev2">First name</label>
+                            </div>
+      
+                          </div>
+                          <div class="col-md-6 mb-4 pb-2">
+      
+                            <div data-mdb-input-init class="form-outline">
+                              <input type="text" id="form3Examplev3" class="form-control form-control-lg" />
+                              <label class="form-label" for="form3Examplev3">Last name</label>
+                            </div>
+      
+                          </div>
+                        </div>
+      
+                        <div class="mb-4 pb-2">
+                          <select data-mdb-select-init>
+                            <option value="1">Position</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                            <option value="4">Four</option>
+                          </select>
+                        </div>
+      
+                        <div class="mb-4 pb-2">
+                          <div data-mdb-input-init class="form-outline">
+                            <input type="text" id="form3Examplev4" class="form-control form-control-lg" />
+                            <label class="form-label" for="form3Examplev4">Position</label>
+                          </div>
+                        </div>
+      
+                        <div class="row">
+                          <div class="col-md-6 mb-4 pb-2 mb-md-0 pb-md-0">
+      
+                            <div data-mdb-input-init class="form-outline">
+                              <input type="text" id="form3Examplev5" class="form-control form-control-lg" />
+                              <label class="form-label" for="form3Examplev5">Bussines Arena</label>
+                            </div>
+      
+                          </div>
+                          <div class="col-md-6">
+      
+                            <select data-mdb-select-init>
+                              <option value="1">Employees</option>
+                              <option value="2">Two</option>
+                              <option value="3">Three</option>
+                              <option value="4">Four</option>
+                            </select>
+      
+                          </div>
+                        </div>
+      
+                      </div>
+                    </div>
+                    <div class="col-lg-6 bg-indigo text-white">
+                      <div class="p-5">
+                        <h3 class="fw-normal mb-5">Contact Details</h3>
+      
+                        <div class="mb-4 pb-2">
+                          <div data-mdb-input-init class="form-outline form-white">
+                            <input type="text" id="form3Examplea2" class="form-control form-control-lg" />
+                            <label class="form-label" for="form3Examplea2">Street + Nr</label>
+                          </div>
+                        </div>
+      
+                        <div class="mb-4 pb-2">
+                          <div data-mdb-input-init class="form-outline form-white">
+                            <input type="text" id="form3Examplea3" class="form-control form-control-lg" />
+                            <label class="form-label" for="form3Examplea3">Additional Information</label>
+                          </div>
+                        </div>
+      
+                        <div class="row">
+                          <div class="col-md-5 mb-4 pb-2">
+      
+                            <div data-mdb-input-init class="form-outline form-white">
+                              <input type="text" id="form3Examplea4" class="form-control form-control-lg" />
+                              <label class="form-label" for="form3Examplea4">Zip Code</label>
+                            </div>
+      
+                          </div>
+                          <div class="col-md-7 mb-4 pb-2">
+      
+                            <div data-mdb-input-init class="form-outline form-white">
+                              <input type="text" id="form3Examplea5" class="form-control form-control-lg" />
+                              <label class="form-label" for="form3Examplea5">Place</label>
+                            </div>
+      
+                          </div>
+                        </div>
+      
+                        <div class="mb-4 pb-2">
+                          <div data-mdb-input-init class="form-outline form-white">
+                            <input type="text" id="form3Examplea6" class="form-control form-control-lg" />
+                            <label class="form-label" for="form3Examplea6">Country</label>
+                          </div>
+                        </div>
+      
+                        <div class="row">
+                          <div class="col-md-5 mb-4 pb-2">
+      
+                            <div data-mdb-input-init class="form-outline form-white">
+                              <input type="text" id="form3Examplea7" class="form-control form-control-lg" />
+                              <label class="form-label" for="form3Examplea7">Code +</label>
+                            </div>
+      
+                          </div>
+                          <div class="col-md-7 mb-4 pb-2">
+      
+                            <div data-mdb-input-init class="form-outline form-white">
+                              <input type="text" id="form3Examplea8" class="form-control form-control-lg" />
+                              <label class="form-label" for="form3Examplea8">Phone Number</label>
+                            </div>
+      
+                          </div>
+                        </div>
+      
+                        <div class="mb-4">
+                          <div data-mdb-input-init class="form-outline form-white">
+                            <input type="text" id="form3Examplea9" class="form-control form-control-lg" />
+                            <label class="form-label" for="form3Examplea9">Your Email</label>
+                          </div>
+                        </div>
+      
+                        <div class="form-check d-flex justify-content-start mb-4 pb-3">
+                          <input class="form-check-input me-3" type="checkbox" value="" id="form2Example3c" />
+                          <label class="form-check-label text-white" for="form2Example3">
+                            I do accept the <a href="#!" class="text-white"><u>Terms and Conditions</u></a> of your
+                            site.
+                          </label>
+                        </div>
+      
+                        <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-light btn-lg"
+                          data-mdb-ripple-color="dark">Register</button>
+      
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
