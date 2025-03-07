@@ -7,5 +7,7 @@ def navbar(request):
 
 def registration(request):
     return render(request,"register.html")
+def user_reg(request):
+    return render(request,"user_reg.html")
 
 
