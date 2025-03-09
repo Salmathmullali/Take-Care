@@ -1,106 +1,87 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Index - Medilab Bootstrap Template</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+  <title>Registration - Medilab</title>
 
-  <!-- Favicons -->
-  <link href="{% static 'images/favicon.png' %}" rel="icon">
-  <link href="{% static 'images/apple-touch-icon.png' %}" rel="apple-touch-icon">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
+  <!-- Styles and Bootstrap -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
-
-  <!-- Main CSS File -->
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
-
   <style>
     @media (min-width: 1025px) {
-      .h-custom {
-        height: 100vh !important;
-      }
+        .h-custom {
+            height: 100vh !important;
+        }
     }
 
     .card-registration .select-input.form-control[readonly]:not([disabled]) {
-      font-size: 1rem;
-      line-height: 2.15;
-      padding-left: .75em;
-      padding-right: .75em;
+        font-size: 1rem;
+        line-height: 2.15;
+        padding-left: .75em;
+        padding-right: .75em;
     }
 
     .card-registration .select-arrow {
-      top: 13px;
+        top: 13px;
     }
 
+    /* Gradient Background */
     .gradient-custom-2 {
-      background: linear-gradient(to right, rgba(161, 196, 253, 1), rgba(194, 233, 251, 1));
+        background: linear-gradient(to right, #ffffff, #ffffff);
     }
 
+    /* Indigo Section */
     .bg-indigo {
-      background-color: #4835d4;
+        background-color: #4835d4 !important;
+        color: rgb(161, 199, 227);
+        padding: 20px;
+        border-radius: 10px;
     }
 
-    @media (min-width: 992px) {
-      .card-registration-2 .bg-indigo {
-        border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px;
-      }
+    /* Form styling */
+    .form-control {
+        border-radius: 10px;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #5592d0;
+        transition: all 0.3s ease-in-out;
     }
 
-    @media (max-width: 991px) {
-      .card-registration-2 .bg-indigo {
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-      }
+    .form-control:focus {
+        border-color: #6c63ff;
+        box-shadow: 0 0 8px rgba(108, 99, 255, 0.5);
+    }
+
+    /* Button Styling */
+    .btn-lg {
+        font-size: 18px;
+        padding: 12px 25px;
+        border-radius: 8px;
+        background-color: #6c63ff;
+        color: rgb(18, 49, 102);
+        border: none;
+        transition: 0.3s;
+    }
+
+    .btn-lg:hover {
+        background-color: #5548c8;
     }
   </style>
-
 </head>
 
 <body class="index-page">
-
   <header id="header" class="header sticky-top">
-    <div class="topbar d-flex align-items-center">
-      <div class="container d-flex justify-content-center justify-content-md-between">
-        <div class="contact-info d-flex align-items-center">
-          <i class="bi bi-envelope"><a href="mailto:contact@example.com">contact@example.com</a></i>
-          <i class="bi bi-phone ms-4"><span>+1 5589 55488 55</span></i>
-        </div>
-        <div class="social-links d-none d-md-flex align-items-center">
-          <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-          <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-          <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-          <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-        </div>
-      </div>
-    </div>
-
     <div class="branding d-flex align-items-center">
       <div class="container d-flex align-items-center justify-content-between">
-        <a href="index.html" class="logo me-auto">
+        <a href="{% url 'home' %}" class="logo me-auto">
           <h1 class="sitename">Medilab</h1>
         </a>
-
         <nav id="navmenu" class="navmenu">
           <ul>
-            <li><a href="#hero" class="active">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="{% url 'registration' %}">Registration</a></li>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'registration' %}" class="active">Registration</a></li>
             <li><a href="{% url 'navbar' %}">Login</a></li>
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -109,67 +90,85 @@
     </div>
   </header>
 
-<section class="h-100 h-custom gradient-custom-2">
-    <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-12">
-          <div class="card card-registration card-registration-2" style="border-radius: 15px;">
-            <div class="card-body p-0">
-              <div class="row g-0">
-                <div class="col-lg-6">
-                  <div class="p-5">
-                    <h3 class="fw-normal mb-5" style="color: #4835d4;">General Information</h3>
+  <section class="h-100 gradient-custom-2">
+    <div class="container py-5">
+      <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-md-8">
+          <div class="card card-registration" style="border-radius: 15px; padding: 20px;">
+            <div class="card-body">
+              <h3 class="fw-normal mb-4 text-center" style="color: #644ba8;">User Registration</h3>
 
-                    <div class="mb-4 pb-2">
-                      <select>
-                        <option value="1">Title</option>
-                        <option value="2">Two</option>
-                      </select>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-md-6 mb-4 pb-2">
-                        <div class="form-outline">
-                          <input type="text" class="form-control form-control-lg" />
-                          <label class="form-label">First Name</label>
-                        </div>
-                      </div>
-                      <div class="col-md-6 mb-4 pb-2">
-                        <div class="form-outline">
-                          <input type="text" class="form-control form-control-lg" />
-                          <label class="form-label">Last Name</label>
-                        </div>
-                      </div>
-                    </div>
-
-                    <button type="button" class="btn btn-light btn-lg">Register</button>
-
-                  </div>
+              <!-- Display Messages -->
+              {% if messages %}
+                <div class="alert alert-info">
+                  {% for message in messages %}
+                    <p>{{ message }}</p>
+                  {% endfor %}
                 </div>
-                <div class="col-lg-6 bg-indigo text-white">
-                  <div class="p-5">
-                    <h3 class="fw-normal mb-5">Contact Details</h3>
-                    <div class="form-outline form-white">
-                      <input type="text" class="form-control form-control-lg" />
-                      <label class="form-label">Your Email</label>
-                    </div>
+              {% endif %}
 
-                    <div class="form-check d-flex justify-content-start mt-4">
-                      <input class="form-check-input me-3" type="checkbox" />
-                      <label class="form-check-label text-white">
-                        I accept the <a href="#" class="text-white"><u>Terms and Conditions</u></a>.
-                      </label>
-                    </div>
+              <form method="POST">
+                {% csrf_token %}
 
-                    <button type="button" class="btn btn-light btn-lg mt-3">Register</button>
-
-                  </div>
+                <!-- Render Form Fields -->
+                <div class="mb-3">
+                  <label for="id_firstname" class="form-label">First Name</label>
+                  {{ form.firstname }}
                 </div>
-              </div>
+
+                <div class="mb-3">
+                  <label for="id_lastname" class="form-label">Last Name</label>
+                  {{ form.lastname }}
+                </div>
+
+                <div class="mb-3">
+                  <label for="id_email" class="form-label">Email</label>
+                  {{ form.email }}
+                </div>
+                <div class="mb-3">
+                  <label for="id_phone" class="form-label">Phone</label>
+                  {{ form.phone }}
+                </div>
+
+                <div class="mb-3">
+                  <label for="id_password1" class="form-label">Password</label>
+                  {{ form.password1 }}
+                </div>
+
+                <div class="mb-3">
+                  <label for="id_password2" class="form-label">Confirm Password</label>
+                  {{ form.password2 }}
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="terms">
+                  <label class="form-check-label" for="terms">
+                    I accept the <a href="#" class="text-primary"><u>Terms and Conditions</u></a>.
+                  </label>
+                </div>
+
+                <button type="submit" class="btn btn-lg mt-3 w-100">Register</button>
+              </form>
+
+              <!-- Display Form Errors -->
+              {% if form.errors %}
+                <div class="alert alert-danger mt-3">
+                  <strong>Please correct the following errors:</strong>
+                  <ul>
+                    {% for field, errors in form.errors.items %}
+                      {% for error in errors %}
+                        <li>{{ field|title }}: {{ error }}</li>
+                      {% endfor %}
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% endif %}
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>
-  </body></html>
+</body>
+</html>
+

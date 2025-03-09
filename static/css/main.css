@@ -1727,3 +1727,87 @@ section,
 .starter-section {
   /* Add your styles here */
 }
+
+
+
+
+
+
+/* ===== User Registration Styling ===== */
+.card-registration {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  padding: 30px;
+  max-width: 500px;
+  margin: auto;
+}
+
+.card-registration h3 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #644ba8;
+  text-align: center;
+}
+
+/* Form Labels */
+.card-registration .form-label {
+  font-weight: 600;
+  color: #644ba8;
+}
+
+/* Input Fields */
+.card-registration input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.3s;
+}
+
+.card-registration input:focus {
+  border-color: #644ba8;
+  box-shadow: 0px 0px 5px rgba(100, 75, 168, 0.5);
+}
+
+/* Button Styling */
+.card-registration .btn-primary {
+  background: #644ba8;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: 0.3s;
+  width: 100%;
+}
+
+.card-registration .btn-primary:hover {
+  background: #4c3a8a;
+}
+
+/* Alert Messages */
+.alert {
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.alert-info {
+  background: #e3f2fd;
+  color: #333;
+}
+
+.alert-danger {
+  background: #ffebee;
+  color: red;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .card-registration {
+      padding: 20px;
+  }
+}
