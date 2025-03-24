@@ -3,6 +3,8 @@ from django.contrib.auth import login
 from django.contrib import messages
 from .models import CustomUser
 from .forms import MyUserCreationForm
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+from django.urls import reverse_lazy
 
 def home(request):
     return render(request, "index.html")
@@ -66,5 +68,33 @@ def seller_reg(request):
             messages.error(request, 'Error occurred during registration. Please check your inputs.')
 
     return render(request, 'user_reg.html', {'form': form})
+
+
+
+class CustomLoginView(LoginView):
+    template_name = 'login.html'
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'password_reset.html'
+    email_template_name = 'password_reset_email.html'
+    success_url = reverse_lazy('password_reset_done')
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'password_reset_done.html'
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'password_reset_confirm.html'
+    success_url = reverse_lazy('password_reset_complete')
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'password_reset_complete.html'
+
+
+
+
+# Logout View
+def logout(request):
+    authlogout(request)
+    return redirect('index')
 
 
