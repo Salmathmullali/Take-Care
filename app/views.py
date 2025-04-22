@@ -59,7 +59,6 @@ class CustomLoginView(LoginView):
 class CustomPasswordResetView(PasswordResetView):
     form_class = MyPasswordResetForm
     template_name = 'password_reset.html'
-    email_template_name = 'password_reset_email.html'
     success_url = reverse_lazy('password_reset_done')
 
 class CustomPasswordResetDoneView(PasswordResetDoneView):
@@ -73,7 +72,7 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'password_reset_complete.html'
 
-# Logout View
-# def logout_view(request):
-#     auth_logout(request)
-#     return redirect('home')
+
+def logout_view(request):
+    auth_logout(request)
+    return redirect('home')

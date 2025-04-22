@@ -16,7 +16,7 @@ urlpatterns = [
     path('charity_user_reg/', views.charity_user_reg, name="charity_user_reg"),
     path('seller_reg/', views.seller_reg, name="seller_reg"),
     path('login/', views.CustomLoginView.as_view(), name='login'),
-    #path('logout/', views.logout_view, name='logout'),
+    path('logout/', views.logout_view, name='logout'),
 
     # Password Management
     path('password-reset/', views.CustomPasswordResetView.as_view(), name='password_reset'),

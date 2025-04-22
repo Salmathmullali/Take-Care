@@ -143,5 +143,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'images')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
