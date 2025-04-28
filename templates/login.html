@@ -14,7 +14,7 @@
     <style>
         /* Fullscreen Centered Background */
         body {
-            background: linear-gradient(135deg, #052f6a, #0e8e9f, #0455b7);
+            background: linear-gradient(135deg, #ffffff, #ffffff, #ffffff);
             font-family: 'Poppins', sans-serif;
             color: white;
             display: flex;
@@ -102,7 +102,9 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="">Home</a>
+
+                        <a class="nav-link active" href="{% url 'home' %}">Home</a>
+
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
@@ -134,7 +136,7 @@
       </form>
       <div class="group">
         <a href="{% url 'password_reset' %}">Forgot Password</a>
-        <a href="#">Sign up</a>
+        <a href="{% url 'user_reg' %}">Not registered yet?</a>
  
       </div>
     </div><br>
@@ -148,3 +150,4 @@
 
 </body>
 </html>
+

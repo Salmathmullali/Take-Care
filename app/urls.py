@@ -17,6 +17,7 @@ urlpatterns = [
     path('seller_reg/', views.seller_reg, name="seller_reg"),
     path('login/', views.CustomLoginView.as_view(), name='login'),
     path('logout/', views.logout_view, name='logout'),
+    path('terms_condition/', views.terms_condition, name='terms_condition'),
 
     # Password Management
     path('password-reset/', views.CustomPasswordResetView.as_view(), name='password_reset'),

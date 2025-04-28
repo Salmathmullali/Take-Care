@@ -12,6 +12,8 @@ def home(request):
 
 def navbar(request):
     return render(request, "navbar.html")
+def terms_condition(request):
+    return render(request, "terms_condition.html")
 
 def charity_page(request):
     return render(request, "charity_page.html")
