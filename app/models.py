@@ -25,22 +25,36 @@ class CustomUserManager(BaseUserManager):
 
 # Custom User Model
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    # Constants for user types
+    NORMAL = 1
+    SELLER = 2
+    CHARITY = 3
+    DOCTOR = 4
+
+    USER_TYPE_CHOICES = [
+        (NORMAL, 'Normal'),
+        (SELLER, 'Seller'),
+        (CHARITY, 'Charity'),
+        (DOCTOR, 'Doctor'),
+    ]
+
+    # Fields
     reg_id = models.AutoField(primary_key=True)
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
-    user_type = models.IntegerField(default=2)
     status = models.BooleanField(default=False)
+    user_type = models.IntegerField(choices=USER_TYPE_CHOICES, default=NORMAL)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
-    objects = CustomUserManager()  # Linking custom manager
+    objects = CustomUserManager()
 
-    USERNAME_FIELD = "email"  # Use email as the username
-    REQUIRED_FIELDS = ["firstname", "lastname", "phone"]  # Other required fields
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["firstname", "lastname", "phone"]
 
     def __str__(self):
         return self.email

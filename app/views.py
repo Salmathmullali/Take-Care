@@ -12,6 +12,7 @@ def home(request):
 
 def navbar(request):
     return render(request, "navbar.html")
+
 def terms_condition(request):
     return render(request, "terms_condition.html")
 
@@ -23,9 +24,6 @@ def seller_page(request):
 
 def normal_user_page(request):
     return render(request, "normal_user_page.html")
-
-def registration(request):
-    return render(request, "register.html")
 
 # Registration Views
 def register_user(request, redirect_page):
@@ -43,6 +41,10 @@ def register_user(request, redirect_page):
             messages.error(request, 'Error occurred during registration. Please check your inputs.')
     return render(request, 'user_reg.html', {'form': form})
 
+def registration(request):
+    return render(request, "register.html")
+
+
 def user_reg(request):
     return register_user(request, 'normal_user_page')
 
@@ -56,6 +58,17 @@ def seller_reg(request):
 class CustomLoginView(LoginView):
     form_class = LoginForm
     template_name = 'login.html'
+
+    def get_success_url(self):
+        user = self.request.user
+        if user.user_type == CustomUser.SELLER:
+            return reverse_lazy('seller_page')
+        elif user.user_type == CustomUser.NORMAL:
+            return reverse_lazy('normal_user_page')
+        elif user.user_type == CustomUser.CHARITY:
+            return reverse_lazy('charity_page')
+        else:
+            return reverse_lazy('navbar')
 
 # Password Management Views
 class CustomPasswordResetView(PasswordResetView):
@@ -74,7 +87,7 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'password_reset_complete.html'
 
-
+# Logout View
 def logout_view(request):
     auth_logout(request)
     return redirect('home')
