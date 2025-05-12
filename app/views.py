@@ -12,6 +12,12 @@ def home(request):
 
 def navbar(request):
     return render(request, "navbar.html")
+def admin_page(request):
+    return render(request, "admin_page.html")
+def charity_approvel(request):
+    return render(request, "charity_approvel.html")
+def business_approvel(request):
+    return render(request, "business_approvel.html")
 
 def terms_condition(request):
     return render(request, "terms_condition.html")

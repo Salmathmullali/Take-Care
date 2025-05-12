@@ -53,7 +53,7 @@
 
       <div class="container position-relative d-flex align-items-center justify-content-between">
         <a href="{% url 'home' %}" class="logo d-flex align-items-center me-auto">
-          <h1 class="sitename">Medilab</h1>
+          <h1 class="sitename">Take Care</h1><br><h2 class="sitename">Approvel History</h2>
         </a>
 
         <nav id="navmenu" class="navmenu">
@@ -61,12 +61,7 @@
             <li><a href="#hero" class="active">Home</a></li>
             <li><a href="{% url 'logout' %}">Logout</a></li>
             <li><a href="{% url 'navbar' %}">Settings</a></li>
-            <li><a href="{% url 'user_reg' %}">register</a></li>
-            <li class="dropdown">
-              <a href="#"><span>Approvel</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-              <ul>
-                <li><a href="{% url 'charity_approvel' %}">Charity</a></li>
-                <li><a href="{% url 'business_approvel' %}">Business</a></li>
+            
               </ul>
             </li>
           </ul>
