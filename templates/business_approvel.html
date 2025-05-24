@@ -73,6 +73,38 @@
     </div>
 
   </header>
+ <div class="main-div">
+    <!-- <table border="1" class="table table-striped"> -->
+<tr><th>first name</th>
+<th>Last name</th>
+<th>address</th>
+<th>password</th>
+<!--    <th>uploads</th>-->
+    <th colspan="2">Actions</th>
+<!--        <th colspan="2">operations</th>-->
+</tr>
+
+
+<tr>
+
+    <td>{{i.firstname}}</td>
+     <td>{{i.lastname}}</td>
+     <td>{{i.address}}</td>
+     <td>{{i.password}}</td>
+<!--         <td>{{i.uploads}}</td>-->
+<!--         <td>{{i.accept}}</td>-->
+<!--        <td>{{i.reject}}</td>-->
+
+<td><a class="btn btn-success" href="{% url 'approve' login_id i.reg_id  %}">accept</a></td>
+<td><a class="btn btn-danger" href="{% url 'reject' login_id i.reg_id %}">reject</a></td>
+</tr>
+{% endfor %}
+    </table></div></section>
+{% include 'pagination.html' %}
+{% endblock content %}
+
+</body>
+</html>
 
 </body>
 </html>
