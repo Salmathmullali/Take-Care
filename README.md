@@ -1,8 +1,8 @@
-Why TakeCare?
+<h2>Why TakeCare?</h2>
 
 The TakeCare application is designed to support users’ health with the help of technology. Our main focus is on both mental and physical health.
 
-What does this application include?
+<h3What does this application include?</h3>
 
 Skin check – analyze symptoms and detect possible diseases.
 
