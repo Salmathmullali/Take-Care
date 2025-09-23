@@ -1,4 +1,4 @@
-/this project encompasses a wide range of useful ideas that we keep confidential. Neverthless, we will highlight two key features that are part of our development plan.
+
 
 
 ![Screenshot 2025-04-01 180614](https://github.com/user-attachments/assets/89f95920-5493-4c52-bbc6-146555f8e38e)
