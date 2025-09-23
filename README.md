@@ -2,7 +2,7 @@
 
 The TakeCare application is designed to support users’ health with the help of technology. Our main focus is on both mental and physical health.
 
-<h3What does this application include?</h3>
+<h3>What does this application include?</h3>
 
 Skin check – analyze symptoms and detect possible diseases.
 
