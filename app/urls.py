@@ -9,6 +9,8 @@ urlpatterns = [
     path('normal_user_page/', views.normal_user_page, name="normal_user_page"),
     path('seller_page/', views.seller_page, name="seller_page"),
     path('charity_page/', views.charity_page, name="charity_page"),
+    path('apply-donor/', views.apply_donor, name='apply_donor'),
+    path('apply-charity/', views.apply_charity, name='apply_charity'),
     
     # Registration and Login
     path('register/', views.registration, name="registration"),

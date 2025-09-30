@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, SetPasswordForm, PasswordResetForm
-from .models import CustomUser
+from .models import CustomUser, DonorApplication, CharityRequest
 
 # User Creation Form (Registration)
 class MyUserCreationForm(UserCreationForm):
@@ -78,3 +78,13 @@ class MySetPasswordForm(SetPasswordForm):
         label='Confirm New Password', 
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
+
+class DonorApplicationForm(forms.ModelForm):
+    class Meta:
+        model = DonorApplication
+        fields = ['message']
+
+class CharityRequestForm(forms.ModelForm):
+    class Meta:
+        model = CharityRequest
+        fields = ['name', 'email', 'reason']

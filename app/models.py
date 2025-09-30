@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from django.conf import settings
+
 
 # Custom User Manager
 class CustomUserManager(BaseUserManager):
@@ -58,3 +60,37 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+class CharityOption(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    target_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    raised_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    def __str__(self):
+        return self.title
+
+# Donors
+class CharityDonor(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    donation_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    cause = models.ForeignKey(CharityOption, on_delete=models.CASCADE)
+    donated_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.user)  # user.email or user.username if you have
+
+# Apply to become donor
+class DonorApplication(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    message = models.TextField()
+    applied_at = models.DateTimeField(auto_now_add=True)
+    approved = models.BooleanField(default=False)
+
+# Apply for receiving charity
+class CharityRequest(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    reason = models.TextField()
+    submitted_at = models.DateTimeField(auto_now_add=True)
+    approved = models.BooleanField(default=False)

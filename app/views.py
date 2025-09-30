@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout as auth_logout
 from django.contrib import messages
-from .models import CustomUser
-from .forms import MyUserCreationForm, LoginForm, MyPasswordResetForm, MySetPasswordForm, MyPasswordChangeForm
+from .models import CustomUser, CharityOption, CharityDonor, DonorApplication, CharityRequest
+from .forms import MyUserCreationForm, LoginForm, MyPasswordResetForm, MySetPasswordForm, MyPasswordChangeForm, DonorApplicationForm, CharityRequestForm 
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import reverse_lazy
 
@@ -23,7 +23,31 @@ def terms_condition(request):
     return render(request, "terms_condition.html")
 
 def charity_page(request):
-    return render(request, "charity_page.html")
+    options = CharityOption.objects.all()
+    donors = CharityDonor.objects.all()
+    return render(request, 'charity_page.html', {'options': options, 'donors': donors})
+
+def apply_donor(request):
+    if request.method == 'POST':
+        form = DonorApplicationForm(request.POST)
+        if form.is_valid():
+            app = form.save(commit=False)
+            app.user = request.user
+            app.save()
+            return redirect('charity_page')
+    else:
+        form = DonorApplicationForm()
+    return render(request, 'apply_donor.html', {'form': form})
+
+def apply_charity(request):
+    if request.method == 'POST':
+        form = CharityRequestForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('charity_page')
+    else:
+        form = CharityRequestForm()
+    return render(request, 'apply_charity.html', {'form': form})
 
 def seller_page(request):
     return render(request, "seller_page.html")

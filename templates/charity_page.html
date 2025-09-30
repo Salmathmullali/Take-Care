@@ -1,5 +1,25 @@
-{% extends 'navbar.html' %}
+<h1>Charity Page</h1>
 
-{% block content %}
+<h2>Available Charity Options</h2>
+<ul>
+  {% for option in options %}
+    <li>{{ option.title }} - Raised: {{ option.raised_amount }}/{{ option.target_amount }}</li>
+  {% empty %}
+    <li>No charity options available.</li>
+  {% endfor %}
+</ul>
 
-{% endblock content %}
+<h2>Available Donors</h2>
+<ul>
+  {% for donor in donors %}
+    <li>{{ donor.user.username }} donated {{ donor.donation_amount }} to {{ donor.cause.title }}</li>
+  {% empty %}
+    <li>No donors yet.</li>
+  {% endfor %}
+</ul>
+
+<h2>Apply to Become a Charity Donor</h2>
+<a href="{% url 'apply_donor' %}">Apply Now</a>
+
+<h2>Apply for Charity Help</h2>
+<a href="{% url 'apply_charity' %}">Submit Application</a>
