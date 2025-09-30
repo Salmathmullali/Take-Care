@@ -1,25 +1,83 @@
-<h1>Charity Page</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charity Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .tracker-bar {
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .tracker-fill {
+            height: 100%;
+            background-color: #28a745;
+            text-align: center;
+            color: white;
+            font-size: 0.8rem;
+            line-height: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Charity Dashboard</h1>
 
-<h2>Available Charity Options</h2>
-<ul>
-  {% for option in options %}
-    <li>{{ option.title }} - Raised: {{ option.raised_amount }}/{{ option.target_amount }}</li>
-  {% empty %}
-    <li>No charity options available.</li>
-  {% endfor %}
-</ul>
+    <!-- Charity Options -->
+    <h2>Available Charity Options</h2>
+    <div class="row">
+        {% for item in options_with_progress %}
+<div class="col-md-4">
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ item.option.title }}</h5>
+            <p class="card-text">{{ item.option.description }}</p>
+            <div class="tracker-bar mb-2">
+                <div class="tracker-fill" style="width: {{ item.progress|floatformat:0 }}%;">
+                    {{ item.option.raised_amount }} / {{ item.option.target_amount }}
+                </div>
+            </div>
+            <a href="{% url 'apply_charity' %}" class="btn btn-success btn-sm">Donate</a>
+        </div>
+    </div>
+</div>
+{% endfor %}
 
-<h2>Available Donors</h2>
-<ul>
-  {% for donor in donors %}
-    <li>{{ donor.user.username }} donated {{ donor.donation_amount }} to {{ donor.cause.title }}</li>
-  {% empty %}
-    <li>No donors yet.</li>
-  {% endfor %}
-</ul>
+    </div>
 
-<h2>Apply to Become a Charity Donor</h2>
-<a href="{% url 'apply_donor' %}">Apply Now</a>
+    <!-- Donor List -->
+    <h2 class="mt-5">Available Donors</h2>
+    <ul class="list-group mb-5">
+        {% for donor in donors %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ donor.user.email }} donated {{ donor.donation_amount }} to {{ donor.cause.title }}
+        </li>
+        {% empty %}
+        <li class="list-group-item">No donors yet.</li>
+        {% endfor %}
+    </ul>
 
-<h2>Apply for Charity Help</h2>
-<a href="{% url 'apply_charity' %}">Submit Application</a>
+    <!-- Apply to Become Donor -->
+    <div class="text-center mb-4">
+        <a href="{% url 'apply_donor' %}" class="btn btn-primary btn-lg">Apply to Become a Charity Donor</a>
+    </div>
+
+    <!-- Apply for Charity Help -->
+    <div class="text-center mb-4">
+        <a href="{% url 'apply_charity' %}" class="btn btn-warning btn-lg">Apply for Charity Assistance</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

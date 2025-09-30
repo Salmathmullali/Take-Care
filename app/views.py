@@ -25,7 +25,18 @@ def terms_condition(request):
 def charity_page(request):
     options = CharityOption.objects.all()
     donors = CharityDonor.objects.all()
-    return render(request, 'charity_page.html', {'options': options, 'donors': donors})
+
+    options_with_progress = []
+    for option in options:
+        progress = (option.raised_amount / option.target_amount) * 100 if option.target_amount > 0 else 0
+        options_with_progress.append({'option': option, 'progress': progress})
+
+    context = {
+        'options_with_progress': options_with_progress,
+        'donors': donors
+    }
+    return render(request, 'charity_page.html', context)
+
 
 def apply_donor(request):
     if request.method == 'POST':
