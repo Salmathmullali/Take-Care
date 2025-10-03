@@ -22,6 +22,9 @@ urlpatterns = [
     path('terms_condition/', views.terms_condition, name='terms_condition'),
     path('admin_page/', views.admin_page, name='admin_page'),
     path('charity_approvel/', views.charity_approvel, name='charity_approvel'),
+    path("donor-applications/", views.donor_applications_list, name="donor_applications_list"),
+    path("donor-applications/<int:pk>/approve/", views.approve_donor, name="approve_donor"),
+    path("donor-applications/<int:pk>/reject/", views.reject_donor, name="reject_donor"),
     path('business_approvel/', views.business_approvel, name='business_approvel'),
 
     # Password Management

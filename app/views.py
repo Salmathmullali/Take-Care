@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout as auth_logout
 from django.contrib import messages
 from .models import CustomUser, CharityOption, CharityDonor, DonorApplication, CharityRequest
 from .forms import MyUserCreationForm, LoginForm, MyPasswordResetForm, MySetPasswordForm, MyPasswordChangeForm, DonorApplicationForm, CharityRequestForm 
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import reverse_lazy
-
+from django.contrib.auth.decorators import user_passes_test
 
 
 # Basic Views
@@ -149,3 +149,28 @@ class CustomPasswordResetCompleteView(PasswordResetCompleteView):
 def logout_view(request):
     auth_logout(request)
     return redirect('home')
+
+
+# Only staff/superusers can access
+def is_admin(user):
+    return user.is_staff or user.is_superuser
+
+@user_passes_test(is_admin)
+def donor_applications_list(request):
+    applications = DonorApplication.objects.all().order_by("-applied_at")
+    return render(request, "donor_applications_list.html", {"applications": applications})
+
+@user_passes_test(is_admin)
+def approve_donor(request, pk):
+    application = get_object_or_404(DonorApplication, pk=pk)
+    application.approved = True
+    application.save()
+    messages.success(request, f"{application.name} has been approved as a donor.")
+    return redirect("donor_applications_list")
+
+@user_passes_test(is_admin)
+def reject_donor(request, pk):
+    application = get_object_or_404(DonorApplication, pk=pk)
+    application.delete()
+    messages.error(request, f"{application.name}'s application has been rejected.")
+    return redirect("donor_applications_list")
