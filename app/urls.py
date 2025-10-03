@@ -25,6 +25,7 @@ urlpatterns = [
     path("donor-applications/", views.donor_applications_list, name="donor_applications_list"),
     path("donor-applications/<int:pk>/approve/", views.approve_donor, name="approve_donor"),
     path("donor-applications/<int:pk>/reject/", views.reject_donor, name="reject_donor"),
+    path("approved-donors/", views.approved_donors, name="approved_donors"),
     path('business_approvel/', views.business_approvel, name='business_approvel'),
 
     # Password Management

@@ -174,3 +174,7 @@ def reject_donor(request, pk):
     application.delete()
     messages.error(request, f"{application.name}'s application has been rejected.")
     return redirect("donor_applications_list")
+
+def approved_donors(request):
+    donors = DonorApplication.objects.filter(approved=True)
+    return render(request, "approved_donors.html", {"donors": donors})
