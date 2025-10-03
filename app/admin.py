@@ -23,3 +23,10 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 
+
+
+
+class DonorApplicationAdmin(admin.ModelAdmin):
+    list_display = ("name", "donor_type", "email", "phone", "approved", "applied_at")
+    list_filter = ("donor_type", "approved")
+    search_fields = ("name", "email", "phone")

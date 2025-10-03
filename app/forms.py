@@ -82,7 +82,7 @@ class MySetPasswordForm(SetPasswordForm):
 class DonorApplicationForm(forms.ModelForm):
     class Meta:
         model = DonorApplication
-        fields = ['message']
+        fields = ['donor_type', 'name', 'email', 'phone', 'address', 'reason', 'photo']
 
 class CharityRequestForm(forms.ModelForm):
     class Meta:

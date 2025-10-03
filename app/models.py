@@ -94,3 +94,30 @@ class CharityRequest(models.Model):
     reason = models.TextField()
     submitted_at = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=False)
+
+
+class DonorApplication(models.Model):
+    INDIVIDUAL = 'Individual'
+    ORGANIZATION = 'Organization'
+    DONOR_TYPE_CHOICES = [
+        (INDIVIDUAL, 'Individual'),
+        (ORGANIZATION, 'Organization'),
+    ]
+
+    donor_type = models.CharField(
+        max_length=20,
+        choices=DONOR_TYPE_CHOICES,
+        default=INDIVIDUAL
+    )
+
+    name = models.CharField(max_length=200, default="Default Name")
+    email = models.EmailField(default="example@example.com")
+    phone = models.CharField(max_length=15, blank=True)        # optional for now
+    address = models.TextField(blank=True)                     # optional for now
+    reason = models.TextField(blank=True)                      # optional for now
+    photo = models.ImageField(upload_to="donor_photos/", blank=True, null=True)
+    applied_at = models.DateTimeField(auto_now_add=True)
+    approved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.name} ({self.donor_type})"

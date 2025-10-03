@@ -6,6 +6,8 @@ from .forms import MyUserCreationForm, LoginForm, MyPasswordResetForm, MySetPass
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import reverse_lazy
 
+
+
 # Basic Views
 def home(request):
     return render(request, "index.html")
@@ -39,16 +41,31 @@ def charity_page(request):
 
 
 def apply_donor(request):
-    if request.method == 'POST':
-        form = DonorApplicationForm(request.POST)
-        if form.is_valid():
-            app = form.save(commit=False)
-            app.user = request.user
-            app.save()
-            return redirect('charity_page')
-    else:
-        form = DonorApplicationForm()
-    return render(request, 'apply_donor.html', {'form': form})
+    if request.method == "POST":
+        donor_type = request.POST.get("donor_type")
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        phone = request.POST.get("phone")
+        address = request.POST.get("address")
+        reason = request.POST.get("reason")
+        photo = request.FILES.get("photo")
+
+        # Save to DB
+        DonorApplication.objects.create(
+            donor_type=donor_type,
+            name=name,
+            email=email,
+            phone=phone,
+            address=address,
+            reason=reason,
+            photo=photo
+        )
+
+        messages.success(request, "Your donor application has been submitted successfully!")
+        return redirect("apply_donor")
+
+    return render(request, "apply_donor.html")
+
 
 def apply_charity(request):
     if request.method == 'POST':
