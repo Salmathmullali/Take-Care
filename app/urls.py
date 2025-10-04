@@ -20,12 +20,7 @@ urlpatterns = [
     path('login/', views.CustomLoginView.as_view(), name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('terms_condition/', views.terms_condition, name='terms_condition'),
-    path('admin_page/', views.admin_page, name='admin_page'),
-    path('charity_approvel/', views.charity_approvel, name='charity_approvel'),
-    path("donor-applications/", views.donor_applications_list, name="donor_applications_list"),
-    path("donor-applications/<int:pk>/approve/", views.approve_donor, name="approve_donor"),
-    path("donor-applications/<int:pk>/reject/", views.reject_donor, name="reject_donor"),
-    path("approved-donors/", views.approved_donors, name="approved_donors"),
+    
     path('business_approvel/', views.business_approvel, name='business_approvel'),
 
     # Password Management
@@ -33,6 +28,17 @@ urlpatterns = [
     path('password-reset/done/', views.CustomPasswordResetDoneView.as_view(), name='password_reset_done'),
     path('password-reset-confirm/<uidb64>/<token>/', views.CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('password-reset-complete/', views.CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('donor-applications/', views.donor_applications_list, name='donor_applications_list'),
+    path('approve-donor/<int:pk>/', views.approve_donor, name='approve_donor'),
+    path('reject-donor/<int:pk>/', views.reject_donor, name='reject_donor'),
+    path('approved-donors/', views.approved_donors, name='approved_donors'),
+
+    path('charity-requests/', views.charity_requests_list, name='charity_requests_list'),
+    path('approve-charity/<int:pk>/', views.approve_charity, name='approve_charity'),
+    path('reject-charity/<int:pk>/', views.reject_charity, name='reject_charity'),
+    path('approved-charities/', views.approved_charities, name='approved_charities')
+
 ]
 
 

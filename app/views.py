@@ -14,10 +14,25 @@ def home(request):
 
 def navbar(request):
     return render(request, "navbar.html")
-def admin_page(request):
-    return render(request, "admin_page.html")
-def charity_approvel(request):
-    return render(request, "charity_approvel.html")
+
+def is_admin(user):
+    return user.is_staff or user.is_superuser
+
+@user_passes_test(is_admin)
+def admin_dashboard(request):
+    donors_pending = DonorApplication.objects.filter(approved=False).count()
+    donors_approved = DonorApplication.objects.filter(approved=True).count()
+    charities_pending = CharityRequest.objects.filter(approved=False).count()
+    charities_approved = CharityRequest.objects.filter(approved=True).count()
+
+    context = {
+        "donors_pending": donors_pending,
+        "donors_approved": donors_approved,
+        "charities_pending": charities_pending,
+        "charities_approved": charities_approved,
+    }
+    return render(request, "admin_dashboard.html", context)
+
 def business_approvel(request):
     return render(request, "business_approvel.html")
 
@@ -64,7 +79,7 @@ def apply_donor(request):
         messages.success(request, "Your donor application has been submitted successfully!")
         return redirect("apply_donor")
 
-    return render(request, "apply_donor.html")
+    return render(request, "apply_doner.html")
 
 
 def apply_charity(request):
@@ -150,10 +165,32 @@ def logout_view(request):
     auth_logout(request)
     return redirect('home')
 
+@user_passes_test(is_admin)
+def charity_requests_list(request):
+    charities = CharityRequest.objects.all().order_by("-applied_at")
+    return render(request, "charity_requests_list.html", {"charities": charities})
 
-# Only staff/superusers can access
-def is_admin(user):
-    return user.is_staff or user.is_superuser
+
+@user_passes_test(is_admin)
+def approve_charity(request, pk):
+    charity = get_object_or_404(CharityRequest, pk=pk)
+    charity.approved = True
+    charity.save()
+    messages.success(request, f"{charity.name} charity request has been approved.")
+    return redirect("charity_requests_list")
+
+
+@user_passes_test(is_admin)
+def reject_charity(request, pk):
+    charity = get_object_or_404(CharityRequest, pk=pk)
+    charity.delete()
+    messages.error(request, f"{charity.name}'s charity request has been rejected.")
+    return redirect("charity_requests_list")
+
+
+def approved_charities(request):
+    charities = CharityRequest.objects.filter(approved=True)
+    return render(request, "approved_charities.html", {"charities": charities})
 
 @user_passes_test(is_admin)
 def donor_applications_list(request):
@@ -175,6 +212,7 @@ def reject_donor(request, pk):
     messages.error(request, f"{application.name}'s application has been rejected.")
     return redirect("donor_applications_list")
 
+@user_passes_test(is_admin)
 def approved_donors(request):
     donors = DonorApplication.objects.filter(approved=True)
     return render(request, "approved_donors.html", {"donors": donors})
