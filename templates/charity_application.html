@@ -1,0 +1,15 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Charity Application</title>
+</head>
+<body>
+    <h2>Apply as a Charity Organization</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Application</button>
+    </form>
+</body>
+</html>

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout as auth_logout
 from django.contrib import messages
 from .models import CustomUser, CharityOption, CharityDonor, DonorApplication, CharityRequest
-from .forms import MyUserCreationForm, LoginForm, MyPasswordResetForm, MySetPasswordForm, MyPasswordChangeForm, DonorApplicationForm, CharityRequestForm 
+from .forms import MyUserCreationForm, LoginForm, MyPasswordResetForm, MySetPasswordForm, MyPasswordChangeForm, DonorApplicationForm, CharityRequestForm, CharityApplicationForm
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
@@ -215,4 +215,14 @@ def reject_donor(request, pk):
 @user_passes_test(is_admin)
 def approved_donors(request):
     donors = DonorApplication.objects.filter(approved=True)
-    return render(request, "approved_donors.html", {"donors": donors})
+    return render(request, "approved_doners.html", {"donors": donors})
+
+def charity_application(request):
+    if request.method == 'POST':
+        form = CharityApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, 'charity_success.html')
+    else:
+        form = CharityApplicationForm()
+    return render(request, 'charity_application.html', {'form': form})

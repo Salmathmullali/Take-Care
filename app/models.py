@@ -121,3 +121,18 @@ class DonorApplication(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.donor_type})"
+    
+from django.db import models
+
+class CharityApplication(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    address = models.TextField()
+    description = models.TextField(help_text="Describe your charity purpose or mission")
+    photo = models.ImageField(upload_to='charity_photos/')
+    document = models.FileField(upload_to='charity_documents/', blank=True, null=True)
+    is_approved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name

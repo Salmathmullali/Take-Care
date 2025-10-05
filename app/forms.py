@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, SetPasswordForm, PasswordResetForm
-from .models import CustomUser, DonorApplication, CharityRequest
+from .models import CustomUser, DonorApplication, CharityRequest, CharityApplication 
 
 # User Creation Form (Registration)
 class MyUserCreationForm(UserCreationForm):
@@ -88,3 +88,8 @@ class CharityRequestForm(forms.ModelForm):
     class Meta:
         model = CharityRequest
         fields = ['name', 'email', 'reason']
+
+class CharityApplicationForm(forms.ModelForm):
+    class Meta:
+        model = CharityApplication
+        fields = ['name', 'email', 'phone', 'address', 'description', 'photo', 'document']
