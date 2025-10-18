@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout as auth_logout
 from django.contrib import messages
-from .models import CustomUser, CharityOption, CharityDonor, DonorApplication, CharityRequest
+from .models import CustomUser, CharityOption, CharityDonor, DonorApplication, CharityRequest, CharityApplication
 from .forms import MyUserCreationForm, LoginForm, MyPasswordResetForm, MySetPasswordForm, MyPasswordChangeForm, DonorApplicationForm, CharityRequestForm, CharityApplicationForm
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.urls import reverse_lazy
@@ -226,3 +226,25 @@ def charity_application(request):
     else:
         form = CharityApplicationForm()
     return render(request, 'charity_application.html', {'form': form})
+
+@user_passes_test(is_admin)
+def charity_applications_list(request):
+    charities = CharityApplication.objects.all()
+    return render(request, 'charity_applications_list.html', {'charities': charities})
+
+@user_passes_test(is_admin)
+def approve_charity(request, pk):
+    charity = get_object_or_404(CharityApplication, pk=pk)
+    charity.approved = True
+    charity.save()
+    return redirect('charity_applications_list')
+
+@user_passes_test(is_admin)
+def reject_charity(request, pk):
+    charity = get_object_or_404(CharityApplication, pk=pk)
+    charity.delete()
+    return redirect('charity_applications_list')
+
+def approved_charities(request):
+    charities = CharityApplication.objects.filter(approved=True)
+    return render(request, 'approved_charities.html', {'charities': charities})
