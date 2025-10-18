@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h2>Charity Applications</h2>
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Photo</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for charity in charities %}
+      <tr>
+        <td>{{ charity.name }}</td>
+        <td>{{ charity.email }}</td>
+        <td>{{ charity.phone }}</td>
+        <td>{{ charity.address }}</td>
+        <td>
+          {% if charity.photo %}
+            <img src="{{ charity.photo.url }}" width="60" height="60">
+          {% else %}
+            No Photo
+          {% endif %}
+        </td>
+        <td>{% if charity.approved %}✅ Approved{% else %}⏳ Pending{% endif %}</td>
+        <td>
+          {% if not charity.approved %}
+          <a href="{% url 'approve_charity' charity.id %}" class="btn btn-success btn-sm">Approve</a>
+          <a href="{% url 'reject_charity' charity.id %}" class="btn btn-danger btn-sm">Reject</a>
+          {% else %}
+          <span class="text-muted">Already Approved</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
