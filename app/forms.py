@@ -92,4 +92,4 @@ class CharityRequestForm(forms.ModelForm):
 class CharityApplicationForm(forms.ModelForm):
     class Meta:
         model = CharityApplication
-        fields = ['name', 'email', 'phone', 'address', 'description', 'photo', 'document']
+        fields = ['name', 'email', 'phone', 'address', 'photo']

@@ -136,3 +136,14 @@ class CharityApplication(models.Model):
 
     def __str__(self):
         return self.name
+
+class CharityApplication(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    address = models.TextField()
+    photo = models.ImageField(upload_to='charity_photos/')
+    is_approved = models.BooleanField(default=False)  # ✅ Add this line
+
+    def __str__(self):
+        return self.name
