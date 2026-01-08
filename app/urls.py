@@ -56,6 +56,9 @@ urlpatterns = [
 # Charity Applications
     path('approve-charity-app/<int:pk>/', views.approve_charity_app, name='approve_charity_app'),
     path('reject-charity-app/<int:pk>/', views.reject_charity_app, name='reject_charity_app'),
+    path('donor-apply/', views.donor_apply, name='donor_apply'),
+    path('donors/', views.donor_list, name='donor_list'),
+    path('donor/<int:donor_id>/', views.donor_detail, name='donor_detail'),
 
 
 

@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout as auth_logout
 from django.contrib import messages
 from .models import (
     CustomUser, CharityOption, CharityDonor, DonorApplication,
-    CharityRequest, CharityApplication
+    CharityRequest, CharityApplication, Donor
 )
 from .forms import (
     MyUserCreationForm, LoginForm, MyPasswordResetForm,
@@ -255,3 +255,26 @@ def reject_donor(request, pk):
     donor.delete()
     messages.error(request, f"{donor.name}'s donor application rejected.")
     return redirect("admin_dashboard")
+
+def donor_apply(request):
+    if request.method == 'POST':
+        Donor.objects.create(
+            donor_type=request.POST['donor_type'],
+            name=request.POST['name'],
+            email=request.POST['email'],
+            phone=request.POST['phone'],
+            address=request.POST['address'],
+            photo=request.FILES['photo'],
+            reason=request.POST['reason'],
+        )
+        return redirect('donor_list')
+
+    return render(request, 'donor_apply.html')
+
+def donor_list(request):
+    donors = Donor.objects.all().order_by('-applied_at')
+    return render(request, 'donor_list.html', {'donors': donors})
+
+def donor_detail(request, donor_id):
+    donor = get_object_or_404(Donor, id=donor_id)
+    return render(request, 'charity/donor_detail.html', {'donor': donor})

@@ -147,3 +147,21 @@ class CharityApplication(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Donor(models.Model):
+    DONOR_TYPE_CHOICES = (
+        ('personal', 'Personal'),
+        ('organization', 'Organization'),
+    )
+
+    donor_type = models.CharField(max_length=20, choices=DONOR_TYPE_CHOICES)
+    name = models.CharField(max_length=150)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    address = models.TextField()
+    photo = models.ImageField(upload_to='donor_photos/')
+    reason = models.TextField()
+    applied_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
