@@ -289,3 +289,19 @@ def admin_dashboard(request):
         'charities': charities,
         'charity_apps': charity_apps,
     })
+
+def admin_donor_detail(request, donor_id):
+    donor = get_object_or_404(Donor, id=donor_id)
+    return render(request, 'admin_donor_detail.html', {'donor': donor})
+
+def approve_donor(request, donor_id):
+    donor = get_object_or_404(Donor, id=donor_id)
+    donor.approved = True
+    donor.save()
+    return redirect('admin_dashboard')
+
+def reject_donor(request, donor_id):
+    donor = get_object_or_404(Donor, id=donor_id)
+    donor.delete()
+    return redirect('admin_dashboard')
+

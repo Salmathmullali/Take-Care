@@ -43,7 +43,7 @@ urlpatterns = [
     #path('approve-charity/<int:pk>/', views.approve_charity, name='approve_charity'),
     #path('reject-charity/<int:pk>/', views.reject_charity, name='reject_charity'),
     #path('approved-charities/', views.approved_charities, name='approved_charities'),
-    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    # path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
 
 # Donor actions
     path('approve-donor/<int:pk>/', views.approve_donor, name='approve_donor'),
@@ -59,7 +59,11 @@ urlpatterns = [
     path('donor-apply/', views.donor_apply, name='donor_apply'),
     path('donors/', views.donor_list, name='donor_list'),
     path('donor/<int:donor_id>/', views.donor_detail, name='donor_detail'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('admin/donor/<int:donor_id>/', views.admin_donor_detail, name='admin_donor_detail'),
 
+    path('donor/approve/<int:donor_id>/', views.approve_donor, name='approve_donor'),
+    path('donor/reject/<int:donor_id>/', views.reject_donor, name='reject_donor'),
 
 
 ]
