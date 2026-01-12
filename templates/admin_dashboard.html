@@ -45,9 +45,17 @@
                 <h2>Donor Applications</h2>
                 {% for donor in donors %}
                     <div class="border rounded p-3 mb-2 bg-light">
-                        <strong>{{ donor.name }}</strong> ({{ donor.donor_type }})<br>
-                        <small>Email: {{ donor.email }}</small><br>
-                        <small>Reason: {{ donor.reason }}</small><br>
+                        <strong>{{ donor.name }}</strong> ({{ donor.get_donor_type_display }})<br>
+<small>Email: {{ donor.email }}</small><br>
+
+<a href="{% url 'admin_donor_detail' donor.id %}" 
+   class="btn btn-sm btn-outline-primary mt-2">
+   View Details
+</a>
+<br>
+
+<small>Reason: {{ donor.reason|truncatechars:60 }}</small><br>
+
                         {% if donor.approved %}
                             <span class="badge bg-success">Approved</span>
                         {% else %}
