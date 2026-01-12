@@ -34,31 +34,31 @@ def is_admin(user):
 # ----------------------------
 # ADMIN DASHBOARD
 # ----------------------------
-@user_passes_test(is_admin)
-def admin_dashboard(request):
-    donors_pending = DonorApplication.objects.filter(approved=False).count()
-    donors_approved = DonorApplication.objects.filter(approved=True).count()
-    charities_pending = CharityRequest.objects.filter(approved=False).count()
-    charities_approved = CharityRequest.objects.filter(approved=True).count()
-    charity_apps_pending = CharityApplication.objects.filter(approved=False).count()
-    charity_apps_approved = CharityApplication.objects.filter(approved=True).count()
+# @user_passes_test(is_admin)
+# def admin_dashboard(request):
+#     donors_pending = DonorApplication.objects.filter(approved=False).count()
+#     donors_approved = DonorApplication.objects.filter(approved=True).count()
+#     charities_pending = CharityRequest.objects.filter(approved=False).count()
+#     charities_approved = CharityRequest.objects.filter(approved=True).count()
+#     charity_apps_pending = CharityApplication.objects.filter(approved=False).count()
+#     charity_apps_approved = CharityApplication.objects.filter(approved=True).count()
 
-    donors = DonorApplication.objects.all()
-    charities = CharityRequest.objects.all()
-    charity_apps = CharityApplication.objects.all()
+#     donors = DonorApplication.objects.all()
+#     charities = CharityRequest.objects.all()
+#     charity_apps = CharityApplication.objects.all()
 
-    context = {
-        "donors_pending": donors_pending,
-        "donors_approved": donors_approved,
-        "charities_pending": charities_pending,
-        "charities_approved": charities_approved,
-        "charity_apps_pending": charity_apps_pending,
-        "charity_apps_approved": charity_apps_approved,
-        "donors": donors,
-        "charities": charities,
-        "charity_apps": charity_apps,
-    }
-    return render(request, "admin_dashboard.html", context)
+#     context = {
+#         "donors_pending": donors_pending,
+#         "donors_approved": donors_approved,
+#         "charities_pending": charities_pending,
+#         "charities_approved": charities_approved,
+#         "charity_apps_pending": charity_apps_pending,
+#         "charity_apps_approved": charity_apps_approved,
+#         "donors": donors,
+#         "charities": charities,
+#         "charity_apps": charity_apps,
+#     }
+#     return render(request, "admin_dashboard.html", context)
 
 
 # ----------------------------
@@ -277,4 +277,15 @@ def donor_list(request):
 
 def donor_detail(request, donor_id):
     donor = get_object_or_404(Donor, id=donor_id)
-    return render(request, 'charity/donor_detail.html', {'donor': donor})
+    return render(request, 'donor_detail.html', {'donor': donor})
+
+def admin_dashboard(request):
+    donors = Donor.objects.all().order_by('-applied_at')
+    charities = CharityApplication.objects.all()
+    charity_apps = CharityApplication.objects.all()
+
+    return render(request, 'admin_dashboard.html', {
+        'donors': donors,
+        'charities': charities,
+        'charity_apps': charity_apps,
+    })

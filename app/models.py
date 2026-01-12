@@ -161,6 +161,7 @@ class Donor(models.Model):
     address = models.TextField()
     photo = models.ImageField(upload_to='donor_photos/')
     reason = models.TextField()
+    approved = models.BooleanField(default=False)   # ✅ important
     applied_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
