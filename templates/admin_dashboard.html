@@ -59,7 +59,7 @@
                         {% if donor.approved %}
                             <span class="badge bg-success">Approved</span>
                         {% else %}
-                            <a href="{% url 'approve_donor' donor.id %}" class="btn btn-sm btn-approve">Approve</a>
+                            <a href="{% url 'approved_donor' donor.id %}" class="btn btn-sm btn-approve">Approve</a>
                             <a href="{% url 'reject_donor' donor.id %}" class="btn btn-sm btn-reject">Reject</a>
                         {% endif %}
                     </div>
