@@ -178,3 +178,29 @@ def reject_charity_app(request, pk):
     charity.delete()
     return redirect('admin_dashboard')
 
+@user_passes_test(is_admin)
+def approved_donors(request):
+    donors = DonorApplication.objects.filter(approved=True)
+    return render(request, 'approved_donors.html', {
+        'donors': donors
+    })
+
+@user_passes_test(is_admin)
+def approved_charities(request):
+    charities = CharityRequest.objects.filter(approved=True)
+    return render(request, 'approved_charities.html', {
+        'charities': charities
+    })
+
+@user_passes_test(is_admin)
+def approved_charity_apps(request):
+    charity_apps = CharityApplication.objects.filter(approved=True)
+    return render(request, 'approved_charity_apps.html', {
+        'charity_apps': charity_apps
+    })
+def donor_list(request):
+    return render(request, 'donor_list.html')
+
+def admin_donor_detail(request, donor_id):
+    donor = get_object_or_404(Donor, id=donor_id)
+    return render(request, 'admin_donor_detail.html', {'donor': donor})

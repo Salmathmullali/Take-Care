@@ -26,26 +26,24 @@ urlpatterns = [
     path('password-reset-confirm/<uidb64>/<token>/', views.CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('password-reset-complete/', views.CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
-    # ================= ADMIN =================
+   # ================= ADMIN =================
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
 
-    # Donors (Admin)
+# Donors (Admin)
     path('admin/donors/', views.donor_list, name='donor_list'),
     path('admin/donor/<int:donor_id>/', views.admin_donor_detail, name='admin_donor_detail'),
-    path('donor/approve/<int:donor_id>/', views.approve_donor, name='approve_donor'),
-    path('donor/reject/<int:donor_id>/', views.reject_donor, name='reject_donor'),
+
+    path('donor/approve/<int:pk>/', views.approve_donor, name='approve_donor'),
+    path('donor/reject/<int:pk>/', views.reject_donor, name='reject_donor'),
     path('donors/approved/', views.approved_donors, name='approved_donors'),
 
-    # Charity Requests
-    path('charity/approve/<int:charity_id>/', views.approve_charity, name='approve_charity'),
-    path('charity/reject/<int:charity_id>/', views.reject_charity, name='reject_charity'),
+# Charity Requests
+    path('charity/approve/<int:pk>/', views.approve_charity_request, name='approve_charity'),
+    path('charity/reject/<int:pk>/', views.reject_charity_request, name='reject_charity'),
     path('charities/approved/', views.approved_charities, name='approved_charities'),
 
-    # Charity Applications
-    path('charity-app/approve/<int:app_id>/', views.approve_charity_app, name='approve_charity_app'),
-    path('charity-app/reject/<int:app_id>/', views.reject_charity_app, name='reject_charity_app'),
-    path('charity-apps/approved/', views.approved_charity_apps, name='approved_charity_apps'),
+# Charity Applications
+    path('charity-app/approve/<int:pk>/', views.approve_charity_app, name='approve_charity_app'),
+    path('charity-app/reject/<int:pk>/', views.reject_charity_app, name='reject_charity_app'),
+    path('charity-apps/approved/', views.approved_charity_apps, name='approved_charity_apps')
 ]
-
-
-
