@@ -57,11 +57,12 @@
 <small>Reason: {{ donor.reason|truncatechars:60 }}</small><br>
 
                         {% if donor.approved %}
-                            <span class="badge bg-success">Approved</span>
-                        {% else %}
-                            <a href="{% url 'approved_donor' donor.id %}" class="btn btn-sm btn-approve">Approve</a>
-                            <a href="{% url 'reject_donor' donor.id %}" class="btn btn-sm btn-reject">Reject</a>
-                        {% endif %}
+    <span class="badge bg-success">Approved</span>
+{% else %}
+    <a href="{% url 'approve_donor' donor.id %}" class="btn btn-sm btn-approve">Approve</a>
+    <a href="{% url 'reject_donor' donor.id %}" class="btn btn-sm btn-reject">Reject</a>
+{% endif %}
+
                     </div>
                 {% empty %}
                     <p>No donor applications yet.</p>
@@ -101,11 +102,13 @@
                         <small>Phone: {{ app.phone }}</small><br>
                         <small>Address: {{ app.address }}</small><br>
                         {% if app.is_approved %}
-                            <span class="badge bg-success">Approved</span>
-                        {% else %}
-                            <a href="{% url 'approve_charity_app' app.id %}" class="btn btn-sm btn-approve">Approve</a>
-                            <a href="{% url 'reject_charity_app' app.id %}" class="btn btn-sm btn-reject">Reject</a>
-                        {% endif %}
+    <span class="badge bg-success">Approved</span>
+{% else %}
+    <a href="{% url 'approve_charity_app' app.id %}" class="btn btn-sm btn-approve">Approve</a>
+    <a href="{% url 'reject_charity_app' app.id %}" class="btn btn-sm btn-reject">Reject</a>
+{% endif %}
+
+
                     </div>
                 {% empty %}
                     <p>No charity applications yet.</p>

@@ -55,12 +55,20 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         user = self.request.user
+
+        # ✅ Superuser / Admin
+        if user.is_superuser:
+            return reverse_lazy('admin_dashboard')
+
         if user.user_type == CustomUser.SELLER:
             return reverse_lazy('seller_page')
+
         elif user.user_type == CustomUser.NORMAL:
-            return reverse_lazy('normal_user_page')
+            return reverse_lazy('home')  # or create normal_user_page
+
         elif user.user_type == CustomUser.CHARITY:
             return reverse_lazy('charity_page')
+
         return reverse_lazy('home')
 
 def logout_view(request):
@@ -168,9 +176,10 @@ def reject_charity_request(request, pk):
 @user_passes_test(is_admin)
 def approve_charity_app(request, pk):
     charity = get_object_or_404(CharityApplication, pk=pk)
-    charity.approved = True
+    charity.is_approved = True
     charity.save()
     return redirect('admin_dashboard')
+
 
 @user_passes_test(is_admin)
 def reject_charity_app(request, pk):
@@ -194,10 +203,11 @@ def approved_charities(request):
 
 @user_passes_test(is_admin)
 def approved_charity_apps(request):
-    charity_apps = CharityApplication.objects.filter(approved=True)
+    charity_apps = CharityApplication.objects.filter(is_approved=True)
     return render(request, 'approved_charity_apps.html', {
         'charity_apps': charity_apps
     })
+
 def donor_list(request):
     return render(request, 'donor_list.html')
 
