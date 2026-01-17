@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout as auth_logout
+from django.contrib.auth import login
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
@@ -7,16 +7,26 @@ from django.contrib.auth.views import (
     LoginView, PasswordResetView, PasswordResetDoneView,
     PasswordResetConfirmView, PasswordResetCompleteView
 )
+from django.contrib.auth import logout as auth_logout
 
 from .models import (
-    CustomUser, CharityOption, CharityDonor,
-    DonorApplication, CharityRequest, CharityApplication, Donor
+    CustomUser,
+    CharityOption,
+    CharityDonor,
+    DonorApplication,
+    CharityApplication
 )
+
 from .forms import (
-    MyUserCreationForm, LoginForm,
-    MyPasswordResetForm, MySetPasswordForm,
-    DonorApplicationForm, CharityRequestForm, CharityApplicationForm
+    MyUserCreationForm,
+    LoginForm,
+    MyPasswordResetForm,
+    MySetPasswordForm,
+    DonorApplicationForm,
+    CharityApplicationForm
 )
+
+# ---------------- BASIC PAGES ----------------
 
 def home(request):
     return render(request, "index.html")
@@ -26,6 +36,8 @@ def navbar(request):
 
 def is_admin(user):
     return user.is_staff or user.is_superuser
+
+# ---------------- AUTH ----------------
 
 def register_user(request, redirect_page):
     form = MyUserCreationForm(request.POST or None)
@@ -37,11 +49,8 @@ def register_user(request, redirect_page):
         return redirect(redirect_page)
     return render(request, 'user_reg.html', {'form': form})
 
-def registration(request):
-    return render(request, "register.html")
-
 def user_reg(request):
-    return register_user(request, 'normal_user_page')
+    return register_user(request, 'home')
 
 def charity_user_reg(request):
     return register_user(request, 'charity_page')
@@ -56,17 +65,13 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         user = self.request.user
 
-        # ✅ Superuser / Admin
         if user.is_superuser:
             return reverse_lazy('admin_dashboard')
 
         if user.user_type == CustomUser.SELLER:
             return reverse_lazy('seller_page')
 
-        elif user.user_type == CustomUser.NORMAL:
-            return reverse_lazy('home')  # or create normal_user_page
-
-        elif user.user_type == CustomUser.CHARITY:
+        if user.user_type == CustomUser.CHARITY:
             return reverse_lazy('charity_page')
 
         return reverse_lazy('home')
@@ -74,6 +79,8 @@ class CustomLoginView(LoginView):
 def logout_view(request):
     auth_logout(request)
     return redirect('home')
+
+# ---------------- PASSWORD RESET ----------------
 
 class CustomPasswordResetView(PasswordResetView):
     form_class = MyPasswordResetForm
@@ -91,6 +98,8 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'password_reset_complete.html'
 
+# ---------------- CHARITY PAGE ----------------
+
 def charity_page(request):
     options = CharityOption.objects.all()
     donors = CharityDonor.objects.all()
@@ -104,6 +113,8 @@ def charity_page(request):
         'options_with_progress': options_with_progress,
         'donors': donors
     })
+
+# ---------------- DONOR APPLICATION ----------------
 
 def apply_donor(request):
     if request.method == "POST":
@@ -121,12 +132,7 @@ def apply_donor(request):
 
     return render(request, "apply_doner.html")
 
-def apply_charity(request):
-    form = CharityRequestForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        return redirect('charity_page')
-    return render(request, 'apply_charity.html', {'form': form})
+# ---------------- CHARITY APPLICATION ----------------
 
 def charity_application(request):
     form = CharityApplicationForm(request.POST or None, request.FILES or None)
@@ -135,17 +141,19 @@ def charity_application(request):
         return render(request, 'charity_success.html')
     return render(request, 'charity_application.html', {'form': form})
 
+# ---------------- ADMIN DASHBOARD ----------------
+
 @user_passes_test(is_admin)
 def admin_dashboard(request):
     donors = DonorApplication.objects.all()
-    charities = CharityRequest.objects.all()
     charity_apps = CharityApplication.objects.all()
 
     return render(request, 'admin_dashboard.html', {
         'donors': donors,
-        'charities': charities,
         'charity_apps': charity_apps,
     })
+
+# ---------------- DONOR APPROVAL ----------------
 
 @user_passes_test(is_admin)
 def approve_donor(request, pk):
@@ -160,18 +168,7 @@ def reject_donor(request, pk):
     donor.delete()
     return redirect('admin_dashboard')
 
-@user_passes_test(is_admin)
-def approve_charity_request(request, pk):
-    charity = get_object_or_404(CharityRequest, pk=pk)
-    charity.approved = True
-    charity.save()
-    return redirect('admin_dashboard')
-
-@user_passes_test(is_admin)
-def reject_charity_request(request, pk):
-    charity = get_object_or_404(CharityRequest, pk=pk)
-    charity.delete()
-    return redirect('admin_dashboard')
+# ---------------- CHARITY APPROVAL ----------------
 
 @user_passes_test(is_admin)
 def approve_charity_app(request, pk):
@@ -180,37 +177,32 @@ def approve_charity_app(request, pk):
     charity.save()
     return redirect('admin_dashboard')
 
-
 @user_passes_test(is_admin)
 def reject_charity_app(request, pk):
     charity = get_object_or_404(CharityApplication, pk=pk)
     charity.delete()
     return redirect('admin_dashboard')
 
+# ---------------- APPROVED LISTS ----------------
+
 @user_passes_test(is_admin)
 def approved_donors(request):
     donors = DonorApplication.objects.filter(approved=True)
-    return render(request, 'approved_donors.html', {
-        'donors': donors
-    })
-
-@user_passes_test(is_admin)
-def approved_charities(request):
-    charities = CharityRequest.objects.filter(approved=True)
-    return render(request, 'approved_charities.html', {
-        'charities': charities
-    })
+    return render(request, 'approved_donors.html', {'donors': donors})
 
 @user_passes_test(is_admin)
 def approved_charity_apps(request):
     charity_apps = CharityApplication.objects.filter(is_approved=True)
-    return render(request, 'approved_charity_apps.html', {
-        'charity_apps': charity_apps
-    })
+    return render(request, 'approved_charity_apps.html', {'charity_apps': charity_apps})
 
-def donor_list(request):
-    return render(request, 'donor_list.html')
+# ---------------- DONOR DETAIL ----------------
 
 def admin_donor_detail(request, donor_id):
-    donor = get_object_or_404(Donor, id=donor_id)
+    donor = get_object_or_404(DonorApplication, id=donor_id)
     return render(request, 'admin_donor_detail.html', {'donor': donor})
+
+
+@user_passes_test(is_admin)
+def donor_list(request):
+    donors = DonorApplication.objects.all()
+    return render(request, 'donor_list.html', {'donors': donors})
