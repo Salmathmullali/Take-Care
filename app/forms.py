@@ -15,24 +15,54 @@ from .models import CustomUser, DonorApplication, CharityApplication
 class MyUserCreationForm(UserCreationForm):
     firstname = forms.CharField(
         max_length=30,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'})
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'First Name',
+            'autocomplete': 'given-name'
+        })
     )
+
     lastname = forms.CharField(
         max_length=30,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'})
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Last Name',
+            'autocomplete': 'family-name'
+        })
     )
+
     email = forms.EmailField(
-        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'})
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Email',
+            'autocomplete': 'email'
+        })
     )
+
     phone = forms.CharField(
         max_length=15,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone'})
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Phone',
+            'autocomplete': 'tel',
+            'type': 'tel'
+        })
     )
+
     password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'})
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Password',
+            'autocomplete': 'new-password'
+        })
     )
+
     password2 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'})
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Confirm Password',
+            'autocomplete': 'new-password'
+        })
     )
 
     class Meta:
@@ -41,7 +71,7 @@ class MyUserCreationForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.username = self.cleaned_data['email']
+        user.username = self.cleaned_data['email']  # email as username
         if commit:
             user.save()
         return user
@@ -54,10 +84,12 @@ class LoginForm(AuthenticationForm):
         widget=forms.TextInput(attrs={
             'autofocus': True,
             'class': 'form-control',
-            'placeholder': 'Enter your Email'
+            'placeholder': 'Enter your Email',
+            'autocomplete': 'email'
         }),
         max_length=150
     )
+
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={
             'autocomplete': 'current-password',
@@ -83,7 +115,10 @@ class MyPasswordChangeForm(PasswordChangeForm):
 
 class MyPasswordResetForm(PasswordResetForm):
     email = forms.EmailField(
-        widget=forms.EmailInput(attrs={'class': 'form-control'})
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'autocomplete': 'email'
+        })
     )
 
 

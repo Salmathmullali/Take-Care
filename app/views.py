@@ -33,6 +33,11 @@ def home(request):
 
 def navbar(request):
     return render(request, "navbar.html")
+def nav_reg(request):
+    return render(request, "register.html")
+def user_page(request):
+    return render(request, "user_page.html")
+
 
 def is_admin(user):
     return user.is_staff or user.is_superuser
@@ -50,7 +55,7 @@ def register_user(request, redirect_page):
     return render(request, 'user_reg.html', {'form': form})
 
 def user_reg(request):
-    return register_user(request, 'home')
+    return register_user(request, 'user_page')
 
 def charity_user_reg(request):
     return register_user(request, 'charity_page')
@@ -74,7 +79,7 @@ class CustomLoginView(LoginView):
         if user.user_type == CustomUser.CHARITY:
             return reverse_lazy('charity_page')
 
-        return reverse_lazy('home')
+        return reverse_lazy('user_page')
 
 def logout_view(request):
     auth_logout(request)

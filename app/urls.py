@@ -13,6 +13,8 @@ urlpatterns = [
     path('apply-charity/', views.charity_application, name='apply_charity'),
 
     # Authentication
+    path('nav_reg/', views.nav_reg, name="nav_reg"),
+    path('user_page/', views.user_page, name="user_page"),
     path('register/', views.register_user, name="registration"),  # ✅ FIX
     path('user-reg/', views.user_reg, name="user_reg"),
     path('charity-user-reg/', views.charity_user_reg, name="charity_user_reg"),
