@@ -40,8 +40,8 @@ urlpatterns = [
     path('admin/donors/', views.donor_list, name='donor_list'),
     path('admin/donor/<int:donor_id>/', views.admin_donor_detail, name='admin_donor_detail'),
 
-    path('donor/approve/<int:pk>/', views.approve_donor, name='approve_donor'),
-    path('donor/reject/<int:pk>/', views.reject_donor, name='reject_donor'),
+    path('donor/approve/<int:donor_id>/', views.approve_donor, name='approve_donor'),
+    path('donor/reject/<int:id>/', views.reject_donor, name='reject_donor'),
     path('donors/approved/', views.approved_donors, name='approved_donors'),
 
     # Charity Requests

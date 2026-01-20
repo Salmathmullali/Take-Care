@@ -50,12 +50,18 @@
                         <small>Email: {{ donor.email }}</small><br>
                         <small>Reason: {{ donor.reason|truncatechars:60 }}</small><br>
 
-                        {% if donor.approved %}
-                            <span class="badge bg-success">Approved</span>
-                        {% else %}
-                            <a href="{% url 'approve_donor' donor.id %}" class="btn btn-sm btn-approve mt-2">Approve</a>
-                            <a href="{% url 'reject_donor' donor.id %}" class="btn btn-sm btn-reject mt-2">Reject</a>
-                        {% endif %}
+                        {% if donor.status == 'approved' %}
+    <span class="badge bg-success">Approved</span>
+
+{% elif donor.status == 'rejected' %}
+    <span class="badge bg-danger">Rejected</span><br>
+    <small>Reason: {{ donor.rejection_reason }}</small>
+
+{% else %}
+    <a href="{% url 'approve_donor' donor.id %}" class="btn btn-sm btn-approve mt-2">Approve</a>
+    <a href="{% url 'reject_donor' donor.id %}" class="btn btn-sm btn-reject mt-2">Reject</a>
+{% endif %}
+
                     </div>
                 {% empty %}
                     <p>No donor applications yet.</p>

@@ -222,15 +222,36 @@ def reject_charity_app(request, id):
     return render(request, 'reject_charity.html', {'charity': charity})
 # ---------------- APPROVED LISTS ----------------
 
-@user_passes_test(is_admin)
-def approved_donors(request):
-    donors = DonorApplication.objects.filter(approved=True)
-    return render(request, 'approved_donors.html', {'donors': donors})
+def approve_donor(request, donor_id):
+    donor = get_object_or_404(DonorApplication, id=donor_id)
+    donor.status = 'approved'
+    donor.rejection_reason = ''
+    donor.save()
 
-@user_passes_test(is_admin)
-def approved_charity_apps(request):
-    charity_apps = CharityApplication.objects.filter(is_approved=True)
-    return render(request, 'approved_charity_apps.html', {'charity_apps': charity_apps})
+    # Dummy email logic
+    print(f"EMAIL → {donor.email}: Congratulations! You are approved as a donor.")
+
+    messages.success(request, "Donor approved successfully.")
+    return redirect('admin_dashboard')
+
+
+# REJECT DONOR
+def reject_donor(request, donor_id):
+    donor = get_object_or_404(DonorApplication, id=donor_id)
+
+    if request.method == "POST":
+        reason = request.POST.get("reason")
+        donor.status = 'rejected'
+        donor.rejection_reason = reason
+        donor.save()
+
+        # Dummy email logic
+        print(f"EMAIL → {donor.email}: Rejected. Reason: {reason}")
+
+        messages.error(request, "Donor rejected.")
+        return redirect('admin_dashboard')
+
+    return render(request, 'reject_donor.html', {'donor': donor})
 
 # ---------------- DONOR DETAIL ----------------
 

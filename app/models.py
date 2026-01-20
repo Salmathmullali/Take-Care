@@ -81,15 +81,27 @@ class DonorApplication(models.Model):
         ("Organization", "Organization"),
     )
 
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    )
+
     donor_type = models.CharField(max_length=20, choices=DONOR_TYPE_CHOICES)
     name = models.CharField(max_length=200)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     address = models.TextField(blank=True)
     reason = models.TextField(blank=True)
-
     photo = models.ImageField(upload_to="donor_photos/", blank=True, null=True)
-    approved = models.BooleanField(default=False)
+
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+    rejection_reason = models.TextField(blank=True, null=True)
+
     applied_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -118,6 +130,7 @@ class CharityApplication(models.Model):
         default='pending'
     )
     rejection_reason = models.TextField(blank=True, null=True)
+    
 
     def __str__(self):
         return self.name
