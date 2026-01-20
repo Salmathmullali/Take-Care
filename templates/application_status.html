@@ -1,0 +1,9 @@
+{% if application %}
+    <h2>Status: {{ application.status }}</h2>
+
+    {% if application.status == 'rejected' %}
+        <p>Reason: {{ application.rejection_reason }}</p>
+    {% endif %}
+{% else %}
+    <p>No application found.</p>
+{% endif %}

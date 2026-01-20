@@ -45,13 +45,13 @@ urlpatterns = [
     path('donors/approved/', views.approved_donors, name='approved_donors'),
 
     # Charity Requests
-    path('charity/approve/<int:pk>/', views.approve_charity_app, name='approve_charity'),
-    path('charity/reject/<int:pk>/', views.reject_charity_app, name='reject_charity'),
+    path('charity/approve/<int:id>/', views.approve_charity_app, name='approve_charity'),
+    path('charity/reject/<int:id>/', views.reject_charity_app, name='reject_charity'),
     path('charities/approved/', views.approved_charity_apps, name='approved_charities'),
 
     # Charity Applications (Admin)
-    path('charity-app/approve/<int:pk>/', views.approve_charity_app, name='approve_charity_app'),
-    path('charity-app/reject/<int:pk>/', views.reject_charity_app, name='reject_charity_app'),
+    path('charity-app/approve/<int:id>/', views.approve_charity_app, name='approve_charity_app'),
+    path('charity-app/reject/<int:id>/', views.reject_charity_app, name='reject_charity_app'),
     path('charity-apps/approved/', views.approved_charity_apps, name='approved_charity_apps'),
 
 ]

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
             background-color: #f4f6f8;
@@ -18,7 +19,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         h2 {
-            color: #333;
             margin-bottom: 20px;
         }
         .btn-approve {
@@ -29,40 +29,33 @@
             background-color: #dc3545;
             color: white;
         }
-        .btn-approve:hover, .btn-reject:hover {
-            opacity: 0.9;
-        }
     </style>
 </head>
+
 <body>
 <div class="container">
     <h1 class="text-center mb-5">Admin Dashboard</h1>
 
     <div class="row">
-        <!-- Donor Applications -->
-        <div class="col-md-4">
+
+        <!-- ================= DONOR APPLICATIONS ================= -->
+        <div class="col-md-6">
             <div class="card p-4 mb-4">
                 <h2>Donor Applications</h2>
+
                 {% for donor in donors %}
                     <div class="border rounded p-3 mb-2 bg-light">
-                        <strong>{{ donor.name }}</strong> ({{ donor.get_donor_type_display }})<br>
-<small>Email: {{ donor.email }}</small><br>
-
-<a href="{% url 'admin_donor_detail' donor.id %}" 
-   class="btn btn-sm btn-outline-primary mt-2">
-   View Details
-</a>
-<br>
-
-<small>Reason: {{ donor.reason|truncatechars:60 }}</small><br>
+                        <strong>{{ donor.name }}</strong>
+                        ({{ donor.get_donor_type_display }})<br>
+                        <small>Email: {{ donor.email }}</small><br>
+                        <small>Reason: {{ donor.reason|truncatechars:60 }}</small><br>
 
                         {% if donor.approved %}
-    <span class="badge bg-success">Approved</span>
-{% else %}
-    <a href="{% url 'approve_donor' donor.id %}" class="btn btn-sm btn-approve">Approve</a>
-    <a href="{% url 'reject_donor' donor.id %}" class="btn btn-sm btn-reject">Reject</a>
-{% endif %}
-
+                            <span class="badge bg-success">Approved</span>
+                        {% else %}
+                            <a href="{% url 'approve_donor' donor.id %}" class="btn btn-sm btn-approve mt-2">Approve</a>
+                            <a href="{% url 'reject_donor' donor.id %}" class="btn btn-sm btn-reject mt-2">Reject</a>
+                        {% endif %}
                     </div>
                 {% empty %}
                     <p>No donor applications yet.</p>
@@ -70,57 +63,36 @@
             </div>
         </div>
 
-        <!-- Charity Requests -->
-        <div class="col-md-4">
-            <div class="card p-4 mb-4">
-                <h2>Charity Requests</h2>
-                {% for charity in charities %}
-                    <div class="border rounded p-3 mb-2 bg-light">
-                        <strong>{{ charity.name }}</strong><br>
-                        <small>Reason: {{ charity.reason }}</small><br>
-                        {% if charity.approved %}
-                            <span class="badge bg-success">Approved</span>
-                        {% else %}
-                            <a href="{% url 'approve_charity' charity.id %}" class="btn btn-sm btn-approve">Approve</a>
-                            <a href="{% url 'reject_charity' charity.id %}" class="btn btn-sm btn-reject">Reject</a>
-                        {% endif %}
-                    </div>
-                {% empty %}
-                    <p>No charity requests yet.</p>
-                {% endfor %}
-            </div>
-        </div>
 
-        <!-- Charity Applications -->
-        <div class="col-md-4">
+        <!-- ================= CHARITY APPLICATIONS ================= -->
+        <div class="col-md-6">
             <div class="card p-4 mb-4">
                 <h2>Charity Applications</h2>
+
                 {% for app in charity_apps %}
                     <div class="border rounded p-3 mb-2 bg-light">
                         <strong>{{ app.name }}</strong><br>
                         <small>Email: {{ app.email }}</small><br>
                         <small>Phone: {{ app.phone }}</small><br>
-                        <small>Address: {{ app.address }}</small><br>
-                        {% if app.is_approved %}
-    <span class="badge bg-success">Approved</span>
-{% else %}
-    <a href="{% url 'approve_charity_app' app.id %}" class="btn btn-sm btn-approve">Approve</a>
-    <a href="{% url 'reject_charity_app' app.id %}" class="btn btn-sm btn-reject">Reject</a>
-{% endif %}
 
+                        {% if app.status == 'approved' %}
+                            <span class="badge bg-success">Approved</span>
 
+                        {% elif app.status == 'rejected' %}
+                            <span class="badge bg-danger">Rejected</span><br>
+                            <small>Reason: {{ app.rejection_reason }}</small>
+
+                        {% else %}
+                            <a href="{% url 'approve_charity_app' app.id %}" class="btn btn-sm btn-approve mt-2">Approve</a>
+                            <a href="{% url 'reject_charity_app' app.id %}" class="btn btn-sm btn-reject mt-2">Reject</a>
+                        {% endif %}
                     </div>
                 {% empty %}
                     <p>No charity applications yet.</p>
                 {% endfor %}
             </div>
         </div>
-    </div>
 
-    <div class="text-center mt-4">
-        <a href="{% url 'approved_donors' %}" class="btn btn-primary me-2">View Approved Donors</a>
-        <a href="{% url 'approved_charities' %}" class="btn btn-warning me-2">View Approved Charities</a>
-        <a href="{% url 'approved_charity_apps' %}" class="btn btn-success">View Approved Charity Applications</a>
     </div>
 </div>
 

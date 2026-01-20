@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, CharityApplication  # <-- import from your models
+from .models import CustomUser, CharityApplication
 
-# --- Custom User Admin ---
+
 class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'firstname', 'lastname', 'is_staff', 'is_superuser')
     search_fields = ('email', 'firstname', 'lastname')
@@ -22,11 +22,23 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
+
 admin.site.register(CustomUser, CustomUserAdmin)
 
-# --- Charity Application Admin ---
+
 @admin.register(CharityApplication)
 class CharityApplicationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'phone', 'is_approved')
-    list_filter = ('is_approved',)
+    list_display = ('name', 'email', 'phone', 'status')
+    list_filter = ('status',)
     search_fields = ('name', 'email', 'phone')
+    actions = ['approve_applications', 'reject_applications']
+
+    def approve_applications(self, request, queryset):
+        queryset.update(status='approved')
+
+    approve_applications.short_description = "Approve selected applications"
+
+    def reject_applications(self, request, queryset):
+        queryset.update(status='rejected')
+
+    reject_applications.short_description = "Reject selected applications"

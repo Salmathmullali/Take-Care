@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reject Charity</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card p-4 shadow">
+        <h3 class="text-danger">Reject Charity Application</h3>
+        <p><strong>{{ charity.name }}</strong></p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Rejection Reason</label>
+                <textarea name="reason" class="form-control" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-danger">Reject & Send Mail</button>
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

@@ -100,12 +100,24 @@ class DonorApplication(models.Model):
 # Charity Application
 # =========================
 class CharityApplication(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    )
+
     name = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=15)
     address = models.TextField()
     photo = models.ImageField(upload_to='charity_photos/')
-    is_approved = models.BooleanField(default=False)  # <-- Add this back
+
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+    rejection_reason = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.name

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
+from django.core.mail import send_mail
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
@@ -173,21 +174,52 @@ def reject_donor(request, pk):
     donor.delete()
     return redirect('admin_dashboard')
 
-# ---------------- CHARITY APPROVAL ----------------
-
-@user_passes_test(is_admin)
-def approve_charity_app(request, pk):
-    charity = get_object_or_404(CharityApplication, pk=pk)
-    charity.is_approved = True
+# APPROVE CHARITY APPLICATION
+# =========================
+def approve_charity_app(request, id):
+    charity = get_object_or_404(CharityApplication, id=id)
+    charity.status = 'approved'
+    charity.rejection_reason = ''
     charity.save()
+
+    # Dummy mail (console)
+    send_mail(
+        subject='Charity Application Approved',
+        message=f'Congratulations {charity.name}! Your charity application has been approved.',
+        from_email='admin@takecare.com',
+        recipient_list=[charity.email],
+        fail_silently=True
+    )
+
+    messages.success(request, "Charity approved and mail sent.")
     return redirect('admin_dashboard')
 
-@user_passes_test(is_admin)
-def reject_charity_app(request, pk):
-    charity = get_object_or_404(CharityApplication, pk=pk)
-    charity.delete()
-    return redirect('admin_dashboard')
 
+# =========================
+# REJECT CHARITY APPLICATION
+# =========================
+def reject_charity_app(request, id):
+    charity = get_object_or_404(CharityApplication, id=id)
+
+    if request.method == 'POST':
+        reason = request.POST.get('reason')
+
+        charity.status = 'rejected'
+        charity.rejection_reason = reason
+        charity.save()
+
+        send_mail(
+            subject='Charity Application Rejected',
+            message=f'Sorry {charity.name}, your application was rejected.\n\nReason:\n{reason}',
+            from_email='admin@takecare.com',
+            recipient_list=[charity.email],
+            fail_silently=True
+        )
+
+        messages.error(request, "Charity rejected and mail sent.")
+        return redirect('admin_dashboard')
+
+    return render(request, 'reject_charity.html', {'charity': charity})
 # ---------------- APPROVED LISTS ----------------
 
 @user_passes_test(is_admin)
@@ -211,3 +243,18 @@ def admin_donor_detail(request, donor_id):
 def donor_list(request):
     donors = DonorApplication.objects.all()
     return render(request, 'donor_list.html', {'donors': donors})
+
+def application_status(request, email):
+    application = CharityApplication.objects.filter(email=email).first()
+    return render(request, 'application_status.html', {'application': application})
+
+def approve_applications(self, request, queryset):
+    for app in queryset:
+        app.status = 'approved'
+        app.save()
+        send_mail(
+            'Application Approved',
+            'Congratulations! Your charity application is approved.',
+            'admin@site.com',
+            [app.email],
+        )
