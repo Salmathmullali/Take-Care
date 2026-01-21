@@ -53,5 +53,7 @@ urlpatterns = [
     path('charity-app/approve/<int:id>/', views.approve_charity_app, name='approve_charity_app'),
     path('charity-app/reject/<int:id>/', views.reject_charity_app, name='reject_charity_app'),
     path('charity-apps/approved/', views.approve_charity_app, name='approved_charity_apps'),
+    path('charity/categories/', views.charity_categories, name='charity_categories'),path('charity/categories/<str:category>/', views.category_donors, name='category_donors'),
+    path('charity/categories/<str:category>/', views.category_donors, name='category_donors'),
 
 ]

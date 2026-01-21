@@ -286,3 +286,23 @@ def approved_donors(request):
     return render(request, 'admin/approved_donors.html', {
         'donors': donors
     })
+
+def charity_categories(request):
+    categories = [
+        {'key': 'health', 'name': 'Health'},
+        {'key': 'education', 'name': 'Education'},
+        {'key': 'food', 'name': 'Food'},
+        {'key': 'money', 'name': 'Money'},
+        {'key': 'environment', 'name': 'Environment'},
+    ]
+    return render(request, 'charity_categories.html', {'categories': categories})
+
+def category_donors(request, category):
+    donors = DonorApplication.objects.filter(
+        charity_category=category,
+        status='approved'
+    )
+    return render(request, 'category_donors.html', {
+        'donors': donors,
+        'category': category
+    })
