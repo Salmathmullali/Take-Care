@@ -41,17 +41,17 @@ urlpatterns = [
     path('admin/donor/<int:donor_id>/', views.admin_donor_detail, name='admin_donor_detail'),
 
     path('donor/approve/<int:donor_id>/', views.approve_donor, name='approve_donor'),
-    path('donor/reject/<int:id>/', views.reject_donor, name='reject_donor'),
+    path('donor/reject/<int:donor_id>/', views.reject_donor, name='reject_donor'),
     path('donors/approved/', views.approved_donors, name='approved_donors'),
 
     # Charity Requests
     path('charity/approve/<int:id>/', views.approve_charity_app, name='approve_charity'),
     path('charity/reject/<int:id>/', views.reject_charity_app, name='reject_charity'),
-    path('charities/approved/', views.approved_charity_apps, name='approved_charities'),
+    path('charities/approved/', views.approve_charity_app, name='approved_charities'),
 
     # Charity Applications (Admin)
     path('charity-app/approve/<int:id>/', views.approve_charity_app, name='approve_charity_app'),
     path('charity-app/reject/<int:id>/', views.reject_charity_app, name='reject_charity_app'),
-    path('charity-apps/approved/', views.approved_charity_apps, name='approved_charity_apps'),
+    path('charity-apps/approved/', views.approve_charity_app, name='approved_charity_apps'),
 
 ]

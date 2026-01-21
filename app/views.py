@@ -125,19 +125,20 @@ def charity_page(request):
 def apply_donor(request):
     if request.method == "POST":
         DonorApplication.objects.create(
-            donor_type=request.POST['donor_type'],
-            name=request.POST['name'],
-            email=request.POST['email'],
-            phone=request.POST['phone'],
-            address=request.POST['address'],
-            reason=request.POST['reason'],
+            donor_type=request.POST.get('donor_type'),
+            charity_category=request.POST.get('charity_category'),  # ✅ NEW
+            name=request.POST.get('name'),
+            email=request.POST.get('email'),
+            phone=request.POST.get('phone'),
+            address=request.POST.get('address'),
+            reason=request.POST.get('reason'),
             photo=request.FILES.get('photo'),
         )
-        messages.success(request, "Donor application submitted")
+
+        messages.success(request, "Donor application submitted successfully.")
         return redirect("apply_donor")
 
     return render(request, "apply_doner.html")
-
 # ---------------- CHARITY APPLICATION ----------------
 
 def charity_application(request):
@@ -241,18 +242,18 @@ def reject_donor(request, donor_id):
 
     if request.method == "POST":
         reason = request.POST.get("reason")
+
         donor.status = 'rejected'
         donor.rejection_reason = reason
         donor.save()
 
-        # Dummy email logic
+        # Dummy email logic (console)
         print(f"EMAIL → {donor.email}: Rejected. Reason: {reason}")
 
-        messages.error(request, "Donor rejected.")
+        messages.error(request, "Donor rejected successfully.")
         return redirect('admin_dashboard')
 
     return render(request, 'reject_donor.html', {'donor': donor})
-
 # ---------------- DONOR DETAIL ----------------
 
 def admin_donor_detail(request, donor_id):
@@ -279,3 +280,9 @@ def approve_applications(self, request, queryset):
             'admin@site.com',
             [app.email],
         )
+
+def approved_donors(request):
+    donors = DonorApplication.objects.filter(status='approved')
+    return render(request, 'admin/approved_donors.html', {
+        'donors': donors
+    })

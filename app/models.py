@@ -76,6 +76,7 @@ class CharityOption(models.Model):
 # Donor Application
 # =========================
 class DonorApplication(models.Model):
+
     DONOR_TYPE_CHOICES = (
         ("Individual", "Individual"),
         ("Organization", "Organization"),
@@ -87,6 +88,15 @@ class DonorApplication(models.Model):
         ('rejected', 'Rejected'),
     )
 
+    CHARITY_CHOICES = (
+        ('health', 'Health'),
+        ('food', 'Food'),
+        ('education', 'Education'),
+        ('money', 'Money'),
+        ('clothes', 'Clothes'),
+        ('other', 'Other'),
+    )
+
     donor_type = models.CharField(max_length=20, choices=DONOR_TYPE_CHOICES)
     name = models.CharField(max_length=200)
     email = models.EmailField()
@@ -94,6 +104,12 @@ class DonorApplication(models.Model):
     address = models.TextField(blank=True)
     reason = models.TextField(blank=True)
     photo = models.ImageField(upload_to="donor_photos/", blank=True, null=True)
+
+    # 🔥 NEW FIELD
+    charity_category = models.CharField(
+        max_length=20,
+        choices=CHARITY_CHOICES
+    )
 
     status = models.CharField(
         max_length=10,
