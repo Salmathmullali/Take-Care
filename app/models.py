@@ -45,7 +45,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     address = models.TextField(blank=True)
 
     user_type = models.IntegerField(choices=USER_TYPE_CHOICES, default=NORMAL)
-    status = models.BooleanField(default=False)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -76,7 +75,6 @@ class CharityOption(models.Model):
 # Donor Application
 # =========================
 class DonorApplication(models.Model):
-
     DONOR_TYPE_CHOICES = (
         ("Individual", "Individual"),
         ("Organization", "Organization"),
@@ -97,31 +95,24 @@ class DonorApplication(models.Model):
         ('other', 'Other'),
     )
 
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
     donor_type = models.CharField(max_length=20, choices=DONOR_TYPE_CHOICES)
-    name = models.CharField(max_length=200)
-    email = models.EmailField()
-    phone = models.CharField(max_length=20)
-    address = models.TextField(blank=True)
+    charity_category = models.CharField(max_length=20, choices=CHARITY_CHOICES)
+
     reason = models.TextField(blank=True)
     photo = models.ImageField(upload_to="donor_photos/", blank=True, null=True)
 
-    # 🔥 NEW FIELD
-    charity_category = models.CharField(
-        max_length=20,
-        choices=CHARITY_CHOICES
-    )
-
-    status = models.CharField(
-        max_length=10,
-        choices=STATUS_CHOICES,
-        default='pending'
-    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     rejection_reason = models.TextField(blank=True, null=True)
 
     applied_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.user.email} - {self.status}"
 
 
 # =========================
@@ -134,11 +125,14 @@ class CharityApplication(models.Model):
         ('rejected', 'Rejected'),
     )
 
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone = models.CharField(max_length=15)
-    address = models.TextField()
-    photo = models.ImageField(upload_to='charity_photos/')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+
+    charity_category = models.CharField(max_length=20)
+    reason = models.TextField()
+    photo = models.ImageField(upload_to='charity_photos/', blank=True, null=True)
 
     status = models.CharField(
         max_length=10,
@@ -146,21 +140,43 @@ class CharityApplication(models.Model):
         default='pending'
     )
     rejection_reason = models.TextField(blank=True, null=True)
-    
+
+    applied_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
-
+        return f"{self.user.email} - {self.status}"
 
 
 # =========================
-# Charity Donor Records
+# Donor ↔ Charity Request
 # =========================
-class CharityDonor(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    cause = models.ForeignKey(CharityOption, on_delete=models.CASCADE)
-    donation_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    donated_at = models.DateTimeField(auto_now_add=True)
+class DonorRequest(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    )
+
+    donor = models.ForeignKey(
+        DonorApplication,
+        on_delete=models.CASCADE,
+        related_name='donor_requests'
+    )
+    charity = models.ForeignKey(
+        CharityApplication,
+        on_delete=models.CASCADE,
+        related_name='charity_requests'
+    )
+
+    message = models.TextField()
+    response_message = models.TextField(blank=True, null=True)
+
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='pending'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.email} - {self.donation_amount}"
+        return f"{self.charity.email} → {self.donor.user.email}"

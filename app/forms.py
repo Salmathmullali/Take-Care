@@ -136,13 +136,18 @@ class MySetPasswordForm(SetPasswordForm):
 class DonorApplicationForm(forms.ModelForm):
     class Meta:
         model = DonorApplication
-        fields = ['donor_type', 'name', 'email', 'phone', 'address', 'reason', 'photo']
-
+        fields = [
+            'donor_type',
+            'charity_category',
+            'reason',
+            'photo',
+        ]
 
 # ================= CHARITY APPLICATION =================
 
 class CharityApplicationForm(forms.ModelForm):
     class Meta:
         model = CharityApplication
-        fields = ['name', 'email', 'phone', 'address', 'photo']
-
+        fields = [
+            'photo',
+        ]
