@@ -26,7 +26,8 @@ E-commerce for medical products – purchase items like sanitary pads, cotton, a
 created chairty page and finally commited charity doner apply page and charity reciever registration.<br>
 also include admin approvel for charity doner.
 <br><br>
-charity page contain - login pge for each doner and charity reciever, what we can access charity and how to apply for charity..
+charity page contain - login pge for each doner and charity reciever, what we can access charity and how to apply for charity..<br>
+donor application with donor can accept and reject the charity request.
 
 
 /Doctors Help for mental health/
