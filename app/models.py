@@ -46,17 +46,27 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     user_type = models.IntegerField(choices=USER_TYPE_CHOICES, default=NORMAL)
 
+    status = models.CharField(
+        max_length=10,
+        choices=(
+            ('pending', 'Pending'),
+            ('approved', 'Approved'),
+            ('rejected', 'Rejected'),
+        ),
+        default='pending'
+    )
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
     objects = CustomUserManager()
 
+    # ✅ THESE MUST BE INSIDE THE CLASS
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["firstname", "lastname", "phone"]
 
     def __str__(self):
         return self.email
-
 
 # =========================
 # Charity Options (Causes)
@@ -126,9 +136,10 @@ class CharityApplication(models.Model):
     )
 
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
+    settings.AUTH_USER_MODEL,
+    on_delete=models.CASCADE
+)
+
 
     charity_category = models.CharField(max_length=20)
     reason = models.TextField()
@@ -179,4 +190,4 @@ class DonorRequest(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.charity.email} → {self.donor.user.email}"
+        return f"{self.charity.user.email} → {self.donor.user.email}"

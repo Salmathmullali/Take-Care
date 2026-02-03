@@ -9,6 +9,8 @@ urlpatterns = [
     # ================= AUTH =================
     path('register/', views.register_user, name="user_reg"),
     path('login/', views.CustomLoginView.as_view(), name='login'),
+    path('password-reset/', views.PasswordResetView.as_view(), name='password_reset'),
+
     path('logout/', views.logout_view, name='logout'),
 
     # ================= USER DASHBOARD =================

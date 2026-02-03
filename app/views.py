@@ -49,7 +49,7 @@ def register_user(request):
     if request.method == "POST" and form.is_valid():
         user = form.save()
         login(request, user)
-        return redirect("user_dashboard")
+        return redirect("user_page")
     return render(request, "user_reg.html", {"form": form})
 
 
