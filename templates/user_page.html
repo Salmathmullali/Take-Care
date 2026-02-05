@@ -5,135 +5,94 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Take care</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+  <title>Take Care</title>
 
   <!-- Favicons -->
   <link href="{% static 'images/favicon.png' %}" rel="icon">
-  <link href="{% static 'images/apple-touch-icon.png' %}" rel="apple-touch-icon">
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
+  <!-- Vendor CSS -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
 
-  <!-- Main CSS File -->
+  <!-- Main CSS -->
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
 </head>
 
-<body class="index-page">
+<body>
 
-  <header id="header" class="header sticky-top">
+<!-- ================= HEADER ================= -->
+<header class="header sticky-top">
+  <div class="container d-flex justify-content-between align-items-center py-3">
+    <h2>Take-Care</h2>
+    <nav>
+      <a href="{% url 'home' %}" class="me-3">Home</a>
+      <a href="{% url 'logout' %}">Logout</a>
+    </nav>
+  </div>
+</header>
 
-    <div class="topbar d-flex align-items-center">
-      <div class="container d-flex justify-content-center justify-content-md-between">
-        <div class="contact-info d-flex align-items-center">
-          <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">contact@example.com</a></i>
-          <i class="bi bi-phone d-flex align-items-center ms-4"><span>+1 5589 55488 55</span></i>
-        </div>
-        <div class="social-links d-none d-md-flex align-items-center">
-          <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-          <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-          <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-          <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-        </div>
-      </div>
-    </div><!-- End Top Bar -->
+<!-- ================= CONTENT ================= -->
+<div class="container mt-5">
 
-    <div class="branding d-flex align-items-center">
+  <h1 class="text-center mb-4">Charity Dashboard</h1>
 
-      <div class="container position-relative d-flex align-items-center justify-content-between">
-        <a href="{% url 'home' %}" class="logo d-flex align-items-center me-auto">
-          <h1 class="sitename">Take-Care</h1>
-        </a>
+  <!-- ================= AVAILABLE DONORS ================= -->
+  <h2 class="mt-4">Available Approved Donors</h2>
 
-        <nav id="navmenu" class="navmenu">
-          <ul>
-            <li><a href="#hero" class="active">Home</a></li>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-            <li><a href="#">Settings</a></li>
-            <li class="dropdown">
-              <a href="#"><span>Available</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-              <ul>
-                <li><a href="#">Dropdown 1</a></li>
-                <li><a href="#">Dropdown 2</a></li>
-              </ul>
-            </li>
-          </ul>
-          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-        </nav>
+  <ul class="list-group mb-5">
+    {% for donor in donors %}
+      <li class="list-group-item">
 
-      </div>
+        <strong>{{ donor.user.email }}</strong><br>
+        <span class="text-muted">
+          Category: {{ donor.charity_category }}
+        </span>
 
-    </div>
+        {% if donor.description %}
+          <p class="mt-2">{{ donor.description }}</p>
+        {% endif %}
 
-  </header>
+        <!-- ===== REQUEST FORM ===== -->
+        <form method="post" action="{% url 'send_donor_request' donor.id %}">
+    {% csrf_token %}
+    <textarea name="message" required></textarea>
+    <button type="submit">Request Help</button>
+</form>
 
-  <div class="container mt-5">
-    <h1 class="mb-4 text-center">Charity Dashboard</h1>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-center">
+        No approved donors available right now.
+      </li>
+    {% endfor %}
+  </ul>
 
-    <!-- Charity Options -->
-    <h2>Available Charity Options</h2>
-    <div class="row">
-        {% for item in options_with_progress %}
-<div class="col-md-4">
-    <div class="card shadow-sm mb-3">
-        <div class="card-body">
-            <h5 class="card-title">{{ item.option.title }}</h5>
-            <p class="card-text">{{ item.option.description }}</p>
-            <div class="tracker-bar mb-2">
-                <div class="tracker-fill" style="width: {{ item.progress|floatformat:0 }}%;">
-                    {{ item.option.raised_amount }} / {{ item.option.target_amount }}
-                </div>
-            </div>
-            <a href="{% url 'apply_charity' %}" class="btn btn-success btn-sm">Donate</a>
-        </div>
-    </div>
-</div>
-{% endfor %}
+  <!-- ================= ACTION BUTTONS ================= -->
+  <div class="text-center mb-4">
+    <a href="{% url 'apply_charity' %}" class="btn btn-warning btn-lg">
+      Apply for Charity Assistance
+    </a>
+  </div>
 
-    </div>
+  <div class="text-center mb-4">
+    <a href="{% url 'apply_donor' %}" class="btn btn-primary btn-lg">
+      Apply to Become a Donor
+    </a>
+  </div>
 
-    <!-- Donor List -->
-    <h2 class="mt-5">Available Donors</h2>
-    <ul class="list-group mb-5">
-        {% for donor in donors %}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            {{ donor.user.email }} donated {{ donor.donation_amount }} to {{ donor.cause.title }}
-        </li>
-        {% empty %}
-        <li class="list-group-item">No donors yet.</li>
-        {% endfor %}
-    </ul>
+  <div class="text-center mb-5">
+    <a href="{% url 'charity_categories' %}" class="btn btn-info btn-lg">
+      Charity Categories
+    </a>
+  </div>
 
-    <!-- Apply to Become Donor -->
-    <div class="text-center mb-4">
-        <a href="{% url 'apply_donor' %}" class="btn btn-primary btn-lg">Apply to Become a Charity Donor</a>
-    </div>
-
-    <div class="text-center mb-4">
-        <a href="{% url 'charity_categories' %}" class="btn btn-info btn-lg">
-    Charity Categories
-</a>
-
-    </div>
-    <!-- Apply for Charity Help -->
-    <div class="text-center mb-4">
-        <a href="{% url 'apply_charity' %}" class="btn btn-warning btn-lg">Apply for Charity Assistance</a>
-    </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+<!-- ================= JS ================= -->
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 </body>
 </html>

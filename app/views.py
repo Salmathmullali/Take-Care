@@ -2,16 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.views import (
-    LoginView, PasswordResetView, PasswordResetDoneView,
-    PasswordResetConfirmView, PasswordResetCompleteView
-)
+from django.contrib.auth.views import LoginView
 
 from .models import (
-    CustomUser,
-    CharityOption,
     DonorApplication,
     CharityApplication,
     DonorRequest
@@ -21,10 +15,16 @@ from .forms import (
     MyUserCreationForm,
     LoginForm,
     DonorApplicationForm,
-    CharityApplicationForm,
-    MyPasswordResetForm,
-    MySetPasswordForm
+    CharityApplicationForm
 )
+
+# =====================================================
+# HELPERS
+# =====================================================
+
+def is_admin(user):
+    return user.is_staff or user.is_superuser
+
 
 # =====================================================
 # BASIC
@@ -33,12 +33,13 @@ from .forms import (
 def home(request):
     return render(request, "index.html")
 
+
+@login_required
 def user_page(request):
-    return render(request, "user_page.html")
-
-def is_admin(user):
-    return user.is_staff or user.is_superuser
-
+    donors = DonorApplication.objects.filter(status='approved')
+    return render(request, 'user_page.html', {
+        'donors': donors
+    })
 
 # =====================================================
 # AUTH
@@ -49,7 +50,7 @@ def register_user(request):
     if request.method == "POST" and form.is_valid():
         user = form.save()
         login(request, user)
-        return redirect("user_page")
+        return redirect("user_dashboard")
     return render(request, "user_reg.html", {"form": form})
 
 
@@ -69,7 +70,7 @@ def logout_view(request):
 
 
 # =====================================================
-# USER DASHBOARD (MAIN LOGIC)
+# USER DASHBOARD
 # =====================================================
 
 @login_required
@@ -98,45 +99,48 @@ def user_dashboard(request):
 # APPLY AS DONOR
 # =====================================================
 
-from django.contrib.auth.decorators import login_required
-
 @login_required
 def apply_donor(request):
+    if DonorApplication.objects.filter(user=request.user).exists():
+        messages.warning(request, "You already applied as donor.")
+        return redirect("user_dashboard")
+
     if request.method == "POST":
         form = DonorApplicationForm(request.POST, request.FILES)
         if form.is_valid():
             donor = form.save(commit=False)
-            donor.user = request.user   # ✅ link CustomUser
+            donor.user = request.user
             donor.save()
-
-            messages.success(request, "Donor application submitted successfully.")
-            return redirect("user_page")
+            messages.success(request, "Donor application submitted.")
+            return redirect("user_dashboard")
     else:
         form = DonorApplicationForm()
 
-    return render(request, "apply_doner.html", {"form": form})
+    return render(request, "apply_donor.html", {"form": form})
 
 
 # =====================================================
-# APPLY AS CHARITY RECEIVER
+# APPLY AS CHARITY
 # =====================================================
 
 @login_required
 def apply_charity(request):
     if CharityApplication.objects.filter(user=request.user).exists():
-        messages.warning(request, "You already applied for charity.")
+        messages.warning(request, "You already applied as charity.")
         return redirect("user_dashboard")
 
     if request.method == "POST":
-        CharityApplication.objects.create(
-            user=request.user,
-            reason=request.POST.get("reason"),
-            photo=request.FILES.get("photo"),
-        )
-        messages.success(request, "Charity application submitted.")
-        return redirect("user_dashboard")
+        form = CharityApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            charity = form.save(commit=False)
+            charity.user = request.user
+            charity.save()
+            messages.success(request, "Charity application submitted.")
+            return redirect("user_dashboard")
+    else:
+        form = CharityApplicationForm()
 
-    return render(request, "apply_charity.html")
+    return render(request, "apply_charity.html", {"form": form})
 
 
 # =====================================================
@@ -151,7 +155,10 @@ def available_donors(request):
         status="approved"
     )
 
-    donors = DonorApplication.objects.filter(status="approved")
+    donors = DonorApplication.objects.filter(
+        status="approved",
+        charity_category=charity.charity_category
+    )
 
     return render(request, "available_donors.html", {
         "donors": donors
@@ -163,7 +170,7 @@ def available_donors(request):
 # =====================================================
 
 @login_required
-def request_donor(request, donor_id):
+def send_donor_request(request, donor_id):
     charity = get_object_or_404(
         CharityApplication,
         user=request.user,
@@ -185,48 +192,45 @@ def request_donor(request, donor_id):
         messages.success(request, "Request sent to donor.")
         return redirect("available_donors")
 
-    return render(request, "request_donor.html", {"donor": donor})
+    return render(request, "send_donor_request.html", {
+        "donor": donor
+    })
 
 
 # =====================================================
 # DONOR – VIEW REQUESTS
 # =====================================================
 
-@login_required
-def donor_requests(request):
-    donor = get_object_or_404(
-        DonorApplication,
-        user=request.user,
-        status="approved"
-    )
-
-    requests = DonorRequest.objects.filter(donor=donor)
-
-    return render(request, "donor_requests.html", {"requests": requests})
-
 
 # =====================================================
-# DONOR – APPROVE / REJECT REQUEST
+# DONOR – RESPOND TO REQUEST
 # =====================================================
 
 @login_required
 def respond_request(request, request_id, action):
-    req = get_object_or_404(DonorRequest, id=request_id)
+    donor_request = get_object_or_404(
+        DonorRequest,
+        id=request_id,
+        donor__user=request.user
+    )
 
     if request.method == "POST":
-        req.response_message = request.POST.get("response_message")
+        donor_request.response_message = request.POST.get("response_message")
 
         if action == "approve":
-            req.status = "approved"
+            donor_request.status = "approved"
             messages.success(request, "Request approved.")
         else:
-            req.status = "rejected"
+            donor_request.status = "rejected"
             messages.error(request, "Request rejected.")
 
-        req.save()
+        donor_request.save()
         return redirect("donor_requests")
 
-    return render(request, "respond_request.html", {"req": req})
+    return render(request, "respond_request.html", {
+        "req": donor_request,
+        "action": action
+    })
 
 
 # =====================================================
@@ -245,7 +249,7 @@ def admin_dashboard(request):
 
 
 # =====================================================
-# ADMIN – APPROVE / REJECT DONOR
+# ADMIN ACTIONS
 # =====================================================
 
 @user_passes_test(is_admin)
@@ -254,7 +258,6 @@ def approve_donor(request, donor_id):
     donor.status = "approved"
     donor.rejection_reason = ""
     donor.save()
-    messages.success(request, "Donor approved.")
     return redirect("admin_dashboard")
 
 
@@ -266,15 +269,10 @@ def reject_donor(request, donor_id):
         donor.status = "rejected"
         donor.rejection_reason = request.POST.get("reason")
         donor.save()
-        messages.error(request, "Donor rejected.")
         return redirect("admin_dashboard")
 
     return render(request, "reject_donor.html", {"donor": donor})
 
-
-# =====================================================
-# ADMIN – APPROVE / REJECT CHARITY
-# =====================================================
 
 @user_passes_test(is_admin)
 def approve_charity(request, charity_id):
@@ -282,7 +280,6 @@ def approve_charity(request, charity_id):
     charity.status = "approved"
     charity.rejection_reason = ""
     charity.save()
-    messages.success(request, "Charity approved.")
     return redirect("admin_dashboard")
 
 
@@ -294,132 +291,23 @@ def reject_charity(request, charity_id):
         charity.status = "rejected"
         charity.rejection_reason = request.POST.get("reason")
         charity.save()
-        messages.error(request, "Charity rejected.")
         return redirect("admin_dashboard")
 
     return render(request, "reject_charity.html", {"charity": charity})
 
+
+
 @login_required
-def charity_application(request):
-    if request.method == 'POST':
-        form = CharityApplicationForm(request.POST, request.FILES)
-        if form.is_valid():
-            charity = form.save(commit=False)
-            charity.user = request.user   # ✅ link user
-            charity.save()
-
-            messages.success(request, "Charity application submitted.")
-            return redirect('user_page')
-    else:
-        form = CharityApplicationForm()
-
-    return render(request, 'charity_application.html', {'form': form})
-
-# ================= CHARITY CATEGORIES =================
-
-def charity_categories(request):
-    categories = [
-        {'key': 'health', 'name': 'Health'},
-        {'key': 'education', 'name': 'Education'},
-        {'key': 'food', 'name': 'Food'},
-        {'key': 'money', 'name': 'Money'},
-        {'key': 'clothes', 'name': 'Clothes'},
-        {'key': 'other', 'name': 'Other'},
-    ]
-
-    return render(request, 'charity_categories.html', {
-        'categories': categories
-    })
-
-def category_donors(request, category):
-    donors = DonorApplication.objects.filter(
-        charity_category=category,
-        status='approved'
-    )
-
-    return render(request, 'category_donors.html', {
-        'donors': donors,
-        'category': category
-    })
-
-def is_admin(user):
-    return user.is_staff or user.is_superuser
-
-
-# ================= ADMIN DONOR LIST =================
-
-@user_passes_test(is_admin)
-def donor_list(request):
-    donors = DonorApplication.objects.all().order_by('-applied_at')
-
-    return render(request, 'donor_list.html', {
-        'donors': donors
-    })
-
-@user_passes_test(is_admin)
-def admin_donor_detail(request, donor_id):
-    donor = get_object_or_404(DonorApplication, id=donor_id)
-
-    return render(request, 'admin_donor_detail.html', {
-        'donor': donor
-    })
-
-def send_donor_request(request, donor_id):
-    donor = get_object_or_404(
-        DonorApplication,
-        id=donor_id,
-        status='approved'
-    )
-
-    charity = get_object_or_404(
-        CharityApplication,
-        email=request.user.email,
-        status='approved'
-    )
-
-    if request.method == "POST":
-        DonorRequest.objects.create(
-            donor=donor,
-            charity=charity,
-            message=request.POST.get('message')
-        )
-
-        messages.success(request, "Request sent to donor.")
-        return redirect('user_page')
-
-    return render(request, 'send_donor_request.html', {'donor': donor})
-
-def donor_requests(request):
-    donor = get_object_or_404(
-        DonorApplication,
-        user=request.user,
-        status='approved'
-    )
-
-    requests = DonorRequest.objects.filter(donor=donor)
-
-    return render(request, 'donor_requests.html', {
-        'requests': requests
-    })
 def approve_receiver(request, request_id):
     donor_request = get_object_or_404(
         DonorRequest,
-        id=request_id,
-        donor__user=request.user
+        id=request_id
     )
+    donor_request.status = 'approved'
+    donor_request.save()
+    return redirect('donor_requests')
 
-    if request.method == "POST":
-        donor_request.status = 'approved'
-        donor_request.response_message = request.POST.get('message')
-        donor_request.save()
-
-        messages.success(request, "Request approved.")
-        return redirect('donor_requests')
-
-    return render(request, 'approve_receiver.html', {
-        'req': donor_request
-    })
-
+@login_required
 def reject_receiver(request, request_id):
     donor_request = get_object_or_404(
         DonorRequest,
@@ -427,14 +315,8 @@ def reject_receiver(request, request_id):
         donor__user=request.user
     )
 
-    if request.method == "POST":
-        donor_request.status = 'rejected'
-        donor_request.response_message = request.POST.get('message')
-        donor_request.save()
+    donor_request.status = 'rejected'
+    donor_request.response_message = request.POST.get("response_message", "")
+    donor_request.save()
 
-        messages.error(request, "Request rejected.")
-        return redirect('donor_requests')
-
-    return render(request, 'reject_receiver.html', {
-        'req': donor_request
-    })
+    return redirect("donor_requests")

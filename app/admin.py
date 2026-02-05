@@ -11,13 +11,15 @@ from .models import (
 # Custom User Admin
 # =========================
 class CustomUserAdmin(UserAdmin):
-    list_display = ('email', 'firstname', 'lastname', 'is_staff', 'is_superuser')
-    search_fields = ('email', 'firstname', 'lastname')
+    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'is_superuser')
+    search_fields = ('email', 'first_name', 'last_name')
     ordering = ('email',)
 
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal Info', {'fields': ('firstname', 'lastname', 'phone', 'address')}),
+        ('Personal Info', {
+            'fields': ('first_name', 'last_name', 'phone', 'address')
+        }),
         ('Permissions', {
             'fields': (
                 'is_active',
@@ -35,15 +37,14 @@ class CustomUserAdmin(UserAdmin):
             'classes': ('wide',),
             'fields': (
                 'email',
-                'firstname',
-                'lastname',
+                'first_name',
+                'last_name',
                 'phone',
                 'password1',
                 'password2'
             ),
         }),
     )
-
 
 admin.site.register(CustomUser, CustomUserAdmin)
 
@@ -54,7 +55,6 @@ admin.site.register(CustomUser, CustomUserAdmin)
 class DonorApplicationAdmin(admin.ModelAdmin):
     list_display = (
         'user',
-        'donor_type',
         'charity_category',
         'status',
         'applied_at'
@@ -72,7 +72,6 @@ class DonorApplicationAdmin(admin.ModelAdmin):
         queryset.update(status='rejected')
 
     reject_donors.short_description = "Reject selected donors"
-
 
 # =========================
 # Charity Application Admin
@@ -98,7 +97,6 @@ class CharityApplicationAdmin(admin.ModelAdmin):
         queryset.update(status='rejected')
 
     reject_applications.short_description = "Reject selected charity applications"
-
 
 # =========================
 # Donor Request Admin

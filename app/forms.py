@@ -137,10 +137,8 @@ class DonorApplicationForm(forms.ModelForm):
     class Meta:
         model = DonorApplication
         fields = [
-            'donor_type',
             'charity_category',
-            'reason',
-            'photo',
+            'description',
         ]
 
 # ================= CHARITY APPLICATION =================
@@ -149,5 +147,7 @@ class CharityApplicationForm(forms.ModelForm):
     class Meta:
         model = CharityApplication
         fields = [
+            'charity_category',
+            'reason',
             'photo',
         ]
