@@ -28,8 +28,14 @@ also include admin approvel for charity doner.
 <br><br>
 charity page contain - login pge for each doner and charity reciever, what we can access charity and how to apply for charity..<br>
 donor application with donor can accept and reject the charity request.
+<br> available charity are -  blood donation, hospital bill payment, food service
+<br> E-commerce are currently on building 
+<br> in Take care E-commerce user can sell their quality medical product ...
+<br> we provide low budget medical product through E-commerce page
 
-
+/hospital and doctors searching features/
+/lab test/
 /Doctors Help for mental health/
+/skin scanning/
 
 
