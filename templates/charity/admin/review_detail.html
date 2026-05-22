@@ -1,0 +1,24 @@
+{% extends 'charity/base.html' %}
+{% block title %}Review application{% endblock %}
+{% block content %}
+<h1>Review: {{ profile.display_name|default:profile.patient_name|default:profile.business_name|default:profile.org_name }}</h1>
+<div class="card">
+  <p><strong>Type:</strong> {{ profile_type }}</p>
+  <p><strong>Status:</strong> {% include 'charity/components/_status_badge.html' with profile=profile %}</p>
+  <p><strong>Phone:</strong> {{ profile.phone }}</p>
+  <p><strong>City:</strong> {{ profile.city }}</p>
+  {% if profile.patient_name %}<p><strong>Patient:</strong> {{ profile.patient_name }}</p>{% endif %}
+  {% if profile.hospital_name %}<p><strong>Hospital:</strong> {{ profile.hospital_name }}</p>{% endif %}
+  {% if profile.bill_amount %}<p><strong>Bill:</strong> {{ profile.bill_amount }} ({{ profile.bill_reference }})</p>{% endif %}
+  {% if profile.blood_type %}<p><strong>Blood type:</strong> {{ profile.blood_type }}</p>{% endif %}
+  {% if profile.notes %}<p>{{ profile.notes }}</p>{% endif %}
+  {% if profile.bill_document %}<p><a href="{{ profile.bill_document.url }}" target="_blank">View bill document</a></p>{% endif %}
+
+  <form method="post" action="{% url 'charity:admin:accept' profile_type=profile_type pk=profile.pk %}" style="display:inline">{% csrf_token %}
+    <input type="hidden" name="admin_message" value="">
+    <button type="submit" class="btn btn-primary">Approve</button>
+  </form>
+  <a href="{% url 'charity:admin:reject' profile_type=profile_type pk=profile.pk %}" class="btn btn-danger" style="margin-left:0.5rem">Reject</a>
+  <a href="{% url 'charity:admin:dashboard' %}" class="btn btn-secondary" style="margin-left:0.5rem">Back</a>
+</div>
+{% endblock %}

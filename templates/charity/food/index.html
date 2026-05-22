@@ -1,0 +1,21 @@
+{% extends 'charity/base.html' %}
+{% block title %}Surplus Food{% endblock %}
+{% block accent %}#16a34a{% endblock %}
+{% block content %}
+<div class="pillar-header food">
+  <h1>Surplus Food Donation</h1>
+  <p>Connect food suppliers with hospitals and volunteer distributors.</p>
+</div>
+<div class="pillar-grid">
+  <div class="card">
+    <h2>Supplier (hotel / restaurant)</h2>
+    <a href="{% url 'charity:food:apply_supplier' %}" class="btn btn-primary" style="background:var(--food)">Apply as supplier</a>
+    <a href="{% url 'charity:food:create_listing' %}" class="btn btn-secondary" style="margin-left:0.5rem">Post listing</a>
+  </div>
+  <div class="card">
+    <h2>Distributor</h2>
+    <a href="{% url 'charity:food:apply_distributor' %}" class="btn btn-primary" style="background:var(--food)">Apply as distributor</a>
+    <a href="{% url 'charity:food:browse' %}" class="btn btn-secondary" style="margin-left:0.5rem">Browse surplus</a>
+  </div>
+</div>
+{% endblock %}

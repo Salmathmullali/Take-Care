@@ -1,0 +1,70 @@
+{% extends 'charity/base.html' %}
+{% block title %}My Charity Dashboard{% endblock %}
+{% block content %}
+<div class="charity-hero">
+  <h1>My Charity Dashboard</h1>
+  <p>Track applications, matches, and next steps.</p>
+</div>
+
+<div class="card">
+  <h2>My applications</h2>
+  <div class="list-item">
+    <span>Blood donor</span>
+    {% if blood_donor %}{% include 'charity/components/_status_badge.html' with profile=blood_donor %}{% else %}<a href="{% url 'charity:blood:apply_donor' %}" class="btn btn-secondary">Apply</a>{% endif %}
+  </div>
+  <div class="list-item">
+    <span>Blood requester</span>
+    {% if blood_requester %}{% include 'charity/components/_status_badge.html' with profile=blood_requester %}{% else %}<a href="{% url 'charity:blood:apply_requester' %}" class="btn btn-secondary">Apply</a>{% endif %}
+  </div>
+  <div class="list-item">
+    <span>Medical patient</span>
+    {% if medical_recipient %}{% include 'charity/components/_status_badge.html' with profile=medical_recipient %}{% else %}<a href="{% url 'charity:medical:apply_recipient' %}" class="btn btn-secondary">Apply</a>{% endif %}
+  </div>
+  <div class="list-item">
+    <span>Bill sponsor</span>
+    {% if medical_sponsor %}{% include 'charity/components/_status_badge.html' with profile=medical_sponsor %}{% else %}<a href="{% url 'charity:medical:apply_sponsor' %}" class="btn btn-secondary">Apply</a>{% endif %}
+  </div>
+  <div class="list-item">
+    <span>Food supplier</span>
+    {% if food_supplier %}{% include 'charity/components/_status_badge.html' with profile=food_supplier %}{% else %}<a href="{% url 'charity:food:apply_supplier' %}" class="btn btn-secondary">Apply</a>{% endif %}
+  </div>
+  <div class="list-item">
+    <span>Food distributor</span>
+    {% if food_distributor %}{% include 'charity/components/_status_badge.html' with profile=food_distributor %}{% else %}<a href="{% url 'charity:food:apply_distributor' %}" class="btn btn-secondary">Apply</a>{% endif %}
+  </div>
+</div>
+
+{% if blood_donor and blood_donor.status == 'rejected' or blood_requester and blood_requester.status == 'rejected' %}
+<p class="alert alert-info">If rejected, see admin message on your profile and re-apply after contacting support.</p>
+{% endif %}
+
+<div class="card">
+  <h2>Blood matches</h2>
+  {% for m in blood_matches %}
+  <div class="list-item">
+    <span>{{ m.requester.display_name }} → {{ m.donor.display_name }} ({{ m.get_status_display }})</span>
+    <a href="{% url 'charity:blood:match_detail' pk=m.pk %}" class="btn btn-secondary">View</a>
+  </div>
+  {% empty %}<p class="empty-state">No blood matches yet.</p>{% endfor %}
+</div>
+
+<div class="card">
+  <h2>Medical bill matches</h2>
+  {% for m in medical_matches %}
+  <div class="list-item">
+    <span>{{ m.sponsor.display_name }} → {{ m.recipient.patient_name }} ({{ m.get_status_display }})</span>
+    <a href="{% url 'charity:medical:match_detail' pk=m.pk %}" class="btn btn-secondary">View</a>
+  </div>
+  {% empty %}<p class="empty-state">No medical matches yet.</p>{% endfor %}
+</div>
+
+<div class="card">
+  <h2>Food pickups</h2>
+  {% for p in food_pickups %}
+  <div class="list-item">
+    <span>{{ p.listing.food_description|truncatechars:40 }} ({{ p.get_status_display }})</span>
+    <a href="{% url 'charity:food:pickup_detail' pk=p.pk %}" class="btn btn-secondary">View</a>
+  </div>
+  {% empty %}<p class="empty-state">No food pickups yet.</p>{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'charity/base.html' %}
+{% block title %}Food pickup{% endblock %}
+{% block accent %}#16a34a{% endblock %}
+{% block content %}
+<h1>Food pickup request</h1>
+<div class="card">
+  <p>{{ pickup.listing.food_description }}</p>
+  <p><strong>Status:</strong> {{ pickup.get_status_display }}</p>
+  {% if party == 'supplier' and not pickup.supplier_accepted and pickup.status == 'pending' %}
+  <form method="post">{% csrf_token %}
+    <button name="accept" class="btn btn-primary" style="background:var(--food)">Accept pickup</button>
+    <button name="reject" class="btn btn-danger">Decline</button>
+  </form>
+  {% elif party == 'distributor' and not pickup.is_unlocked %}
+  <p class="alert alert-info">Waiting for supplier to accept.</p>
+  {% endif %}
+</div>
+{% include 'charity/components/_unlock_panel.html' with contact=contact connection=pickup pillar='food' %}
+{% endblock %}

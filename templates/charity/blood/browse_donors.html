@@ -1,0 +1,42 @@
+{% extends 'charity/base.html' %}
+{% block title %}Browse donors{% endblock %}
+{% block accent %}#e11d48{% endblock %}
+{% block content %}
+<h1>Approved blood donors</h1>
+{% if not requester %}
+<p class="alert alert-info">Apply and get approved as a requester to send donation requests.</p>
+{% endif %}
+<form method="get" class="card" style="display:flex;gap:1rem;align-items:end;">
+  <div class="form-group" style="margin:0;flex:1">
+    <label>Filter blood type</label>
+    <select name="blood_type" class="form-control">
+      <option value="">All compatible</option>
+      {% for t in "A+,A-,B+,B-,AB+,AB-,O+,O-"|make_list %}{% endfor %}
+      <option value="A+" {% if blood_filter == "A+" %}selected{% endif %}>A+</option>
+      <option value="A-" {% if blood_filter == "A-" %}selected{% endif %}>A-</option>
+      <option value="B+" {% if blood_filter == "B+" %}selected{% endif %}>B+</option>
+      <option value="B-" {% if blood_filter == "B-" %}selected{% endif %}>B-</option>
+      <option value="AB+" {% if blood_filter == "AB+" %}selected{% endif %}>AB+</option>
+      <option value="AB-" {% if blood_filter == "AB-" %}selected{% endif %}>AB-</option>
+      <option value="O+" {% if blood_filter == "O+" %}selected{% endif %}>O+</option>
+      <option value="O-" {% if blood_filter == "O-" %}selected{% endif %}>O-</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-secondary">Filter</button>
+</form>
+<div class="card">
+  {% for d in donors %}
+  <div class="list-item">
+    <div>
+      <strong>{{ d.display_name }}</strong> · {{ d.blood_type }} · {{ d.city }}
+      <br><small style="color:var(--muted)">{{ d.availability_notes|truncatechars:80 }}</small>
+    </div>
+    {% if requester %}
+    <a href="{% url 'charity:blood:send_request' donor_id=d.pk %}" class="btn btn-primary" style="background:var(--blood)">Request</a>
+    {% endif %}
+  </div>
+  {% empty %}
+  <p class="empty-state">No compatible donors listed yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

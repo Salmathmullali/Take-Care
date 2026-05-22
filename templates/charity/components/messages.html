@@ -1,0 +1,25 @@
+{% extends 'charity/base.html' %}
+{% block title %}Messages{% endblock %}
+{% block content %}
+<h1>Secure messages</h1>
+{% include 'charity/components/_unlock_panel.html' with contact=contact connection=connection pillar=pillar %}
+<div class="card messages">
+  {% for msg in messages_list %}
+  <div class="message-bubble {% if msg.sender_id == user.id %}mine{% else %}theirs{% endif %}">
+    <strong>{{ msg.sender.first_name }}</strong><br>
+    {{ msg.body }}
+    <br><small style="color:var(--muted)">{{ msg.created_at }}</small>
+  </div>
+  {% empty %}
+  <p class="empty-state">No messages yet. Say hello!</p>
+  {% endfor %}
+</div>
+<div class="card">
+  <form method="post">{% csrf_token %}
+    {{ form.body }}
+    {{ form.body.errors }}
+    <button type="submit" class="btn btn-primary" style="margin-top:0.75rem">Send</button>
+  </form>
+</div>
+<a href="javascript:history.back()" class="btn btn-secondary">← Back</a>
+{% endblock %}

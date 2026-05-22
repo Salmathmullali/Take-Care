@@ -1,0 +1,21 @@
+{% extends 'charity/base.html' %}
+{% block title %}Blood match{% endblock %}
+{% block accent %}#e11d48{% endblock %}
+{% block content %}
+<h1>Blood donation match</h1>
+<div class="card">
+  <p><strong>Status:</strong> {{ match.get_status_display }}</p>
+  <p>Requester: {{ match.requester.display_name }} ({{ match.requester.blood_type }})</p>
+  <p>Donor: {{ match.donor.display_name }} ({{ match.donor.blood_type }})</p>
+  <p><em>{{ match.intro_message }}</em></p>
+  {% if party == 'donor' and match.status == 'pending' and not match.donor_accepted %}
+  <form method="post">{% csrf_token %}
+    <button name="accept" class="btn btn-primary" style="background:var(--blood)">Accept request</button>
+    <button name="reject" class="btn btn-danger">Decline</button>
+  </form>
+  {% elif party == 'requester' and not match.is_unlocked %}
+  <p class="alert alert-info">Waiting for donor to accept your request.</p>
+  {% endif %}
+</div>
+{% include 'charity/components/_unlock_panel.html' with contact=contact connection=match pillar='blood' %}
+{% endblock %}

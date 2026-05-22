@@ -1,0 +1,34 @@
+{% extends 'charity/base.html' %}
+{% block title %}Medical match{% endblock %}
+{% block accent %}#0d9488{% endblock %}
+{% block content %}
+<h1>Medical bill match</h1>
+<div class="card">
+  <p><strong>Status:</strong> {{ match.get_status_display }}</p>
+  <p>Patient: {{ match.recipient.patient_name }} · Sponsor: {{ match.sponsor.display_name }}</p>
+  <p><em>{{ match.offer_message }}</em></p>
+  {% if match.pledge_amount %}<p>Pledge: {{ match.pledge_amount }}</p>{% endif %}
+
+  {% if not match.is_unlocked %}
+  <div class="steps">
+    <span {% if match.recipient_accepted %}class="active"{% endif %}>Patient accepts</span> →
+    <span {% if match.sponsor_accepted %}class="active"{% endif %}>Sponsor confirms</span> →
+    <span>Contact unlocked</span>
+  </div>
+  {% endif %}
+
+  {% if party == 'recipient' and not match.recipient_accepted and match.status == 'pending' %}
+  <form method="post">{% csrf_token %}
+    <button name="accept" class="btn btn-primary">Accept this sponsor's offer</button>
+    <button name="reject" class="btn btn-danger">Decline</button>
+  </form>
+  {% elif party == 'sponsor' and match.recipient_accepted and not match.is_unlocked %}
+  <form method="post">{% csrf_token %}
+    <button name="accept" class="btn btn-primary">Confirm match</button>
+  </form>
+  {% elif party == 'sponsor' and not match.recipient_accepted %}
+  <p class="alert alert-info">Waiting for patient to accept your offer.</p>
+  {% endif %}
+</div>
+{% include 'charity/components/_unlock_panel.html' with contact=contact connection=match pillar='medical' %}
+{% endblock %}

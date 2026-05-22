@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — Take Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <style>
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #7c3aed 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 480px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      padding: 2rem;
+    }
+    .auth-card h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .auth-card .sub { color: #64748b; margin-bottom: 1.5rem; font-size: 0.9rem; }
+    .btn-primary { background: #2563eb; border: none; padding: 0.65rem; font-weight: 600; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .top-nav { position: fixed; top: 0; left: 0; right: 0; padding: 0.75rem 1.5rem; }
+    .top-nav a { color: #fff; text-decoration: none; font-weight: 500; margin-right: 1rem; }
+    .errorlist { color: #dc2626; font-size: 0.85rem; list-style: none; padding: 0; margin: 0.25rem 0 0; }
+  </style>
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="{% url 'home' %}">← Home</a>
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'charity:hub' %}">Charity</a>
+  </nav>
+
+  <div class="auth-card">
+    <h1>Create your account</h1>
+    <p class="sub">Join Take Care to access charity services and more.</p>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+      {% endif %}
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label" for="id_first_name">First name</label>
+          {{ form.first_name }}
+          {{ form.first_name.errors }}
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label" for="id_last_name">Last name</label>
+          {{ form.last_name }}
+          {{ form.last_name.errors }}
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="id_email">Email</label>
+        {{ form.email }}
+        {{ form.email.errors }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="id_password1">Password</label>
+        {{ form.password1 }}
+        {{ form.password1.errors }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="id_password2">Confirm password</label>
+        {{ form.password2 }}
+        {{ form.password2.errors }}
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Register</button>
+    </form>
+
+    <p class="text-center mt-3 mb-0" style="font-size:0.875rem">
+      Already have an account? <a href="{% url 'login' %}">Sign in</a>
+    </p>
+  </div>
+</body>
+</html>

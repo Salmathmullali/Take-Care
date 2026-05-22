@@ -1,0 +1,18 @@
+{% extends 'charity/base.html' %}
+{% block title %}Apply — Blood Donor{% endblock %}
+{% block accent %}#e11d48{% endblock %}
+{% block content %}
+<h1>Apply as blood donor</h1>
+<div class="card">
+  <form method="post">{% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      <label>{{ field.label }}</label>
+      {{ field }}
+      {{ field.errors }}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary" style="background:var(--blood)">Submit application</button>
+  </form>
+</div>
+{% endblock %}

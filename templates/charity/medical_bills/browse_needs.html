@@ -1,0 +1,24 @@
+{% extends 'charity/base.html' %}
+{% block title %}Browse medical needs{% endblock %}
+{% block accent %}#0d9488{% endblock %}
+{% block content %}
+<h1>Patients needing help</h1>
+<p style="color:var(--muted)">Contact details are hidden until you match and both parties accept.</p>
+{% if not sponsor %}
+<p class="alert alert-info">Get approved as a sponsor to send offers.</p>
+{% endif %}
+<div class="card">
+  {% for r in recipients %}
+  <div class="list-item">
+    <div>
+      <strong>{{ r.patient_name }}</strong> · {{ r.hospital_name }}
+      <br>Bill: {{ r.bill_amount }} · Ref: {{ r.bill_reference }}
+      <br><small>{{ r.condition_summary|truncatechars:120 }}</small>
+    </div>
+    <a href="{% url 'charity:medical:recipient_detail' pk=r.pk %}" class="btn btn-secondary">View</a>
+  </div>
+  {% empty %}
+  <p class="empty-state">No approved requests yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

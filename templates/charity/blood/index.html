@@ -1,0 +1,23 @@
+{% extends 'charity/base.html' %}
+{% block title %}Blood Donation{% endblock %}
+{% block accent %}#e11d48{% endblock %}
+{% block content %}
+<div class="pillar-header blood">
+  <h1>Blood Donation Portal</h1>
+  <p>Register as a donor or requester. Matches use blood type compatibility.</p>
+</div>
+<div class="pillar-grid">
+  <div class="card">
+    <h2>Donor</h2>
+    <p>Share your blood type and availability.</p>
+    <a href="{% url 'charity:blood:apply_donor' %}" class="btn btn-primary" style="background:var(--blood)">Apply as donor</a>
+    <a href="{% url 'charity:blood:browse_requesters' %}" class="btn btn-secondary" style="margin-left:0.5rem">Browse requesters</a>
+  </div>
+  <div class="card">
+    <h2>Requester</h2>
+    <p>Find compatible donors after approval.</p>
+    <a href="{% url 'charity:blood:apply_requester' %}" class="btn btn-primary" style="background:var(--blood)">Apply as requester</a>
+    <a href="{% url 'charity:blood:browse_donors' %}" class="btn btn-secondary" style="margin-left:0.5rem">Browse donors</a>
+  </div>
+</div>
+{% endblock %}

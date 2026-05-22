@@ -1,0 +1,31 @@
+{% extends 'charity/base.html' %}
+{% block title %}Charity & Community — Take Care{% endblock %}
+{% block content %}
+<div class="charity-hero">
+  <h1>Charity & Community Service</h1>
+  <p>Connect donors and recipients across blood donation, medical bill assistance, and surplus food distribution.</p>
+</div>
+<div class="steps">
+  <span class="active">1. Apply</span> → <span>2. Admin review</span> → <span>3. Browse & match</span> → <span>4. Contact unlocked</span>
+</div>
+<div class="pillar-grid">
+  <a href="{% url 'charity:blood:hub' %}" class="pillar-card blood">
+    <div class="icon">🩸</div>
+    <h2>Blood Donation</h2>
+    <p>Donors and requesters matched by blood type. Secure contact after acceptance.</p>
+    <span class="btn btn-primary" style="background:var(--blood)">Enter portal →</span>
+  </a>
+  <a href="{% url 'charity:medical:hub' %}" class="pillar-card medical">
+    <div class="icon">🏥</div>
+    <h2>Medical Bill Payment</h2>
+    <p>Patients request help; sponsors offer offline support. Contacts unlock after mutual match.</p>
+    <span class="btn btn-primary" style="background:var(--medical)">Enter portal →</span>
+  </a>
+  <a href="{% url 'charity:food:hub' %}" class="pillar-card food">
+    <div class="icon">🍽</div>
+    <h2>Surplus Food</h2>
+    <p>Hotels and restaurants connect with hospitals and volunteers for fresh food pickup.</p>
+    <span class="btn btn-primary" style="background:var(--food)">Enter portal →</span>
+  </a>
+</div>
+{% endblock %}

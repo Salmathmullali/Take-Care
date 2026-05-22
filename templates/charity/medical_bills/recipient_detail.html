@@ -1,0 +1,18 @@
+{% extends 'charity/base.html' %}
+{% block title %}{{ recipient.patient_name }}{% endblock %}
+{% block accent %}#0d9488{% endblock %}
+{% block content %}
+<h1>{{ recipient.patient_name }}</h1>
+<div class="card">
+  <p><strong>Hospital:</strong> {{ recipient.hospital_name }}</p>
+  <p><strong>Bill amount:</strong> {{ recipient.bill_amount }}</p>
+  <p><strong>Reference:</strong> {{ recipient.bill_reference }}</p>
+  <p>{{ recipient.condition_summary }}</p>
+  <p class="alert alert-info">Phone and full contact unlock only after mutual match acceptance.</p>
+  {% if sponsor and not existing_match %}
+  <a href="{% url 'charity:medical:send_offer' recipient_id=recipient.pk %}" class="btn btn-primary">Offer to help</a>
+  {% elif existing_match %}
+  <a href="{% url 'charity:medical:match_detail' pk=existing_match.pk %}" class="btn btn-secondary">View your offer</a>
+  {% endif %}
+</div>
+{% endblock %}

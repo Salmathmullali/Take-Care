@@ -1,0 +1,22 @@
+{% extends 'charity/base.html' %}
+{% block title %}Browse surplus food{% endblock %}
+{% block accent %}#16a34a{% endblock %}
+{% block content %}
+<h1>Available surplus food</h1>
+<div class="card">
+  {% for l in listings %}
+  <div class="list-item">
+    <div>
+      <strong>{{ l.food_description }}</strong> · {{ l.quantity }}
+      <br>{{ l.supplier.business_name }} · Pickup: {{ l.pickup_window }}
+      <br><small>Until {{ l.available_until }}</small>
+    </div>
+    {% if distributor %}
+    <a href="{% url 'charity:food:claim' listing_id=l.pk %}" class="btn btn-primary" style="background:var(--food)">Request pickup</a>
+    {% endif %}
+  </div>
+  {% empty %}
+  <p class="empty-state">No active listings.</p>
+  {% endfor %}
+</div>
+{% endblock %}

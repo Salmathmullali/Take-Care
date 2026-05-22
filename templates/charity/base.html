@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Charity — Take Care{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'charity/css/charity.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="charity-body" style="--accent: {% block accent %}#0d9488{% endblock %};">
+  <nav class="charity-nav">
+    <a href="{% url 'charity:hub' %}" class="brand">Take Care · Charity</a>
+    <div class="links">
+      <a href="{% url 'charity:hub' %}">Hub</a>
+      <a href="{% url 'charity:blood:hub' %}">Blood</a>
+      <a href="{% url 'charity:medical:hub' %}">Medical Bills</a>
+      <a href="{% url 'charity:food:hub' %}">Food</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'charity:my_dashboard' %}">My Dashboard</a>
+        {% if user.is_staff %}
+          <a href="{% url 'charity:admin:dashboard' %}">Review</a>
+        {% endif %}
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+      {% endif %}
+      <a href="{% url 'home' %}">← Take Care Home</a>
+    </div>
+  </nav>
+
+  <main class="charity-container">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

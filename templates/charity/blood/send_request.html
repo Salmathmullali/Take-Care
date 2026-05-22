@@ -1,0 +1,19 @@
+{% extends 'charity/base.html' %}
+{% block title %}Request blood{% endblock %}
+{% block accent %}#e11d48{% endblock %}
+{% block content %}
+<h1>Request from {{ donor.display_name }}</h1>
+<p>Blood type: {{ donor.blood_type }} · {{ donor.city }}</p>
+<div class="card">
+  <form method="post">{% csrf_token %}
+    {{ form.donor_id }}
+    <div class="form-group">
+      <label>Message to donor</label>
+      {{ form.intro_message }}
+      {{ form.intro_message.errors }}
+      {{ form.non_field_errors }}
+    </div>
+    <button type="submit" class="btn btn-primary" style="background:var(--blood)">Send request</button>
+  </form>
+</div>
+{% endblock %}

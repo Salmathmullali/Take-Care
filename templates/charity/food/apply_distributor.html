@@ -1,0 +1,10 @@
+{% extends 'charity/base.html' %}
+{% block title %}Food distributor application{% endblock %}
+{% block accent %}#16a34a{% endblock %}
+{% block content %}
+<h1>Apply as distributor</h1>
+<div class="card"><form method="post">{% csrf_token %}
+  {% for field in form %}<div class="form-group"><label>{{ field.label }}</label>{{ field }}{{ field.errors }}</div>{% endfor %}
+  <button type="submit" class="btn btn-primary" style="background:var(--food)">Submit</button>
+</form></div>
+{% endblock %}

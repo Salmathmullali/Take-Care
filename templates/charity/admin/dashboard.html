@@ -1,0 +1,62 @@
+{% extends 'charity/base.html' %}
+{% block title %}Admin Review{% endblock %}
+{% block content %}
+<h1>Charity Admin Review</h1>
+<p style="color:var(--muted)">Approve or reject applications before they appear on public lists.</p>
+<div class="admin-grid">
+  <div class="card">
+    <h2>Blood donors ({{ blood_donors_pending.count }})</h2>
+    {% for p in blood_donors_pending %}
+    <div class="list-item">
+      <span>{{ p.display_name }} · {{ p.blood_type }}</span>
+      <a href="{% url 'charity:admin:detail' profile_type='blood-donor' pk=p.pk %}" class="btn btn-secondary">Review</a>
+    </div>
+    {% empty %}<p class="empty-state">None pending</p>{% endfor %}
+  </div>
+  <div class="card">
+    <h2>Blood requesters ({{ blood_requesters_pending.count }})</h2>
+    {% for p in blood_requesters_pending %}
+    <div class="list-item">
+      <span>{{ p.display_name }} · {{ p.blood_type }}</span>
+      <a href="{% url 'charity:admin:detail' profile_type='blood-requester' pk=p.pk %}" class="btn btn-secondary">Review</a>
+    </div>
+    {% empty %}<p class="empty-state">None pending</p>{% endfor %}
+  </div>
+  <div class="card">
+    <h2>Medical patients ({{ medical_recipients_pending.count }})</h2>
+    {% for p in medical_recipients_pending %}
+    <div class="list-item">
+      <span>{{ p.patient_name }} · {{ p.bill_amount }}</span>
+      <a href="{% url 'charity:admin:detail' profile_type='medical-recipient' pk=p.pk %}" class="btn btn-secondary">Review</a>
+    </div>
+    {% empty %}<p class="empty-state">None pending</p>{% endfor %}
+  </div>
+  <div class="card">
+    <h2>Medical sponsors ({{ medical_sponsors_pending.count }})</h2>
+    {% for p in medical_sponsors_pending %}
+    <div class="list-item">
+      <span>{{ p.display_name }}</span>
+      <a href="{% url 'charity:admin:detail' profile_type='medical-sponsor' pk=p.pk %}" class="btn btn-secondary">Review</a>
+    </div>
+    {% empty %}<p class="empty-state">None pending</p>{% endfor %}
+  </div>
+  <div class="card">
+    <h2>Food suppliers ({{ food_suppliers_pending.count }})</h2>
+    {% for p in food_suppliers_pending %}
+    <div class="list-item">
+      <span>{{ p.business_name }}</span>
+      <a href="{% url 'charity:admin:detail' profile_type='food-supplier' pk=p.pk %}" class="btn btn-secondary">Review</a>
+    </div>
+    {% empty %}<p class="empty-state">None pending</p>{% endfor %}
+  </div>
+  <div class="card">
+    <h2>Food distributors ({{ food_distributors_pending.count }})</h2>
+    {% for p in food_distributors_pending %}
+    <div class="list-item">
+      <span>{{ p.org_name }}</span>
+      <a href="{% url 'charity:admin:detail' profile_type='food-distributor' pk=p.pk %}" class="btn btn-secondary">Review</a>
+    </div>
+    {% empty %}<p class="empty-state">None pending</p>{% endfor %}
+  </div>
+</div>
+{% endblock %}

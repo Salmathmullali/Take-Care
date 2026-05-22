@@ -1,0 +1,17 @@
+{% extends 'charity/base.html' %}
+{% block title %}Reject application{% endblock %}
+{% block content %}
+<h1>Reject application</h1>
+<div class="card">
+  <p>{{ profile.display_name|default:profile.patient_name }}</p>
+  <form method="post">{% csrf_token %}
+    <div class="form-group">
+      <label>Reason (required, min 10 characters)</label>
+      {{ form.admin_message }}
+      {{ form.admin_message.errors }}
+    </div>
+    <button type="submit" class="btn btn-danger">Confirm rejection</button>
+    <a href="{% url 'charity:admin:detail' profile_type=profile_type pk=profile.pk %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

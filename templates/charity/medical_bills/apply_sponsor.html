@@ -1,0 +1,14 @@
+{% extends 'charity/base.html' %}
+{% block title %}Sponsor application{% endblock %}
+{% block accent %}#0d9488{% endblock %}
+{% block content %}
+<h1>Register as bill sponsor</h1>
+<div class="card">
+  <form method="post">{% csrf_token %}
+    {% for field in form %}
+    <div class="form-group"><label>{{ field.label }}</label>{{ field }}{{ field.errors }}</div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Submit for admin review</button>
+  </form>
+</div>
+{% endblock %}

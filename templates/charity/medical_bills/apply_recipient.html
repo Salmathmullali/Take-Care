@@ -1,0 +1,18 @@
+{% extends 'charity/base.html' %}
+{% block title %}Patient application{% endblock %}
+{% block accent %}#0d9488{% endblock %}
+{% block content %}
+<h1>Request medical bill assistance</h1>
+<div class="card">
+  <form method="post" enctype="multipart/form-data">{% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      <label>{{ field.label }}</label>
+      {{ field }}
+      {{ field.errors }}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Submit for admin review</button>
+  </form>
+</div>
+{% endblock %}

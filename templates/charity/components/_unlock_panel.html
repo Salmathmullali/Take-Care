@@ -1,0 +1,19 @@
+{% if contact %}
+<div class="unlock-panel">
+  <h3>Contact unlocked</h3>
+  <dl>
+    {% for key, value in contact.items %}
+      {% if key != 'offline_payment_note' and value %}
+        <dt>{{ key|title|cut:"_" }}</dt>
+        <dd>{{ value }}</dd>
+      {% endif %}
+    {% endfor %}
+  </dl>
+  {% if contact.offline_payment_note %}
+    <div class="offline-notice">{{ contact.offline_payment_note }}</div>
+  {% endif %}
+  <p style="margin-top:1rem;">
+    <a href="{% url 'charity:messages' pillar=pillar pk=connection.pk %}" class="btn btn-primary">Open messages</a>
+  </p>
+</div>
+{% endif %}

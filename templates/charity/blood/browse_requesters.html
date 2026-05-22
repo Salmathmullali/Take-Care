@@ -1,0 +1,18 @@
+{% extends 'charity/base.html' %}
+{% block title %}Browse requesters{% endblock %}
+{% block accent %}#e11d48{% endblock %}
+{% block content %}
+<h1>Approved blood requesters</h1>
+<div class="card">
+  {% for r in requesters %}
+  <div class="list-item">
+    <div>
+      <strong>{{ r.display_name }}</strong> · needs {{ r.blood_type }} · {{ r.get_urgency_display }}
+      <br><small>{{ r.medical_context|truncatechars:100 }}</small>
+    </div>
+  </div>
+  {% empty %}
+  <p class="empty-state">No requesters yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'charity/base.html' %}
+{% block title %}Claim listing{% endblock %}
+{% block accent %}#16a34a{% endblock %}
+{% block content %}
+<h1>Request pickup</h1>
+<p>{{ listing.food_description }} — {{ listing.supplier.business_name }}</p>
+<div class="card"><form method="post">{% csrf_token %}
+  <div class="form-group"><label>Message</label>{{ form.message }}{{ form.message.errors }}</div>
+  <button type="submit" class="btn btn-primary" style="background:var(--food)">Send request</button>
+</form></div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'charity/base.html' %}
+{% block title %}Medical Bill Payment{% endblock %}
+{% block accent %}#0d9488{% endblock %}
+{% block content %}
+<div class="pillar-header medical">
+  <h1>Medical Bill Payment</h1>
+  <p>Offline peer-to-peer assistance. No online payments — sponsors help directly after mutual match.</p>
+</div>
+<div class="offline-notice" style="margin-bottom:2rem">
+  <strong>How it works:</strong> Patients upload bill details (phone hidden until match). Sponsors browse and offer help. 
+  When both accept, contact and bill reference unlock for direct payment to patient or hospital.
+</div>
+<div class="pillar-grid">
+  <div class="card">
+    <h2>Patient / Recipient</h2>
+    <a href="{% url 'charity:medical:apply_recipient' %}" class="btn btn-primary">Request bill assistance</a>
+  </div>
+  <div class="card">
+    <h2>Bill sponsor</h2>
+    <a href="{% url 'charity:medical:apply_sponsor' %}" class="btn btn-primary">Register as sponsor</a>
+    <a href="{% url 'charity:medical:browse_needs' %}" class="btn btn-secondary" style="margin-left:0.5rem">Browse needs</a>
+  </div>
+</div>
+{% endblock %}
