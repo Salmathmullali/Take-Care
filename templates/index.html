@@ -30,40 +30,39 @@
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
   <style>
     body {
-      background-color: rgb(0, 0, 0) !important;
-      color: white !important;
+      background-color: #f8fafc !important;
+      color: #1f2937 !important;
     }
     .light-background {
-      background-color: black !important;
-      color: white !important;
+      background-color: #ffffff !important;
+      color: #1f2937 !important;
     }
-    /* Ensure text is white in other elements as well */
-    .section, .content, p, h1, h2, h3, h4, h5, h6, a {
-        color: white !important;
+    /* Ensure text is visible in other elements */
+    .section, .content, p, h1, h2, h3, h4, h5, h6, a, label {
+        color: #1f2937 !important;
     }
     .topbar, .branding, .navmenu ul li a, .cta-btn, .section-title, .info-item div, .footer, .copyright {
-        color: white !important;
+        color: #1f2937 !important;
     }
     .topbar .contact-info i, .topbar .social-links a, .navmenu ul li a, .cta-btn, .section-title p, .section-title h2, .info-item i, .footer-contact p, .footer-links h4, .footer-links ul li a, .copyright p, .copyright a {
-        color: white !important;
+        color: #1f2937 !important;
     }
     .navbar-nav .nav-link {
-        color: white !important;
+        color: #1f2937 !important;
     }
     .navbar-nav .nav-link:hover {
-        color: #ccc !important;
+        color: #2563eb !important;
     }
     .dropdown-menu {
-        background-color: #333 !important;
+        background-color: #ffffff !important;
     }
     .dropdown-item {
-        color: white !important;
+        color: #1f2937 !important;
     }
     .dropdown-item:hover {
-        background-color: #555 !important;
-        color: white !important;
+        background-color: #f1f5f9 !important;
+        color: #2563eb !important;
     }
-
   </style>
 
   <!-- =======================================================
@@ -105,32 +104,22 @@
 
         <nav id="navmenu" class="navmenu">
           <ul>
-            <li><a href="#hero" class="active">Home<br></a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="{% url 'register' %}">Register</a></li>
-            <li><a href="{% url 'login' %}">Login</a></li>
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'charity:my_dashboard' %}">My Dashboard</a></li>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-            {% endif %}
-            <li><a href="#">Departments</a></li>
-
+            <li><a href="{% url 'home' %}" class="active">Home</a></li>
+            <li><a href="{% url 'charity:hub' %}">Charity</a></li>
+            <li><a href="{% url 'list_product' %}">Shop</a></li>
             
-            <li><a href="#doctors">Doctors</a></li>
-            <li class="dropdown"><a href="#"><span>Available Settings</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-              <ul>
-                <li><a href="#">User</a></li>
-                <li class="dropdown"><a href="#"><span>Medical Availability</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                  
-                </li>
-                <li><a href="{% url 'list_product' %}">Shopping</a></li>
-                <li><a href="{% url 'seller_entry' %}">Seller Portal</a></li>
+            {% if user.is_authenticated %}
+                {% if user.user_type == 2 %}
+                    <li><a href="{% url 'seller_dashboard' %}">Seller Dashboard</a></li>
+                {% else %}
+                    <li><a href="{% url 'seller_entry' %}">Become a Seller</a></li>
+                {% endif %}
                 <li><a href="{% url 'cart' %}">Cart ({% if cart_count %}{{ cart_count }}{% else %}0{% endif %})</a></li>
-                <li><a href="{% url 'charity:hub' %}">Charity</a></li>
-                
-              </ul>
-            </li>
-            <li><a href="#contact">Contact</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>

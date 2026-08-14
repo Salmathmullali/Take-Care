@@ -98,33 +98,35 @@
     <nav class="bg-[#2563eb] sticky top-0 z-50 shadow-md">
         <div class="max-w-7xl mx-auto px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-10">
-                <h1 class="text-2xl font-light tracking-[0.2em] uppercase text-white">TakeCare</h1>
+                <a href="{% url 'home' %}"><h1 class="text-2xl font-light tracking-[0.2em] uppercase text-white">TakeCare</h1></a>
                 <div class="hidden md:flex gap-8">
-                    <a href="#" class="nav-link">Doctors</a>
-                    <a href="#" class="nav-link">Specialties</a>
-                    <a href="#" class="nav-link">Resources</a>
+                    <a href="{% url 'home' %}" class="nav-link">Home</a>
+                    <a href="{% url 'charity:hub' %}" class="nav-link">Charity</a>
+                    <a href="{% url 'list_product' %}" class="nav-link">Shop</a>
                 </div>
             </div>
 
             <div class="flex items-center gap-6 text-white/90">
-                <div class="cursor-pointer hover:text-white transition-colors">
-                    <i data-lucide="search" class="w-5 h-5 stroke-[1.5]"></i>
-                </div>
-                
-                <div class="cursor-pointer hover:text-white transition-colors relative">
-                    <i data-lucide="heart" class="w-5 h-5 stroke-[1.5]"></i>
-                    <span class="absolute -top-1.5 -right-1.5 text-[9px] bg-white text-blue-600 w-3.5 h-3.5 flex items-center justify-center rounded-full font-bold">0</span>
+                <div class="hidden md:flex gap-6 items-center">
+                    {% if user.is_authenticated %}
+                        {% if user.user_type == 2 %}
+                            <a href="{% url 'seller_dashboard' %}" class="nav-link">Dashboard</a>
+                        {% else %}
+                            <a href="{% url 'seller_entry' %}" class="nav-link">Become a Seller</a>
+                        {% endif %}
+                        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="nav-link">Login</a>
+                    {% endif %}
                 </div>
 
                 <div class="cursor-pointer hover:text-white transition-colors relative">
                     <a href="{% url 'cart' %}" class="cursor-pointer hover:text-white transition-colors relative">
-    <i data-lucide="shopping-cart" class="w-5 h-5 stroke-[1.5]"></i>
-
-    <span class="absolute -top-1.5 -right-1.5 text-[9px] bg-white text-blue-600 w-3.5 h-3.5 flex items-center justify-center rounded-full font-bold">
-        {{ cart_count }}
-    </span>
-</a>
-
+                        <i data-lucide="shopping-cart" class="w-5 h-5 stroke-[1.5]"></i>
+                        <span class="absolute -top-1.5 -right-1.5 text-[9px] bg-white text-blue-600 w-3.5 h-3.5 flex items-center justify-center rounded-full font-bold">
+                            {% if cart_count %}{{ cart_count }}{% else %}0{% endif %}
+                        </span>
+                    </a>
                 </div>
             </div>
         </div>

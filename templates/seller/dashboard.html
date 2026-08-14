@@ -153,10 +153,15 @@
 <div class="main-wrapper">
     <nav class="navbar">
         <div class="container d-flex justify-content-between align-items-center">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{% url 'home' %}">
                 <i class="fa-solid fa-heart-pulse me-2 text-info"></i> TakeCare
             </a>
-            <a class="navbar-brand" href="{% url 'list_product' %}" style="font-size:medium;">Product</a>
+            <div class="d-flex gap-4 align-items-center">
+                <a class="text-white text-decoration-none" href="{% url 'home' %}" style="font-size:1.1rem;">Home</a>
+                <a class="text-white text-decoration-none" href="{% url 'charity:hub' %}" style="font-size:1.1rem;">Charity</a>
+                <a class="text-white text-decoration-none" href="{% url 'list_product' %}" style="font-size:1.1rem;">Shop</a>
+                <a class="text-white text-decoration-none" href="{% url 'logout' %}" style="font-size:1.1rem;">Logout</a>
+            </div>
         </div>
     </nav>
 

@@ -58,16 +58,22 @@
 
         <nav id="navmenu" class="navmenu">
           <ul>
-            <li><a href="#hero" class="active">Home</a></li>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
-            <li><a href="{% url 'navbar' %}">Settings</a></li>
-            <li class="dropdown">
-              <a href="#"><span>Available</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-              <ul>
-                <li><a href="#">Dropdown 1</a></li>
-                <li><a href="#">Dropdown 2</a></li>
-              </ul>
-            </li>
+            <li><a href="{% url 'home' %}" class="active">Home</a></li>
+            <li><a href="{% url 'charity:hub' %}">Charity</a></li>
+            <li><a href="{% url 'list_product' %}">Shop</a></li>
+            
+            {% if user.is_authenticated %}
+                {% if user.user_type == 2 %}
+                    <li><a href="{% url 'seller_dashboard' %}">Seller Dashboard</a></li>
+                {% else %}
+                    <li><a href="{% url 'seller_entry' %}">Become a Seller</a></li>
+                {% endif %}
+                <li><a href="{% url 'cart' %}">Cart ({% if cart_count %}{{ cart_count }}{% else %}0{% endif %})</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>

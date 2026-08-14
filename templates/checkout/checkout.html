@@ -1,20 +1,56 @@
-<h2>Checkout</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | TakeCare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #1e293b; }
+    </style>
+</head>
+<body class="p-8">
+    <div class="max-w-2xl mx-auto">
+        <a href="{% url 'cart' %}" class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:text-blue-800 mb-6 bg-blue-50 px-3 py-2 rounded-md">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Cart
+        </a>
+        
+        <h2 class="text-2xl font-bold mb-6 text-slate-800">Checkout</h2>
 
-<form method="POST">
-    {% csrf_token %}
+        <form method="POST" class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+            {% csrf_token %}
+            
+            <div class="space-y-4 mb-8">
+                <input type="text" name="full_name" placeholder="Full Name" required class="w-full p-3 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-blue-500">
+                <input type="text" name="phone" placeholder="Phone" required class="w-full p-3 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-blue-500">
+                <textarea name="address" placeholder="Address" required class="w-full p-3 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-blue-500"></textarea>
+                <div class="flex gap-4">
+                    <input type="text" name="city" placeholder="City" required class="w-1/2 p-3 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-blue-500">
+                    <input type="text" name="pincode" placeholder="Pincode" required class="w-1/2 p-3 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:border-blue-500">
+                </div>
+            </div>
 
-    <input type="text" name="full_name" placeholder="Full Name" required><br>
-    <input type="text" name="phone" placeholder="Phone" required><br>
-    <textarea name="address" placeholder="Address" required></textarea><br>
-    <input type="text" name="city" placeholder="City" required><br>
-    <input type="text" name="pincode" placeholder="Pincode" required><br>
+            <h3 class="text-lg font-bold mb-4 text-slate-800 border-t border-slate-100 pt-6">Order Summary</h3>
+            <div class="space-y-2 mb-6">
+            {% for item in cart_items %}
+                <div class="flex justify-between text-sm text-slate-600">
+                    <span>{{ item.product.name }} × {{ item.quantity }}</span>
+                    <span class="font-bold">₹{{ item.product.price }}</span>
+                </div>
+            {% endfor %}
+            </div>
 
-    <h3>Order Summary</h3>
-    {% for item in cart_items %}
-        <p>{{ item.product.name }} × {{ item.quantity }} — ₹{{ item.product.price }}</p>
-    {% endfor %}
+            <div class="flex justify-between items-center text-xl font-bold text-slate-900 mb-6">
+                <span>Total</span>
+                <span class="text-blue-600">₹{{ total }}</span>
+            </div>
 
-    <h3>Total: ₹{{ total }}</h3>
-
-    <button type="submit">Place Order</button>
-</form>
+            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                Place Order
+            </button>
+        </form>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
