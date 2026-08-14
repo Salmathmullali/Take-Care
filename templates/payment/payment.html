@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+</head>
+<body>
+
+<h2>Pay ₹{{ amount }}</h2>
+<button id="pay-btn">Pay Now</button>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+document.getElementById("pay-btn").addEventListener("click", function (e) {
+    e.preventDefault();
+
+    var options = {
+        "key": "{{ razorpay_key }}",
+        "amount": "{{ amount }}00",
+        "currency": "INR",
+        "name": "Take Care",
+        "order_id": "{{ order_id }}",
+
+        "handler": function (response) {
+            alert("Payment Success");
+            window.location.href = "/payment-success/";
+        }
+    };
+
+    var rzp = new Razorpay(options);
+    rzp.open();
+});
+</script>
+
+</body>
+</html>

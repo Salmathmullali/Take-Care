@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TakeCare | Status</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        html, body { height: 100%; margin: 0; overflow: hidden; }
+
+        .main-wrapper {
+            height: 100vh;
+            width: 100vw;
+            background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.4)),
+                        url('{% static "images/1.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        
+
+        /* Compact Card Style */
+        .status-card {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(20px) saturate(120%);
+            -webkit-backdrop-filter: blur(20px) saturate(120%);
+            width: 100%;
+            max-width: 364px; /* Matches your Login Card Width */
+            padding: 25px 30px; /* Reduced padding */
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            text-align: center;
+        }
+
+        .icon-box {
+            width: 60px; /* Smaller Icon Circle */
+            height: 60px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        h3 { font-size: 1.25rem; font-weight: 700; color: #045980; margin-bottom: 4px; }
+        .subtitle { font-size: 13px; color: #05505a; margin-bottom: 20px; }
+
+        .progress-container {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            margin: 15px 0;
+        }
+
+        .progress-bar-fill {
+            position: absolute;
+            height: 100%;
+            width: 40%;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            animation: loading-slide 2s infinite ease-in-out;
+        }
+
+        @keyframes loading-slide { 0% { left: -40%; } 100% { left: 100%; } }
+
+        .btn-action {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            display: block;
+            font-size: 14px;
+            transition: 0.3s;
+            border: none;
+        }
+
+        .alert-mini {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 12px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(79, 172, 254, 0.4); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(79, 172, 254, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(79, 172, 254, 0); }
+        }
+        .pulse { animation: pulse 2s infinite; }
+    </style>
+
+    {% if not seller.is_rejected %}<meta http-equiv="refresh" content="5">{% endif %}
+</head>
+<body>
+
+<div class="main-wrapper">
+    <nav class="navbar py-2" style="background: rgba(255,255,255,0.4); backdrop-filter: blur(15px);">
+        <div class="container d-flex justify-content-between">
+            <span class="fw-bold"><i class="fa-solid fa-heart-pulse text-info"></i> TakeCare</span>
+            <a href="{% url 'logout' %}" class="text-decoration-none small fw-bold text-dark">LOGOUT</a>
+        </div>
+    </nav>
+
+    <div class="d-flex flex-grow-1 align-items-center justify-content-center px-3">
+        <div class="status-card">
+            
+            {% if seller.is_rejected %}
+                <div class="icon-box text-danger" style="border-color: rgba(255,0,0,0.3);">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </div>
+                <h3>Denied</h3>
+                <p class="subtitle">Verification failed</p>
+                <div class="alert-mini mb-3" style="background: rgba(255,0,0,0.05); color: #8b0000;">
+                    {{ seller.rejection_reason|default:'Documentation does not meet safety standards.' }}
+                </div>
+                <a href="mailto:compliance@hospital.com" class="btn-action">Contact Compliance</a>
+            {% else %}
+                <div class="icon-box pulse text-primary">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3>Reviewing</h3>
+                <p class="subtitle">Verifying clinical credentials</p>
+                <div class="status-row">
+    <span class="label">Provider Name:</span>
+    <span class="value">{{ seller.business_name|truncatechars:20 }}</span>
+</div>
+
+<style>
+    .status-row {
+        display: flex;
+        justify-content: center; /* Centers the whole line */
+        align-items: center;
+        gap: 8px;               /* Space between label and name */
+        background: rgba(255, 255, 255, 0.4);
+        padding: 8px 15px;
+        border-radius: 12px;
+        margin: 15px 0;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        white-space: nowrap;    /* Prevents name from dropping to second line */
+    }
+
+    .label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #1c1d1d;
+        opacity: 0.8;
+    }
+
+    .value {
+        font-size: 13px;
+        font-weight: 800;
+        color: #045980;
+    }
+</style>
+
+                <div class="progress-container">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <small class="text-muted" style="font-size: 11px;">Auto-refreshing status...</small>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{% url 'home' %}" class="text-decoration-none small fw-bold" style="color: #045980;">
+                    <i class="fa-solid fa-house me-1"></i> Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

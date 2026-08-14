@@ -1,0 +1,222 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seller Registration | TakeCare</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        html, body { height: 100%; margin: 0; }
+
+        .main-wrapper {
+            min-height: 100vh;
+            width: 100vw;
+            background: 
+                linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.4)),
+                url('{% static "images/1.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.4) !important;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .navbar-brand { font-weight: 700; color: #1a1a1a !important; }
+
+        .registration-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* COMPACT CARD SETTINGS */
+        .registration-card {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(25px) saturate(120%);
+            -webkit-backdrop-filter: blur(25px) saturate(120%);
+            width: 100%;
+            max-width: 345px; /* Smaller width to match login */
+            padding: 24px;    /* Reduced padding */
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .registration-card h3 {
+            font-weight: 700;
+            color: #045980;
+            margin-bottom: 4px;
+            text-align: center;
+            font-size: 1.25rem;
+        }
+
+        .registration-card p.subtitle {
+            color: #05505a;
+            font-size: 13px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group { margin-bottom: 12px; }
+
+        .form-label {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #045980;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.55) !important;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: #fff;
+            border: none;
+            padding: 11px;
+            border-radius: 11px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+            box-shadow: 0 8px 15px rgba(79, 172, 254, 0.2);
+        }
+
+        .footer-text {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #444;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="main-wrapper">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fa-solid fa-heart-pulse me-2"></i> TakeCare
+            </a>
+        </div>
+    </nav>
+
+    <div class="registration-content">
+        <div class="registration-card">
+            
+            <h3><b>PARTNER JOIN</b></h3>
+            <p class="subtitle">Seller Network Onboarding</p>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label class="form-label">Business Name</label>
+                    <input type="text" name="business_name" class="form-control" placeholder="Legal Name" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Tax ID / NPI</label>
+                    <input type="text" name="tax_id" class="form-control" placeholder="XX-XXXXXXX" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select name="category" class="form-select text-muted">
+                        <option>Medical Supplies</option>
+                        <option>Pharmaceuticals</option>
+                        <option>Lab Equipment</option>
+                    </select>
+                </div>
+
+                <div class="form-check my-3">
+                    <input class="form-check-input" type="checkbox" id="terms" required>
+                    <label class="form-check-label" style="font-size: 11px;" for="terms">
+                        I agree to the <a href="#" class="text-decoration-none fw-bold">Clinical Terms</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-register">Register Now</button>
+
+                
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+
+Edaa..sheriyan..ninak orupad problems ind..athinte edayil enne nokan time kittathond avum.
+njn ath manasilakki ninnal theerunne prashnam mathre ullu...alle? Njn enth paranjalum ninak parayan
+ninte family problems and job issues or room issues okke ayitt undavum. orupad thavana njn ith kettit ind.
+i know your situation. but enik ippayum manasilavatha onnind...sathyathil ne enne porathnn vanna vere oralayitt
+aano kandittulle..like, ninte family member aayit enne ne ithvare kandittille? Ne ee paraynne family problems lu
+ente problem pedoole? Llarum paraynne pole vann kayariyaval thanne aanalla penn..athevdenna family lu ullathavua...alle?
+
+ne ennengilum choychitt undo ninte family situations okke engane..vtl ippo problems undo..like mrrg paranj scn akarundo..
+ninak koyaponnullala. ennoke? ne edak edak parayarille.. ninakum koodi vendiyalle njn ee job maarnne ennoke..appo ninakum koodi 
+vendiyalle..ee veetkardem kudumbakardem nattardem okke vayeel iriknnem kett..vtl chora aakeet varnne proposal okke mudakknne?
+ithonnum kettirknna pole athra sugam ulla karyalla..anubavich nokanm appo mansilavum..ellarum ottapedthnne avstha indalla..ath anubavichork
+mansilavum..allathork verum oru kadha. ithine pattiyonnum onn choykar polulla ne...eniyum ithonnum choykanda..enik parayanum interest um illa.
+
+ne paraynn ne insta nokalilla enn...noknne kalam ellathinum suport akiyond scn illala lle...pinne insta nokalillelum reels okke 
+kanan time indenn ariyam. ath pinne insta open akand aavum alle? athilonnum enikoru budhimuttum illayipo.
+ne idnne post aanelum njn mind akalu kuravanu..enthaan areela maybe ego prashnm avam..ingot kittatha support angottum venda
+enn kartheet avam. ponn mone njn paranjenn karthi ente post nokkua polum cheyyanda..njn athine patti care cheyynnilla ippo.
+
+pinne ne nerethe paranj..jobnte apply cheyyne karym njn choykkanjath..njnum apply akalillayrnnu...annorika akiyithe ullu enn..appo njn 
+edak choykmbo apply akalind enn paraynne kallam aavum alle? njn onn choykatte...ne apply akalinda jobnu, enn choykan ninak kore time okke
+venam aayirikum alle? aa oru qn polum choyknenu ninak parayan ullath family problms okke aan..athinte edak evdenna time alle?
+ne apply akkathathum time issue kond thanne avum alle? night duty nte edak ee one week kond ethra padam kand theerth? athin 
+time ille?
+
+Enikariyam ne exersise um cheyyalonnum indavilla enn..prashnam onnulla..vittek. pinne..ennod ente career related aayitulla onnum
+choykanda like apply akalindo, padikalindo ennonum choykanda...enikathonnum ishdalla. enik ariyam ente karyangal take care cheyyan.
+athilupari njn ninnem takecare cheyyum.InshaAllah...ninte karyangal choyiknenum..anweshiknenum ente veshmangalo budhimuttukalo ithvare thadassam aayit enik
+thoneet illa..athethra valiya issues enik undengilum...enik ninte karyam choyknnathilum or ninne takecare cheynelu sandhosham thoneette ullu..ath 
+eniyum angane thanne ayirikkum.
+
+allelum oru day..athayath 24 hrs ..athil nml samsariknnath koodipoyal 1 or 2 hrs mathram eriku.pinne evdenna lle okke samsarikan time indavua.
+ee ninne parijayapett nml close aaye samayam thott ..ninte oru prasence njn ente ella karyathilum agrahichirunnu. ippo angane onnum illatto..like
+ne enne mind akkett illelum enik mansilavum..ninte problems kondavum enn...enik veshmonnullado..okke mansilakan ulle ichiri budhi okke enik indennaan
+ente vishwasam. ninte situations okke enik mansilavum..nadhooi 
+
+nadhooi njn ninne kuttapedthiyatho...ente parathi paranjathum onnualla..entho..chumma irnnapo oron thoni..ath ninnod choych athre ullu.
+njn ee paraynne kett ennod nala muthal over ayi samsarikan nikanda...inn vare enthoke samsarich engane ninn..athpole mathra eneem ninnal mathi.
+njn athrokeye arhikunnullu. njn valiya punyalathi onnualla.enik ninnekal koravukal indenn enik nannayi ariyam. so , ninnod adiyakano vayakidano 
+onnum vendeet alla..chumma paranjenn mathram. enikorupad nalla frnds indayrnnu..enne mansilakiya korach alkar..avre okke ne vannapo njn angad oyivakiyapole
+aayi..nnalum ipayum njn ok ano enn avar choykan marakkalilla.
+
+
+ne eni ethrayoke enne avoid cheyyan nokiyalum ..aa pathoi ennulla vili ille..ath ketta mathi enik..entho ..ninnod ithvare enik verup thoneettilla.
+ne enne avoid akknn..mind akknnilla..paye pole alla ennoke ethravattam njn paranjalum ..enik ninnodulla ishdam koodiyathallathe kuranjittillado.
+still I Love You Lot 
+

@@ -33,3 +33,12 @@ class LoginForm(AuthenticationForm):
             attrs={'class': 'form-control', 'placeholder': 'Password', 'autocomplete': 'current-password'}
         ),
     )
+
+
+# --- E-Commerce Forms ---
+from .models import Product
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'price', 'description', 'image', 'stock']

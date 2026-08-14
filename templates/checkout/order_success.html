@@ -1,0 +1,7 @@
+<h2>Order Placed Successfully 🎉</h2>
+
+<p>Order ID: {{ order.id }}</p>
+<p>Total Amount: ₹{{ order.total_price }}</p>
+<p>Status: {{ order.status }}</p>
+
+<a href="{% url 'home' %}">Continue Shopping</a>

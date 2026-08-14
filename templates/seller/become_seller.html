@@ -1,0 +1,150 @@
+<style>
+  /* Reuse your existing :root variables for consistency */
+  :root {
+    --hc-primary: #0077b6;
+    --hc-secondary: #f0f7ff;
+    --hc-accent: #023e8a;
+    --hc-text: #1e293b;
+    --hc-border: #cbdceb;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--hc-secondary);
+    color: var(--hc-text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* Main Onboarding Container */
+  .onboarding-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .onboarding-card {
+    background: #ffffff;
+    max-width: 450px;
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid var(--hc-border);
+    box-shadow: 0 15px 35px rgba(0, 50, 100, 0.08);
+    padding: 40px;
+    text-align: center;
+  }
+
+  /* Medical/Store Icon Styling */
+  .icon-circle {
+    width: 80px;
+    height: 80px;
+    background: var(--hc-secondary);
+    color: var(--hc-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 40px;
+    border: 2px solid var(--hc-border);
+  }
+
+  .onboarding-card h2 {
+    color: var(--hc-accent);
+    margin: 0 0 15px 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  .onboarding-card p {
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+  }
+
+  .info-box {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 30px;
+    text-align: left;
+    border-left: 4px solid var(--hc-primary);
+  }
+
+  .info-box ul {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 0.85rem;
+    color: #475569;
+  }
+
+  .btn-become-seller {
+    background-color: var(--hc-primary);
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 119, 182, 0.2);
+  }
+
+  .btn-become-seller:hover {
+    background-color: var(--hc-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 119, 182, 0.3);
+  }
+
+  .btn-cancel {
+    display: block;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #94a3b8;
+    font-size: 0.85rem;
+  }
+
+  .btn-cancel:hover {
+    color: #64748b;
+  }
+</style>
+
+<nav class="hc-navbar" style="background: var(--hc-accent); height: 65px; display: flex; align-items: center; padding: 0 25px;">
+  <div style="display: flex; align-items: center; gap: 12px;">
+    <div style="width: 34px; height: 34px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--hc-accent); font-weight: bold; font-size: 22px;">+</div>
+    <span style="color: white; font-weight: 600; font-size: 1.1rem;">MED-Portal</span>
+  </div>
+</nav>
+
+<div class="onboarding-container">
+  <div class="onboarding-card">
+    <div class="icon-circle">🏪</div>
+    
+    <h2>Become a Seller</h2>
+    <p>Join our medical supply network. By becoming a seller, you can manage inventory and distribute products across our facility departments.</p>
+
+    <div class="info-box">
+      <strong>Permissions you will gain:</strong>
+      <ul>
+        <li>Create and update stock records</li>
+        <li>Manage pharmaceutical pricing</li>
+        <li>Access clinical inventory reports</li>
+      </ul>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn-become-seller">Yes, Become a Seller</button>
+    </form>
+    
+    <a href="/" class="btn-cancel">I'll do this later</a>
+  </div>
+</div>

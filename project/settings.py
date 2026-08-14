@@ -12,9 +12,19 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Read .env file manually
+env_path = BASE_DIR / '.env'
+if env_path.exists():
+    with open(env_path) as f:
+        for line in f:
+            if line.strip() and not line.startswith('#'):
+                key, val = line.strip().split('=', 1)
+                os.environ[key.strip()] = val.strip()
 
 
 # Quick-start development settings - unsuitable for production
@@ -69,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'app.context_processors.cart_count',
             ],
         },
     },
@@ -151,3 +162,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'admin@takecare.com'
+
+# Razorpay Settings
+RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'rzp_test_qrTILwvklytMvh')
+RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', '0eVlkIUIXxSUtummc10LNbhi')

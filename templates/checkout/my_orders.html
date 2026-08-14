@@ -1,0 +1,9 @@
+<h2>My Orders</h2>
+
+{% for order in orders %}
+    <div>
+        <p>Order #{{ order.id }}</p>
+        <p>Total: ₹{{ order.total_price }}</p>
+        <p>Status: {{ order.status }}</p>
+    </div>
+{% endfor %}

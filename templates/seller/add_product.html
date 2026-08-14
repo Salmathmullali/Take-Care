@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TakeCare | Stock Management</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.4)),
+                        url('{% static "images/1.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Update your existing .navbar CSS with these lines */
+.navbar {
+    background: rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 0;
+}
+
+.navbar .container-fluid {
+    padding-left: 20px;
+}
+
+.navbar-brand {
+    margin-left: 88px;
+}
+
+/* Force the container to align everything left */
+.navbar .container, 
+.navbar .container-fluid {
+    display: flex !important;
+    justify-content: flex-start !important;
+    margin-left: 0 !important; /* Removes the left "push" */
+    padding-left: 20px; /* Adjust this for the gap from the screen edge */
+}
+
+.navbar-brand {
+    margin-right: auto !important; /* Pushes everything else away from it */
+    text-align: left !important;
+}
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        /* --- MINI CARD STYLING --- */
+        .inventory-card {
+             background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            width: 100%;
+            max-width: 360px; /* Shortened width significantly */
+            padding: 24px;    /* Tight internal padding */
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .inventory-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #045980;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #045980;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.6) !important;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 8px 12px; /* Slimmer inputs */
+            font-size: 0.85rem;
+        }
+
+        /* Slim File Upload */
+        .file-upload-wrapper {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px dashed rgba(4, 89, 128, 0.3);
+            border-radius: 10px;
+            padding: 8px;
+        }
+
+        .file-upload-wrapper input {
+            font-size: 0.75rem;
+            border: none !important;
+            background: transparent !important;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            width: 100%;
+            margin-top: 8px;
+            transition: 0.3s;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid px-4"> <a class="navbar-brand" href="#" style="font-size: medium;">
+            <i class="fa-solid fa-heart-pulse me-2"></i> TakeCare
+        </a>
+    </div>
+</nav>
+
+    <div class="content-wrapper">
+        <div class="inventory-card">
+            <h3>Add New Stock</h3>
+            
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="mb-2">
+                    <label>Product Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="Item Name" required>
+                </div>
+
+                <div class="row g-2">
+                    <div class="col-6 mb-2">
+                        <label>Price</label>
+                        <input type="number" name="price" step="0.01" class="form-control" placeholder="0.00" required>
+                    </div>
+                    <div class="col-6 mb-2">
+                        <label>Stock</label>
+                        <input type="number" name="stock" class="form-control" placeholder="Qty" required>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <label>Notes</label>
+                    <textarea name="description" class="form-control" rows="1" placeholder="Brief details..."></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label>Image</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" name="image" class="form-control" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-register">Register Item</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
