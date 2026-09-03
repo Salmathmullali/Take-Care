@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'charity',
+    'doctor_discovery',
 ]
 
 AUTH_USER_MODEL = 'app.CustomUser'

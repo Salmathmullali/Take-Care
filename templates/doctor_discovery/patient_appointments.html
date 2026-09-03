@@ -1,0 +1,64 @@
+{% extends "doctor_discovery/base_telehealth.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold m-0">My Appointments</h2>
+        <a href="{% url 'telehealth:directory' %}" class="btn btn-outline-primary">Book New Appointment</a>
+    </div>
+    
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Doctor</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th class="text-end pe-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appt in appointments %}
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-light rounded-circle p-2 me-3">
+                                        <i class="fa-solid fa-user-md text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold">Dr. {{ appt.doctor.user.first_name }} {{ appt.doctor.user.last_name }}</div>
+                                        <div class="small text-muted">{{ appt.doctor.qualification }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ appt.date }}</td>
+                            <td>{{ appt.time|time:"H:i" }}</td>
+                            <td>
+                                <span class="badge {% if appt.status == 'Confirmed' %}bg-success{% else %}bg-secondary{% endif %} rounded-pill">
+                                    {{ appt.status }}
+                                </span>
+                            </td>
+                            <td class="text-end pe-4">
+                                <a href="{% url 'telehealth:room' appt.id %}" class="btn btn-sm btn-primary">Enter Room</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-5">
+                                <i class="fa-regular fa-calendar-xmark fa-3x mb-3 text-light"></i>
+                                <h5>No upcoming appointments</h5>
+                                <p>You don't have any appointments scheduled yet.</p>
+                                <a href="{% url 'telehealth:directory' %}" class="btn btn-primary mt-2">Find a Doctor</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

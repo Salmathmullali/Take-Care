@@ -1,0 +1,57 @@
+{% extends "doctor_discovery/base_telehealth.html" %}
+
+{% block content %}
+<div class="page-header text-center">
+    <h1 class="display-5 fw-bold text-primary mb-3">Find a Doctor</h1>
+    <p class="lead text-muted">Browse our directory of qualified healthcare professionals.</p>
+</div>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <form method="GET" class="d-flex gap-2">
+                <select name="specialty" class="form-select form-select-lg">
+                    <option value="">All Specialties</option>
+                    {% for spec in specializations %}
+                    <option value="{{ spec.id }}" {% if request.GET.specialty == spec.id|stringformat:"s" %}selected{% endif %}>
+                        {{ spec.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary btn-lg px-4">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {% for doctor in doctors %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="fa-solid fa-user-doctor fa-4x text-primary opacity-75"></i>
+                    </div>
+                    <h4 class="card-title fw-bold mb-1">Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}</h4>
+                    <p class="text-muted mb-2">
+                        {% for spec in doctor.specializations.all %}
+                            <span class="badge bg-light text-dark border">{{ spec.name }}</span>
+                        {% endfor %}
+                    </p>
+                    <p class="small text-muted mb-3">{{ doctor.qualification }}</p>
+                    <hr class="text-muted opacity-25">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="fw-semibold text-success">Fee: ${{ doctor.fee_per_session }}</span>
+                        <span class="small text-muted"><i class="fa-solid fa-hospital me-1"></i>{% if doctor.hospitals.exists %}{{ doctor.hospitals.first.name }}{% else %}Online Only{% endif %}</span>
+                    </div>
+                    <a href="{% url 'telehealth:doctor_detail' doctor.id %}" class="btn btn-outline-primary w-100">View Profile & Book</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <h3 class="text-muted">No doctors found for this specialty.</h3>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

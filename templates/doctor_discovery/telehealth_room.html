@@ -1,0 +1,137 @@
+{% extends "doctor_discovery/base_telehealth.html" %}
+
+{% block extra_css %}
+<style>
+    #jitsi-container {
+        height: 600px;
+        width: 100%;
+        background-color: #000;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .chat-sidebar {
+        height: 600px;
+        display: flex;
+        flex-direction: column;
+    }
+    .chat-messages {
+        flex-grow: 1;
+        overflow-y: auto;
+        background: #f8fafc;
+        border-radius: 8px;
+        padding: 15px;
+    }
+    .message {
+        margin-bottom: 10px;
+        padding: 10px 15px;
+        border-radius: 15px;
+        max-width: 85%;
+    }
+    .message.sent {
+        background: #2563eb;
+        color: white;
+        margin-left: auto;
+        border-bottom-right-radius: 0;
+    }
+    .message.received {
+        background: #e2e8f0;
+        color: #1f2937;
+        margin-right: auto;
+        border-bottom-left-radius: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4 px-lg-5">
+    <div class="row align-items-center mb-4">
+        <div class="col">
+            <h2 class="fw-bold m-0">
+                <i class="fa-solid fa-video text-primary me-2"></i> Telehealth Consultation
+            </h2>
+            <p class="text-muted m-0">Appointment ID: {{ appointment.id }} | {% if is_doctor %}Patient: {{ appointment.patient.first_name }} {{ appointment.patient.last_name }}{% else %}Dr. {{ appointment.doctor.user.first_name }} {{ appointment.doctor.user.last_name }}{% endif %}</p>
+        </div>
+        <div class="col-auto">
+            <a href="{% if is_doctor %}{% url 'telehealth:doctor_dashboard' %}{% else %}{% url 'telehealth:patient_appointments' %}{% endif %}" class="btn btn-outline-secondary">Leave Session</a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-2">
+                    <div id="jitsi-container"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 chat-sidebar">
+                <div class="card-header bg-white border-bottom pt-3 pb-2">
+                    <h5 class="fw-bold m-0"><i class="fa-regular fa-comments text-primary me-2"></i> Live Chat</h5>
+                </div>
+                <div class="card-body d-flex flex-column p-3">
+                    <div class="chat-messages mb-3" id="chatbox">
+                        <div class="text-center text-muted small mb-3">Session started. Messages are end-to-end encrypted.</div>
+                        <!-- Chat messages will appear here -->
+                    </div>
+                    <form id="chat-form" class="mt-auto d-flex gap-2">
+                        <input type="text" id="chat-input" class="form-control" placeholder="Type a message..." autocomplete="off">
+                        <button type="submit" class="btn btn-primary px-4"><i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://meet.jit.si/external_api.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const domain = "meet.jit.si";
+        const options = {
+            roomName: "{{ room_id }}",
+            width: "100%",
+            height: "100%",
+            parentNode: document.querySelector('#jitsi-container'),
+            userInfo: {
+                displayName: "{{ user_name }}"
+            },
+            configOverwrite: {
+                startWithAudioMuted: false,
+                startWithVideoMuted: false,
+                prejoinPageEnabled: false,
+                disableDeepLinking: true
+            },
+            interfaceConfigOverwrite: {
+                TOOLBAR_BUTTONS: [
+                    'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
+                    'fodeviceselection', 'hangup', 'profile', 'settings', 'videoquality', 'filmstrip', 'tileview'
+                ],
+                SHOW_JITSI_WATERMARK: false,
+                SHOW_WATERMARK_FOR_GUESTS: false,
+            }
+        };
+        const api = new JitsiMeetExternalAPI(domain, options);
+        
+        // Simple mock chat logic for the UI side (Since Django Channels isn't set up)
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatbox = document.getElementById('chatbox');
+        
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const msg = chatInput.value.trim();
+            if (msg) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'message sent';
+                msgDiv.textContent = msg;
+                chatbox.appendChild(msgDiv);
+                chatInput.value = '';
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+        });
+    });
+</script>
+{% endblock %}

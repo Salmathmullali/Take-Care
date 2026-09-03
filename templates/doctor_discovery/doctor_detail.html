@@ -1,0 +1,61 @@
+{% extends "doctor_discovery/base_telehealth.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center p-4">
+                    <i class="fa-solid fa-user-md fa-5x text-primary mb-3"></i>
+                    <h2 class="fw-bold h3">Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}</h2>
+                    <p class="text-muted mb-2">{{ doctor.qualification }}</p>
+                    <div class="mb-3">
+                        {% for spec in doctor.specializations.all %}
+                            <span class="badge bg-primary">{{ spec.name }}</span>
+                        {% endfor %}
+                    </div>
+                    <p class="text-muted">{{ doctor.bio }}</p>
+                    <h4 class="text-success mt-4">Consultation Fee: ${{ doctor.fee_per_session }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body p-4">
+                    <h3 class="fw-bold mb-4">Weekly Availability</h3>
+                    {% if availabilities %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Available Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for slot in availabilities %}
+                                <tr>
+                                    <td class="fw-semibold">{{ slot.get_day_of_week_display }}</td>
+                                    <td><span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 py-2 px-3">{{ slot.start_time|time:"H:i" }} - {{ slot.end_time|time:"H:i" }}</span></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted">This doctor hasn't set their availability yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 border-top border-primary border-4">
+                <div class="card-body p-4 text-center">
+                    <h4 class="fw-bold mb-3">Ready for Consultation?</h4>
+                    <p class="text-muted mb-4">Book your online video session now.</p>
+                    <a href="{% url 'telehealth:book_appointment' doctor.id %}" class="btn btn-primary btn-lg px-5 rounded-pill">Book Appointment</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
