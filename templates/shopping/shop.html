@@ -1,193 +1,109 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TakeCare | Clinical Excellence</title>
+    <title>TakeCare | Shop</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
         
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: #f8fafc; /* Clean Clinical Grey-White */
+            background-color: #f8fafc;
             color: #1e293b; 
         }
 
-        .serif { font-family: 'Playfair Display', serif; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 2rem;
+        }
+        @media (min-width: 640px) {
+            .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (min-width: 1024px) {
+            .product-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         }
 
-        .product-reveal {
-            animation: fadeInUp 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
-            opacity: 0;
-        }
-
-        /* High-Fashion Hover Logic */
-        .img-container img {
-            transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
-        }
-        .product-card:hover .img-container img {
-            transform: scale(1.08);
-        }
-
-        .action-icons {
-            display: flex;
-            gap: 0.60rem;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding-bottom: 1.5rem;
-        }
-
-        .icon-btn {
+        .product-card {
             background: white;
-            color: #2563eb; /* Clinical Blue */
-            width: 42px;
-            height: 42px;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
-            transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
-            opacity: 0;
-            transform: translateY(20px);
+            flex-direction: column;
         }
 
-        .icon-btn:hover {
-            background: #2563eb; 
-            color: white;
-            transform: translateY(-5px) !important;
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
-        .product-card:hover .icon-btn {
-            opacity: 1;
-            transform: translateY(0);
+        .product-img {
+            width: 100%;
+            height: 16rem;
+            object-fit: cover;
         }
 
-        /* Nav link logic */
-        .nav-link {
-            position: relative;
-            font-size: 0.75rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: #dbeafe; /* Light ice blue */
-            transition: color 0.3s ease;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px;
-            bottom: -4px;
-            left: 0;
-            background-color: #ffffff; 
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover::after { width: 100%; }
-        .nav-link:hover { color: #ffffff; }
     </style>
 </head>
 <body>
 
-    <nav class="bg-[#2563eb] sticky top-0 z-50 shadow-md">
-        <div class="max-w-7xl mx-auto px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-10">
-                <a href="{% url 'home' %}"><h1 class="text-2xl font-light tracking-[0.2em] uppercase text-white">TakeCare</h1></a>
-                <div class="hidden md:flex gap-8">
-                    <a href="{% url 'home' %}" class="nav-link">Home</a>
-                    <a href="{% url 'charity:hub' %}" class="nav-link">Charity</a>
-                    <a href="{% url 'list_product' %}" class="nav-link">Shop</a>
-                </div>
-            </div>
+    {% include 'navbar.html' %}
 
-            <div class="flex items-center gap-6 text-white/90">
-                <div class="hidden md:flex gap-6 items-center">
-                    {% if user.is_authenticated %}
-                        {% if user.user_type == 2 %}
-                            <a href="{% url 'seller_dashboard' %}" class="nav-link">Dashboard</a>
-                        {% else %}
-                            <a href="{% url 'seller_entry' %}" class="nav-link">Become a Seller</a>
-                        {% endif %}
-                        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+    <div class="max-w-7xl mx-auto px-8 py-6">
+        <!-- Sub-header toolbar -->
+        <div class="flex justify-between items-center bg-white p-4 rounded-lg shadow-sm border border-slate-100 mb-8">
+            <h2 class="text-xl font-semibold text-slate-800">Available Products</h2>
+            <div class="flex gap-4">
+                {% if user.is_authenticated %}
+                    {% if user.user_type == 2 %}
+                        <a href="{% url 'seller_dashboard' %}" class="px-4 py-2 bg-slate-800 text-white rounded hover:bg-slate-700 transition">Seller Dashboard</a>
                     {% else %}
-                        <a href="{% url 'login' %}" class="nav-link">Login</a>
+                        <a href="{% url 'seller_entry' %}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Become a Seller</a>
                     {% endif %}
-                </div>
-
-                <div class="cursor-pointer hover:text-white transition-colors relative">
-                    <a href="{% url 'cart' %}" class="cursor-pointer hover:text-white transition-colors relative">
-                        <i data-lucide="shopping-cart" class="w-5 h-5 stroke-[1.5]"></i>
-                        <span class="absolute -top-1.5 -right-1.5 text-[9px] bg-white text-blue-600 w-3.5 h-3.5 flex items-center justify-center rounded-full font-bold">
-                            {% if cart_count %}{{ cart_count }}{% else %}0{% endif %}
-                        </span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <main class="max-w-7xl mx-auto px-8 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
-        
-        {% for product in products %}
-        <div class="product-card group cursor-pointer product-reveal" style="animation-delay: calc({{ forloop.counter }} * 0.1s)">
-            <div class="img-container relative bg-blue-50/50 aspect-[2/2] overflow-hidden mb-6 border border-blue-100/50">
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" class="w-full h-full object-cover group-hover:brightness-105 transition-all duration-700">
                 {% else %}
-                    <div class="w-full h-full flex items-center justify-center text-blue-200">
-                        <i data-lucide="cross" class="w-12 h-12 stroke-1"></i>
-                    </div>
+                    <a href="{% url 'login' %}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Become a Seller</a>
                 {% endif %}
-                
-                <div class="absolute inset-0 bg-blue-600/5 flex items-end">
-    <div class="action-icons">
-
-        <!-- Wishlist -->
-        <a href="#" 
-           class="icon-btn" title="Save">
-            <i data-lucide="heart" class="w-4 h-4"></i>
-        </a>
-
-        <!-- Add to Cart -->
-        <a href="{% url 'add_to_cart' product.id %}" 
-           class="icon-btn" title="Booking">
-            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-        </a>
-
-        <!-- Product Detail -->
-        <a href="{% url 'product_detail' product.id %}" 
-           class="icon-btn" title="View Details">
-            <i data-lucide="maximize-2" class="w-4 h-4"></i>
-        </a>
-
-    </div>
-</div>
-
-            </div>
-
-            <div class="text-center">
-                <h3 class="text-[11px] uppercase tracking-[0.15em] text-blue-500 mb-2 group-hover:text-blue-700 transition-colors">
-                    {{ product.name }}
-                </h3>
-                <div class="flex items-center justify-center gap-1 mb-2">
-                    <i data-lucide="star" class="w-2.5 h-2.5 fill-blue-500 text-blue-500"></i>
-                    <i data-lucide="star" class="w-2.5 h-2.5 fill-blue-500 text-blue-500"></i>
-                    <i data-lucide="star" class="w-2.5 h-2.5 fill-blue-500 text-blue-500"></i>
-                    <i data-lucide="star" class="w-2.5 h-2.5 fill-blue-500 text-blue-500"></i>
-                    <i data-lucide="star" class="w-2.5 h-2.5 text-blue-100"></i>
-                </div>
-                <p class="text-sm font-medium text-slate-900">${{ product.price }}</p>
+                <a href="{% url 'cart' %}" class="px-4 py-2 border border-slate-300 text-slate-700 rounded hover:bg-slate-50 transition flex items-center gap-2">
+                    <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                    Cart ({% if cart_count %}{{ cart_count }}{% else %}0{% endif %})
+                </a>
             </div>
         </div>
-        {% endfor %}
 
-    </main>
+        <div class="product-grid">
+            {% for product in products %}
+                <div class="product-card">
+                    <!-- Check for uploaded media image or static image folder -->
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img">
+                    {% else %}
+                        <img src="{% static 'images/default-product.jpg' %}" alt="{{ product.name }}" class="product-img">
+                    {% endif %}
+
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h3 class="text-lg font-semibold text-slate-900 mb-2">{{ product.name }}</h3>
+                        <p class="description text-sm text-slate-600 mb-4 line-clamp-3 flex-grow">{{ product.description }}</p>
+                        
+                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-slate-100">
+                            <p class="price text-xl font-bold text-blue-600">₹{{ product.price }}</p>
+                            <a href="{% url 'add_to_cart' product.id %}" class="btn bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-span-full py-12 text-center bg-white rounded-xl shadow-sm border border-slate-100">
+                    <i data-lucide="package-open" class="w-12 h-12 mx-auto text-slate-300 mb-4"></i>
+                    <p class="text-slate-500 text-lg">No products available yet. Add products via Django Admin!</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
     <script>
         lucide.createIcons();
