@@ -59,8 +59,10 @@
         <nav id="navmenu" class="navmenu">
           <ul>
             <li><a href="{% url 'home' %}" class="active">Home</a></li>
+            <li><a href="{% url 'user_dashboard' %}">Dashboard</a></li>
             <li><a href="{% url 'charity:hub' %}">Charity</a></li>
             <li><a href="{% url 'list_product' %}">Shop</a></li>
+            <li><a href="{% url 'telehealth:directory' %}">Appointments</a></li>
             
             {% if user.is_authenticated %}
                 {% if user.user_type == 2 %}

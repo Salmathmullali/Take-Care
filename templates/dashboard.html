@@ -1,0 +1,56 @@
+{% include 'navbar.html' %}
+
+<main class="main my-5">
+    <div class="container text-center mb-5">
+        <h2 class="display-4 fw-bold">User Dashboard</h2>
+        <p class="lead text-muted">Welcome to your central hub. Where would you like to go today?</p>
+    </div>
+
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+            
+            <!-- E-Commerce Shop Card -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0 bg-light rounded-4 overflow-hidden">
+                    <div class="card-body text-center p-5">
+                        <div class="mb-4">
+                            <i class="fa-solid fa-cart-shopping fa-4x text-primary"></i>
+                        </div>
+                        <h3 class="card-title fw-bold mb-3">E-Commerce Shop</h3>
+                        <p class="card-text text-muted mb-4">Browse and purchase medical products, devices, and supplements from verified sellers.</p>
+                        <a href="{% url 'list_product' %}" class="btn btn-primary btn-lg rounded-pill px-4">Visit Shop</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Doctor & Telehealth Appointments Card -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0 bg-light rounded-4 overflow-hidden">
+                    <div class="card-body text-center p-5">
+                        <div class="mb-4">
+                            <i class="fa-solid fa-user-doctor fa-4x text-success"></i>
+                        </div>
+                        <h3 class="card-title fw-bold mb-3">Telehealth Appointments</h3>
+                        <p class="card-text text-muted mb-4">Find specialized doctors, schedule virtual consultations, and manage your appointments.</p>
+                        <a href="{% url 'telehealth:directory' %}" class="btn btn-success btn-lg rounded-pill px-4">Book Appointment</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charity/Donations Card -->
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0 bg-light rounded-4 overflow-hidden">
+                    <div class="card-body text-center p-5">
+                        <div class="mb-4">
+                            <i class="fa-solid fa-hand-holding-heart fa-4x text-danger"></i>
+                        </div>
+                        <h3 class="card-title fw-bold mb-3">Charity & Donations</h3>
+                        <p class="card-text text-muted mb-4">Connect with those in need. Request or donate blood, medical bills, and food.</p>
+                        <a href="{% url 'charity:hub' %}" class="btn btn-danger btn-lg rounded-pill px-4">Go to Charity</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>

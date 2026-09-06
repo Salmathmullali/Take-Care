@@ -54,7 +54,7 @@ def logout_view(request):
 
 @login_required
 def user_dashboard(request):
-    return redirect('charity:my_dashboard')
+    return render(request, 'dashboard.html')
 
 
 # ==========================================
@@ -225,7 +225,7 @@ def list_product(request):
         except Cart.DoesNotExist:
             cart_count = 0
 
-    return render(request, 'shopping/list_product.html', {
+    return render(request, 'shopping/shop.html', {
         'products': products,
         'cart_count': cart_count
     })
