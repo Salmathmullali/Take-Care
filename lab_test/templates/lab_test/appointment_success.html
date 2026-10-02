@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Confirmed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+        
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Booking Confirmed!</h1>
+        <p class="text-gray-600 mb-8">Your appointment has been successfully scheduled.</p>
+        
+        <div class="bg-gray-50 rounded-xl p-6 text-left border border-gray-100 mb-8 space-y-3">
+            <div>
+                <span class="text-sm text-gray-500 block">Patient</span>
+                <span class="font-semibold text-gray-900">{{ appointment.patient_name }}</span>
+            </div>
+            <div>
+                <span class="text-sm text-gray-500 block">Doctor</span>
+                <span class="font-semibold text-gray-900">Dr. {{ appointment.doctor.name }}</span>
+                <span class="text-sm text-gray-600 block">{{ appointment.doctor.specialization }}</span>
+            </div>
+            <div>
+                <span class="text-sm text-gray-500 block">Location</span>
+                <span class="font-semibold text-gray-900">{{ appointment.hospital_selected }}</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <span class="text-sm text-gray-500 block">Date</span>
+                    <span class="font-semibold text-gray-900">{{ appointment.date }}</span>
+                </div>
+                <div>
+                    <span class="text-sm text-gray-500 block">Time</span>
+                    <span class="font-semibold text-gray-900">{{ appointment.time_slot }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <a href="/" class="inline-block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+            Return to Home
+        </a>
+    </div>
+</body>
+</html>

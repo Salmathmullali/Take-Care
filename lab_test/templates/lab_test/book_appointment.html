@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans py-10">
+    <div class="max-w-2xl mx-auto px-4">
+        <!-- Progress Bar -->
+        <div class="mb-8 text-center text-sm font-medium text-gray-500">
+            <span class="text-blue-600">1. Symptoms</span> > 
+            <span class="text-blue-600">2. Results</span> > 
+            <span class="text-blue-600">3. Doctors</span> > 
+            <span class="text-blue-600 font-bold">4. Booking</span>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-blue-600 p-6 text-white">
+                <h1 class="text-2xl font-bold mb-1">Book Appointment</h1>
+                <p class="text-blue-100 text-sm">with Dr. {{ doctor.name }} ({{ doctor.specialization }})</p>
+            </div>
+            
+            <form method="POST" class="p-6 space-y-6">
+                {% csrf_token %}
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Select Hospital / Clinic</label>
+                    <div class="space-y-2">
+                        {% for hospital in hospitals %}
+                        <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                            <input type="radio" name="hospital_selected" value="{{ hospital }}" required class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                            <span class="ml-3 block text-sm font-medium text-gray-900">{{ hospital }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                        <input type="date" id="date" name="date" required class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 border">
+                    </div>
+                    <div>
+                        <label for="time_slot" class="block text-sm font-medium text-gray-700 mb-1">Time Slot</label>
+                        <select id="time_slot" name="time_slot" required class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 border">
+                            <option value="">Select a time</option>
+                            <option value="09:00:00">09:00 AM</option>
+                            <option value="10:00:00">10:00 AM</option>
+                            <option value="11:00:00">11:00 AM</option>
+                            <option value="14:00:00">02:00 PM</option>
+                            <option value="15:00:00">03:00 PM</option>
+                            <option value="16:00:00">04:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="patient_name" class="block text-sm font-medium text-gray-700 mb-1">Patient Name</label>
+                    <input type="text" id="patient_name" name="patient_name" required class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 border" placeholder="Full Name">
+                </div>
+
+                <div>
+                    <label for="contact" class="block text-sm font-medium text-gray-700 mb-1">Contact Number</label>
+                    <input type="tel" id="contact" name="contact" required class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 border" placeholder="+1 (555) 000-0000">
+                </div>
+                
+                <div class="pt-4">
+                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Confirm Appointment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

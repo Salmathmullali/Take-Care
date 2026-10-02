@@ -29,6 +29,7 @@ urlpatterns = [
     ),
     path('', include('app.urls')),
     path('telehealth/', include('doctor_discovery.urls')),
+    path('lab-test/', include('lab_test.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

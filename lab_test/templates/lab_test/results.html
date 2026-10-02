@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans text-gray-800">
+    <div class="max-w-4xl mx-auto pt-12 px-4 pb-20">
+        <!-- Progress Bar (visual only) -->
+        <div class="mb-10 text-center text-sm font-medium text-gray-500">
+            <span class="text-blue-600">1. Symptoms</span> > 
+            <span class="text-blue-600 font-bold">2. Results</span> > 
+            <span>3. Doctors</span> > 
+            <span>4. Booking</span>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="bg-blue-600 p-8 text-white text-center">
+                <h1 class="text-3xl font-bold mb-2">Analysis Complete</h1>
+                <p class="text-blue-100">Based on your symptoms, we found a potential match.</p>
+            </div>
+            
+            <div class="p-8">
+                {% if disease %}
+                <div class="mb-10">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">{{ disease.name }}</h2>
+                        <span class="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">Confidence: {{ confidence }}</span>
+                    </div>
+                    <p class="text-gray-600 text-lg leading-relaxed">{{ disease.description|default:"A detailed description of the condition would appear here." }}</p>
+                </div>
+
+                <div class="bg-blue-50 rounded-xl p-6 mb-10 border border-blue-100">
+                    <h3 class="text-xl font-bold text-blue-800 mb-4 flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                        Recommended Lab Tests
+                    </h3>
+                    <ul class="space-y-3">
+                        {% for test in disease.recommended_tests.all %}
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-blue-500 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <div>
+                                <span class="font-semibold text-gray-800 block">{{ test.name }}</span>
+                                <span class="text-sm text-gray-500">{{ test.description }}</span>
+                            </div>
+                        </li>
+                        {% empty %}
+                        <li class="text-gray-500 italic">No specific lab tests recommended. Please consult a doctor.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="text-center">
+                    <a href="{% url 'lab_test:doctor_list' disease.id %}" class="inline-block w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded-full shadow-lg transition-transform transform hover:-translate-y-1 text-lg">
+                        Find Best Doctors for This Condition
+                    </a>
+                </div>
+                {% else %}
+                <div class="text-center py-10">
+                    <h3 class="text-xl text-gray-600 mb-4">We couldn't confidently match your symptoms to a specific condition in our database.</h3>
+                    <p class="text-gray-500 mb-8">We strongly recommend consulting a general physician for a proper diagnosis.</p>
+                    <a href="#" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full">
+                        Browse All Doctors
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

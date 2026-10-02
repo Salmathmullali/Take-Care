@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'app',
     'charity',
     'doctor_discovery',
+    'lab_test',
 ]
 
 AUTH_USER_MODEL = 'app.CustomUser'

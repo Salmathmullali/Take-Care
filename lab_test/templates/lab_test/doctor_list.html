@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Doctors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans">
+    <div class="max-w-5xl mx-auto pt-10 px-4 pb-20">
+        <!-- Progress Bar -->
+        <div class="mb-8 text-center text-sm font-medium text-gray-500">
+            <span class="text-blue-600">1. Symptoms</span> > 
+            <span class="text-blue-600">2. Results</span> > 
+            <span class="text-blue-600 font-bold">3. Doctors</span> > 
+            <span>4. Booking</span>
+        </div>
+
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Specialists for {{ disease.name }}</h1>
+            <p class="text-gray-600 mt-2">Top rated doctors and specialists based on your analysis.</p>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2">
+            {% for doctor in doctors %}
+            <div class="bg-white rounded-xl shadow-md p-6 flex flex-col hover:shadow-lg transition-shadow">
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">{{ doctor.name }}</h2>
+                        <p class="text-blue-600 font-medium">{{ doctor.specialization }}</p>
+                    </div>
+                    <div class="flex items-center bg-yellow-50 px-2 py-1 rounded">
+                        <svg class="w-5 h-5 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <span class="font-bold text-gray-700">{{ doctor.rating }}</span>
+                    </div>
+                </div>
+                
+                <div class="mb-4 text-sm text-gray-600">
+                    <p class="mb-1"><span class="font-semibold text-gray-800">Experience:</span> {{ doctor.experience_years }} years</p>
+                    <div class="mt-3">
+                        <span class="font-semibold text-gray-800 block mb-1">Available Hospitals / Clinics:</span>
+                        <div class="flex flex-wrap gap-2">
+                            {% for hospital in doctor.available_hospitals.split %}
+                            <span class="bg-gray-100 px-2 py-1 rounded text-xs">{{ hospital|strip:"," }}</span>
+                            {% endfor %}
+                            <!-- simplified rendering -->
+                            <p class="text-xs text-gray-500">{{ doctor.available_hospitals }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-auto pt-4 border-t border-gray-100 flex gap-3">
+                    <a href="{% url 'lab_test:book_appointment' doctor.id %}" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center font-medium py-2 rounded transition-colors">
+                        Book Appointment
+                    </a>
+                    <button class="flex-1 bg-white border border-blue-600 text-blue-600 hover:bg-blue-50 text-center font-medium py-2 rounded transition-colors">
+                        Order Lab Test
+                    </button>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-2 text-center py-10 bg-white rounded-xl shadow-md">
+                <p class="text-gray-500">No specific specialists found. Please try searching all doctors.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
