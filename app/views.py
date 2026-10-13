@@ -52,10 +52,19 @@ def logout_view(request):
     return redirect('home')
 
 
+from lab_test.models import LabTestOrder, Appointment as LabTestAppointment
+
 @login_required
 def user_dashboard(request):
-    return render(request, 'dashboard.html')
-
+    # Fetch Lab Test Orders and Appointments for the logged-in user
+    lab_test_orders = LabTestOrder.objects.filter(user=request.user).order_by('-order_date')
+    lab_appointments = LabTestAppointment.objects.filter(user=request.user).order_by('-date', '-time_slot')
+    
+    context = {
+        'lab_test_orders': lab_test_orders,
+        'lab_appointments': lab_appointments,
+    }
+    return render(request, 'dashboard.html', context)
 
 # ==========================================
 # E-COMMERCE MODULE VIEWS

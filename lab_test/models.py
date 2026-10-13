@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 class Symptom(models.Model):
     name = models.CharField(max_length=255)
@@ -12,6 +13,25 @@ class LabTest(models.Model):
 
     def __str__(self):
         return self.name
+
+class LabTestOrder(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    test = models.ForeignKey(LabTest, on_delete=models.CASCADE)
+    status = models.CharField(
+        max_length=50,
+        choices=[
+            ('Pending', 'Pending'),
+            ('Sample Collected', 'Sample Collected'),
+            ('Processing', 'Processing'),
+            ('Report Ready', 'Report Ready'),
+        ],
+        default='Pending'
+    )
+    order_date = models.DateTimeField(auto_now_add=True)
+    report_file = models.FileField(upload_to='medical_reports/', null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user} - {self.test.name} ({self.status})"
 
 class Disease(models.Model):
     name = models.CharField(max_length=255)
@@ -33,6 +53,7 @@ class Doctor(models.Model):
         return self.name
 
 class Appointment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     hospital_selected = models.CharField(max_length=255)
     date = models.DateField()

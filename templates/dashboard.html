@@ -10,47 +10,183 @@
         <div class="row g-4 justify-content-center">
             
             <!-- E-Commerce Shop Card -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card h-100 shadow-sm border-0 bg-light rounded-4 overflow-hidden">
-                    <div class="card-body text-center p-5">
-                        <div class="mb-4">
-                            <i class="fa-solid fa-cart-shopping fa-4x text-primary"></i>
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fa-solid fa-cart-shopping fa-3x text-primary"></i>
                         </div>
-                        <h3 class="card-title fw-bold mb-3">E-Commerce Shop</h3>
-                        <p class="card-text text-muted mb-4">Browse and purchase medical products, devices, and supplements from verified sellers.</p>
-                        <a href="{% url 'list_product' %}" class="btn btn-primary btn-lg rounded-pill px-4">Visit Shop</a>
+                        <h4 class="card-title fw-bold mb-2">E-Commerce Shop</h4>
+                        <p class="card-text text-muted small mb-3">Browse and purchase medical products from verified sellers.</p>
+                        <a href="{% url 'list_product' %}" class="btn btn-primary rounded-pill px-4">Visit Shop</a>
                     </div>
                 </div>
             </div>
 
             <!-- Doctor & Telehealth Appointments Card -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card h-100 shadow-sm border-0 bg-light rounded-4 overflow-hidden">
-                    <div class="card-body text-center p-5">
-                        <div class="mb-4">
-                            <i class="fa-solid fa-user-doctor fa-4x text-success"></i>
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fa-solid fa-user-doctor fa-3x text-success"></i>
                         </div>
-                        <h3 class="card-title fw-bold mb-3">Telehealth Appointments</h3>
-                        <p class="card-text text-muted mb-4">Find specialized doctors, schedule virtual consultations, and manage your appointments.</p>
-                        <a href="{% url 'telehealth:directory' %}" class="btn btn-success btn-lg rounded-pill px-4">Book Appointment</a>
+                        <h4 class="card-title fw-bold mb-2">Telehealth Appointments</h4>
+                        <p class="card-text text-muted small mb-3">Find specialized doctors and schedule virtual consultations.</p>
+                        <a href="{% url 'telehealth:directory' %}" class="btn btn-success rounded-pill px-4">Book Appointment</a>
                     </div>
                 </div>
             </div>
 
             <!-- Charity/Donations Card -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card h-100 shadow-sm border-0 bg-light rounded-4 overflow-hidden">
-                    <div class="card-body text-center p-5">
-                        <div class="mb-4">
-                            <i class="fa-solid fa-hand-holding-heart fa-4x text-danger"></i>
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fa-solid fa-hand-holding-heart fa-3x text-danger"></i>
                         </div>
-                        <h3 class="card-title fw-bold mb-3">Charity & Donations</h3>
-                        <p class="card-text text-muted mb-4">Connect with those in need. Request or donate blood, medical bills, and food.</p>
-                        <a href="{% url 'charity:hub' %}" class="btn btn-danger btn-lg rounded-pill px-4">Go to Charity</a>
+                        <h4 class="card-title fw-bold mb-2">Charity & Donations</h4>
+                        <p class="card-text text-muted small mb-3">Connect with those in need. Request or donate blood and food.</p>
+                        <a href="{% url 'charity:hub' %}" class="btn btn-danger rounded-pill px-4">Go to Charity</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lab Tests & Diagnostics Card -->
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm border-0 bg-light rounded-4 overflow-hidden">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fa-solid fa-vial-circle-check fa-3x text-info"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-2">Lab Tests & Diagnostics</h4>
+                        <p class="card-text text-muted small mb-3">Symptom checker, book lab tests, and view medical reports.</p>
+                        <a href="#lab-test-dashboard" class="btn btn-info text-white rounded-pill px-4">My Medical Hub</a>
                     </div>
                 </div>
             </div>
 
         </div>
+
+        <!-- Dashboard Sub-sections -->
+        <div class="mt-5 pt-4 border-top" id="lab-test-dashboard">
+            <h3 class="fw-bold mb-4">Lab Tests & Diagnostics Dashboard</h3>
+            <ul class="nav nav-pills mb-4" id="labTestTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="symptom-tab" data-bs-toggle="pill" data-bs-target="#symptom" type="button" role="tab" aria-controls="symptom" aria-selected="true">Symptom Checker</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="orders-tab" data-bs-toggle="pill" data-bs-target="#orders" type="button" role="tab" aria-controls="orders" aria-selected="false">My Lab Test Orders</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="appointments-tab" data-bs-toggle="pill" data-bs-target="#appointments" type="button" role="tab" aria-controls="appointments" aria-selected="false">My Appointments</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="reports-tab" data-bs-toggle="pill" data-bs-target="#reports" type="button" role="tab" aria-controls="reports" aria-selected="false">Medical Reports</button>
+                </li>
+            </ul>
+            
+            <div class="tab-content bg-white p-4 rounded shadow-sm" id="labTestTabContent">
+                <!-- Symptom Checker -->
+                <div class="tab-pane fade show active text-center py-4" id="symptom" role="tabpanel" aria-labelledby="symptom-tab">
+                    <i class="fa-solid fa-stethoscope fa-4x text-info mb-3"></i>
+                    <h4>Know Your Disease</h4>
+                    <p class="text-muted">Enter your symptoms and get a preliminary diagnosis and recommended lab tests.</p>
+                    <a href="{% url 'lab_test:symptom_input' %}" class="btn btn-primary mt-2">Launch Symptom Checker</a>
+                </div>
+
+                <!-- My Lab Test Orders -->
+                <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                    <h5 class="mb-3">My Lab Test Orders</h5>
+                    {% if lab_test_orders %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Test Name</th>
+                                    <th>Order Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in lab_test_orders %}
+                                <tr>
+                                    <td>{{ order.test.name }}</td>
+                                    <td>{{ order.order_date|date:"M d, Y" }}</td>
+                                    <td>
+                                        <span class="badge {% if order.status == 'Pending' %}bg-warning text-dark{% elif order.status == 'Sample Collected' %}bg-info text-dark{% elif order.status == 'Processing' %}bg-primary{% else %}bg-success{% endif %}">
+                                            {{ order.status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted">You have no active lab test orders.</p>
+                    {% endif %}
+                </div>
+
+                <!-- My Appointments -->
+                <div class="tab-pane fade" id="appointments" role="tabpanel" aria-labelledby="appointments-tab">
+                    <h5 class="mb-3">Upcoming Appointments</h5>
+                    {% if lab_appointments %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Doctor</th>
+                                    <th>Hospital</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for apt in lab_appointments %}
+                                <tr>
+                                    <td>{{ apt.doctor.name }} ({{ apt.doctor.specialization }})</td>
+                                    <td>{{ apt.hospital_selected }}</td>
+                                    <td>{{ apt.date|date:"M d, Y" }}</td>
+                                    <td>{{ apt.time_slot|time:"h:i A" }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted">You have no upcoming appointments.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Medical Reports -->
+                <div class="tab-pane fade" id="reports" role="tabpanel" aria-labelledby="reports-tab">
+                    <h5 class="mb-3">Medical Reports</h5>
+                    {% if lab_test_orders %}
+                    <div class="row g-3">
+                        {% for order in lab_test_orders %}
+                            {% if order.status == 'Report Ready' and order.report_file %}
+                            <div class="col-md-6">
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-body d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">{{ order.test.name }}</h6>
+                                            <small class="text-muted">{{ order.order_date|date:"M d, Y" }}</small>
+                                        </div>
+                                        <a href="{{ order.report_file.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                            <i class="fa-solid fa-download"></i> Download
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No medical reports available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 </main>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

@@ -61,6 +61,7 @@ def book_appointment(request, doctor_id):
         hospital_selected = request.POST.get('hospital_selected')
         
         appointment = Appointment.objects.create(
+            user=request.user if request.user.is_authenticated else None,
             doctor=doctor,
             hospital_selected=hospital_selected,
             date=date,
